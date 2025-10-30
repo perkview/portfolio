@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Resume - Portfolio{% endblock %}
+
+{% block content %}
+
+<!-- 🏆 Resume Header -->
+<section class="py-5 text-center bg-white">
+  <div class="container">
+    <h2 class="fw-semibold text-primary mb-3">Resume</h2>
+    <p class="text-muted mx-auto" style="max-width: 700px;">
+      {{ skills_header.subtitle|default:"A comprehensive overview of my education, work experience, and skillset — showcasing my growth mindset and technical expertise." }}
+    </p>
+    {% if skills_header %}
+      <a href="{% static 'files/resume.pdf' %}" class="btn btn-primary-custom mt-3" download>
+        <i class="bi bi-download"></i> Download Resume
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+<!-- 🧭 Resume Content -->
+<section class="py-5" style="background-color:#F5F5F5;">
+  <div class="container">
+    <div class="row g-4">
+
+      <!-- LEFT COLUMN -->
+      <div class="col-lg-6">
+        
+        <!-- 🎓 Education -->
+        <div class="bg-white rounded shadow-sm p-4 mb-4">
+          <h4 class="fw-semibold text-primary mb-3"><i class="bi bi-mortarboard-fill me-2"></i>Education</h4>
+          {% for edu in education_list %}
+            <div class="mb-3">
+              <h6 class="text-dark mb-1">{{ edu.degree }}</h6>
+              <small class="text-muted">{{ edu.institution }} | {{ edu.year_range }}</small>
+              <p class="text-secondary small mt-2">{{ edu.description }}</p>
+            </div>
+          {% empty %}
+            <p class="text-muted small">No education details available yet.</p>
+          {% endfor %}
+        </div>
+
+        <!-- 🧠 Summary Skills -->
+        <div class="bg-white rounded shadow-sm p-4 mb-4">
+          <h4 class="fw-semibold text-primary mb-3"><i class="bi bi-bar-chart-fill me-2"></i>Summary Skills</h4>
+          {% for skill in summary_skills %}
+            <div class="mb-3">
+              <p class="fw-semibold text-secondary mb-1">{{ skill.skill_name }}</p>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar" style="width: {{ skill.proficiency }}%; background-color: {{ skill.color }};">
+                  {{ skill.proficiency }}%
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-muted small">No summary skills listed yet.</p>
+          {% endfor %}
+        </div>
+
+        <!-- 🧰 Tools -->
+        <div class="bg-white rounded shadow-sm p-4">
+          <h4 class="fw-semibold text-primary mb-3"><i class="bi bi-wrench-adjustable-circle me-2"></i>Tools & Technologies</h4>
+          <div class="d-flex flex-wrap gap-3">
+            {% for tool in tools %}
+              <div class="text-center">
+                {% if tool.icon %}
+                  <img src="{{ tool.icon.url }}" class="img-fluid" alt="{{ tool.name }}" style="height: 40px;">
+                {% endif %}
+                <p class="small text-secondary mt-2 mb-0">{{ tool.name }}</p>
+              </div>
+            {% empty %}
+              <p class="text-muted small">No tools added yet.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="col-lg-6">
+
+        <!-- 💼 Experience -->
+        <div class="bg-white rounded shadow-sm p-4 mb-4">
+          <h4 class="fw-semibold text-primary mb-3"><i class="bi bi-briefcase-fill me-2"></i>Experience</h4>
+          {% for exp in experience_list %}
+            <div class="mb-3">
+              <h6 class="text-dark mb-1">{{ exp.role }}</h6>
+              <small class="text-muted">{{ exp.company }} | {{ exp.year_range }}</small>
+              <p class="text-secondary small mt-2">{{ exp.description }}</p>
+            </div>
+          {% empty %}
+            <p class="text-muted small">No experience available yet.</p>
+          {% endfor %}
+        </div>
+
+        <!-- ⚙️ Technical Skills -->
+        <div class="bg-white rounded shadow-sm p-4 mb-4">
+          <h4 class="fw-semibold text-primary mb-3"><i class="bi bi-cpu-fill me-2"></i>Technical Skills</h4>
+          {% for tech in technical_skills %}
+            <div class="mb-3">
+              <p class="fw-semibold text-secondary mb-1">{{ tech.category }}: <span class="text-dark">{{ tech.skills }}</span></p>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-primary" style="width: {{ tech.proficiency }}%;">
+                  {{ tech.proficiency }}%
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-muted small">No technical skills added yet.</p>
+          {% endfor %}
+        </div>
+
+        <!-- 💬 Soft Skills -->
+        <div class="bg-white rounded shadow-sm p-4">
+          <h4 class="fw-semibold text-primary mb-3"><i class="bi bi-people-fill me-2"></i>Soft Skills</h4>
+          <div class="row g-3">
+            {% for soft in soft_skills %}
+              <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                  <i class="{{ soft.icon_class }} fs-4 text-primary me-2"></i>
+                  <div>
+                    <h6 class="fw-semibold mb-1">{{ soft.title }}</h6>
+                    <p class="text-secondary small mb-0">{{ soft.description }}</p>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <p class="text-muted small">No soft skills available yet.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🌈 Call to Action -->
+<section class="py-5 text-center bg-white">
+  <div class="container">
+    <h3 class="fw-semibold mb-3">Let’s Build Together</h3>
+    <p class="text-secondary mb-4">
+      I’m open to freelance opportunities, internships, and collaborations that challenge me to grow and innovate.
+    </p>
+    <a href="{% url 'contact' %}" class="btn btn-primary-custom">Hire Me</a>
+  </div>
+</section>
+
+{% endblock %}

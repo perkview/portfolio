@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Projects - Portfolio{% endblock %}
+
+{% block content %}
+
+<!-- 💡 Projects Header -->
+<section class="py-5 text-center bg-white">
+  <div class="container">
+    <h2 class="fw-semibold text-primary mb-3">My Projects</h2>
+    <p class="text-muted mx-auto" style="max-width: 700px;">
+      A showcase of ideas turned into reality — blending code, design, and innovation.  
+      Each project reflects my journey of learning, problem-solving, and crafting meaningful digital experiences.
+    </p>
+  </div>
+</section>
+
+<!-- 🚀 Featured Projects -->
+<section class="py-5" style="background-color: #F5F5F5;">
+  <div class="container">
+    <h3 class="fw-semibold text-center mb-5">Featured Projects</h3>
+
+    {% if featured_projects %}
+      <div class="row g-4">
+        {% for project in featured_projects %}
+        <div class="col-md-4">
+          <div class="card shadow-sm border-0 h-100">
+            {% if project.image %}
+              <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+            {% else %}
+              <img src="{% static 'img/default_project.jpg' %}" class="card-img-top" alt="{{ project.title }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title text-primary">{{ project.title }}</h5>
+              <p class="card-text text-secondary small">{{ project.description|truncatechars:160 }}</p>
+            </div>
+            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+              {% if project.live_demo_link %}
+                <a href="{{ project.live_demo_link }}" target="_blank" class="btn btn-sm btn-outline-primary">Live Demo</a>
+              {% endif %}
+              {% if project.github_link %}
+                <a href="{{ project.github_link }}" target="_blank" class="btn btn-sm btn-outline-dark">GitHub</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-muted">No featured projects available yet.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- 🧰 Tech Stack Section -->
+<section class="py-5 bg-white">
+  <div class="container text-center">
+    <h3 class="fw-semibold mb-4">Technologies I Use</h3>
+    <div class="row justify-content-center g-4">
+      {% for tech in technologies %}
+      <div class="col-6 col-md-2">
+        <div class="p-3 border rounded shadow-sm">
+          {% if tech.icon %}
+            <img src="{{ tech.icon.url }}" alt="{{ tech.name }}" width="40">
+          {% else %}
+            <img src="{% static 'icons/default.svg' %}" alt="{{ tech.name }}" width="40">
+          {% endif %}
+          <p class="small text-secondary mt-2">{{ tech.name }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- 🧩 Recent Projects -->
+<section class="py-5" style="background-color: #F5F5F5;">
+  <div class="container">
+    <h3 class="fw-semibold text-center mb-5">Recent Projects</h3>
+
+    {% if recent_projects %}
+      <div class="row g-4">
+        {% for project in recent_projects %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 shadow-sm">
+            {% if project.image %}
+              <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+            {% else %}
+              <img src="{% static 'img/default_project.jpg' %}" class="card-img-top" alt="{{ project.title }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title text-primary">{{ project.title }}</h5>
+              <p class="card-text text-secondary small">{{ project.description|truncatechars:150 }}</p>
+            </div>
+            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+              {% if project.live_demo_link %}
+                <a href="{{ project.live_demo_link }}" target="_blank" class="btn btn-sm btn-outline-primary">Live Demo</a>
+              {% endif %}
+              {% if project.github_link %}
+                <a href="{{ project.github_link }}" target="_blank" class="btn btn-sm btn-outline-dark">GitHub</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-muted">No recent projects added yet.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- 🌐 All Projects -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h3 class="fw-semibold text-center mb-5">All Projects</h3>
+
+    {% if all_projects %}
+      <div class="row g-4">
+        {% for project in all_projects %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 shadow-sm">
+            {% if project.image %}
+              <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+            {% else %}
+              <img src="{% static 'img/default_project.jpg' %}" class="card-img-top" alt="{{ project.title }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title text-primary">{{ project.title }}</h5>
+              <p class="card-text text-secondary small">{{ project.description|truncatechars:150 }}</p>
+            </div>
+            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+              {% if project.live_demo_link %}
+                <a href="{{ project.live_demo_link }}" target="_blank" class="btn btn-sm btn-outline-primary">Live Demo</a>
+              {% endif %}
+              {% if project.github_link %}
+                <a href="{{ project.github_link }}" target="_blank" class="btn btn-sm btn-outline-dark">GitHub</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-muted">No projects added yet.</p>
+    {% endif %}
+  </div>
+</section>
+
+
+{% endblock %}

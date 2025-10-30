@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Skills - Portfolio{% endblock %}
+
+{% block content %}
+
+<!-- 🧠 Skills Header -->
+<section class="py-5 text-center bg-white">
+  <div class="container">
+    <h2 class="fw-semibold mb-3 text-primary">{{ skills_header.title }}</h2>
+    <p class="text-muted mx-auto" style="max-width: 700px;">
+      {{ skills_header.subtitle }}
+    </p>
+  </div>
+</section>
+
+<!-- 💻 Technical Skills -->
+<section class="py-5" style="background-color: #F5F5F5;">
+  <div class="container">
+    <h3 class="fw-semibold mb-4 text-center">Technical Expertise</h3>
+    <div class="row g-4">
+      {% for tech in technical_skills %}
+        <div class="col-md-6">
+          <div class="p-4 bg-white rounded shadow-sm h-100">
+            <h5 class="text-primary mb-2">{{ tech.category }}</h5>
+            <p class="text-muted small mb-3">{{ tech.skills }}</p>
+            <div class="progress mb-3" style="height: 10px;">
+              <div class="progress-bar bg-primary" role="progressbar" 
+                   style="width: {{ tech.proficiency }}%;" 
+                   aria-valuenow="{{ tech.proficiency }}">
+              </div>
+            </div>
+            <small class="text-secondary">{{ tech.proficiency }}% Proficiency</small>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center text-muted">No technical skills added yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 🛠️ Tools & Technologies -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h3 class="fw-semibold mb-4 text-center">Tools & Technologies</h3>
+    <div class="row text-center g-4">
+      {% for tool in tools %}
+        <div class="col-6 col-md-3">
+          <div class="p-3 border rounded shadow-sm h-100">
+            {% if tool.icon %}
+              <img src="{{ tool.icon.url }}" alt="{{ tool.name }}" width="40">
+            {% else %}
+              <img src="{% static 'icons/default.svg' %}" alt="{{ tool.name }}" width="40">
+            {% endif %}
+            <h6 class="mt-2 text-secondary">{{ tool.name }}</h6>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-muted text-center">No tools added yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ⚙️ Soft Skills -->
+<section class="py-5" style="background-color: #F5F5F5;">
+  <div class="container">
+    <h3 class="fw-semibold mb-4 text-center">Soft Skills</h3>
+    <div class="row g-4">
+      {% for soft in soft_skills %}
+        <div class="col-md-4">
+          <div class="p-4 bg-white rounded shadow-sm text-center h-100">
+            <i class="{{ soft.icon_class }} text-primary fs-2 mb-2"></i>
+            <h6 class="text-primary">{{ soft.title }}</h6>
+            <p class="text-secondary small">{{ soft.description }}</p>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center text-muted">No soft skills available yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 📊 Summary Skill Bars -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h3 class="fw-semibold mb-4 text-center">Skill Overview</h3>
+    <div class="row gy-4">
+      {% for bar in summary_skills %}
+        <div class="col-md-6">
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <span class="text-secondary">{{ bar.skill_name }}</span>
+              <span>{{ bar.proficiency }}%</span>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar" 
+                   style="width: {{ bar.proficiency }}%; background-color: {{ bar.color }};">
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-muted text-center">No skill overview added yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

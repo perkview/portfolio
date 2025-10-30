@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Portfolio{% endblock %}
+
+{% block content %}
+
+<!-- 🏠 Hero Section -->
+<section class="hero-section text-center text-white py-5"
+         style="background: linear-gradient(135deg, #007BFF 40%, #40E0D0); border-radius: 0 0 60px 60px;">
+  <div class="container py-5">
+    {% if basic_info.hero_image %}
+      <img src="{{ basic_info.hero_image.url }}" alt="Profile"
+           class="rounded-circle mb-4" width="140" height="140">
+    {% endif %}
+    <h1 class="fw-bold">
+      Hi, I’m <span style="color:#FFC107;">{{ basic_info.full_name }}</span>
+    </h1>
+    <p class="lead mb-4">{{ basic_info.tagline }}</p>
+    <a href="{% url 'projects' %}" class="btn btn-primary-custom me-2">
+      {{ basic_info.work_button_text }}
+    </a>
+    <a href="{% url 'contact' %}" class="btn btn-outline-light border-2 text-white">
+      {{ basic_info.contact_button_text }}
+    </a>
+  </div>
+</section>
+
+<!-- 👤 About Preview -->
+<section class="py-5 bg-white text-center">
+  <div class="container">
+    <h2 class="fw-semibold mb-4">{{ basic_info.about_heading }}</h2>
+    <p class="lead mb-4">{{ basic_info.about_short_description }}</p>
+    <a href="{% url 'about' %}" class="btn btn-primary-custom">Learn More</a>
+  </div>
+</section>
+
+<!-- 🧩 Featured Projects -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="fw-semibold text-center mb-5">Featured Projects</h2>
+    <div class="row g-4">
+
+      {% for project in featured_projects %}
+      <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100">
+          {% if project.image %}
+            <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="fw-semibold">{{ project.title }}</h5>
+            <p class="text-muted">{{ project.description|truncatewords:20 }}</p>
+            {% if project.live_demo_link %}
+              <a href="{{ project.live_demo_link }}" target="_blank" class="text-primary fw-bold">View Project →</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-center text-muted">No featured projects available yet.</p>
+      {% endfor %}
+      
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="{% url 'projects' %}" class="btn btn-primary-custom">View All Projects</a>
+    </div>
+  </div>
+</section>
+
+<!-- 📬 Contact Preview -->
+<section class="py-5 bg-white text-center">
+  <div class="container">
+    <h2 class="fw-semibold mb-4">{{ basic_info.contact_preview_heading }}</h2>
+    <p class="lead mb-4">{{ basic_info.contact_preview_text }}</p>
+    <a href="{% url 'contact' %}" class="btn btn-primary-custom">Get In Touch</a>
+  </div>
+</section>
+
+{% endblock %}

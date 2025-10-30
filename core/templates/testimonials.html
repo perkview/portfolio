@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Testimonials - Portfolio{% endblock %}
+
+{% block content %}
+
+<section class="py-5 text-center bg-white">
+  <div class="container">
+    <h2 class="fw-semibold text-primary mb-3">Testimonials</h2>
+    <p class="text-muted mx-auto" style="max-width: 700px;">
+      Words from clients, mentors, and collaborators who’ve experienced my work ethic, communication, and commitment to quality firsthand.
+    </p>
+  </div>
+</section>
+
+<!-- 🌟 Dynamic Testimonials Carousel -->
+<section class="py-5" style="background-color:#F5F5F5;">
+  <div class="container">
+    {% if featured_testimonials %}
+    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+
+        {% for testimonial in featured_testimonials %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %} text-center">
+          <div class="p-4 bg-white rounded shadow-sm mx-auto" style="max-width: 700px;">
+            {% if testimonial.image %}
+              <img src="{{ testimonial.image.url }}" class="rounded-circle shadow mb-3" width="90" height="90" alt="{{ testimonial.name }}">
+            {% else %}
+              <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle shadow mb-3" width="90" height="90" alt="No Image">
+            {% endif %}
+            <blockquote class="blockquote text-secondary mb-3">
+              <p>{{ testimonial.feedback }}</p>
+            </blockquote>
+            <footer class="blockquote-footer text-primary fw-semibold">
+              {{ testimonial.name }}, <cite title="Company">{{ testimonial.position }}{% if testimonial.company %} at {{ testimonial.company }}{% endif %}</cite>
+            </footer>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- 💎 Dynamic Additional Feedback -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h3 class="fw-semibold text-center mb-5">More Feedback</h3>
+    <div class="row g-4">
+      {% for testimonial in other_testimonials %}
+      <div class="col-md-6 col-lg-4">
+        <div class="p-4 bg-light rounded shadow-sm h-100">
+          <p class="text-secondary small mb-3">“{{ testimonial.feedback }}”</p>
+          <div class="d-flex align-items-center">
+            {% if testimonial.image %}
+              <img src="{{ testimonial.image.url }}" class="rounded-circle me-3" width="50" height="50" alt="{{ testimonial.name }}">
+            {% else %}
+              <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle me-3" width="50" height="50" alt="Default Avatar">
+            {% endif %}
+            <div>
+              <h6 class="text-primary mb-0">{{ testimonial.name }}</h6>
+              <small class="text-muted">{{ testimonial.position }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-center text-muted">No testimonials available yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="py-5 text-center" style="background-color:#F5F5F5;">
+  <div class="container">
+    <h3 class="fw-semibold mb-3">Want to Work Together?</h3>
+    <p class="text-secondary mb-4">
+      Let’s build something impactful together. I’m open to freelance projects, collaborations, and full-time opportunities.
+    </p>
+    <a href="{% url 'contact' %}" class="btn btn-primary-custom">Contact Me</a>
+  </div>
+</section>
+
+{% endblock %}
