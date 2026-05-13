@@ -1,0 +1,1345 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Blog & Insights — Muhammad Ahmad{% endblock %}
+
+{% block meta_description %}Engineering breakdowns, Django tutorials, AI system deep-dives, and freelancing insights from a working full stack developer.{% endblock %}
+
+{% block extra_head %}
+<style>
+
+/* ============================================================
+   PAGE-LEVEL DESIGN TOKENS (inherits base vars)
+   ============================================================ */
+:root {
+  --hero-h: 420px;
+}
+
+/* ============================================================
+   PAGE HERO
+   ============================================================ */
+.blog-hero {
+  position: relative;
+  padding: 100px 0 80px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.blog-hero-orb-1 {
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 70%);
+  top: -200px; left: -100px;
+  pointer-events: none;
+  animation: orbFloat1 14s ease-in-out infinite;
+}
+.blog-hero-orb-2 {
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%);
+  bottom: -150px; right: -80px;
+  pointer-events: none;
+  animation: orbFloat2 16s ease-in-out infinite;
+}
+@keyframes orbFloat1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(24px,16px)} }
+@keyframes orbFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-16px,24px)} }
+
+.blog-hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.blog-hero-inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.blog-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+.blog-hero-eyebrow::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--accent);
+}
+.blog-hero-eyebrow::after {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--accent);
+}
+
+.blog-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 18px;
+}
+.blog-hero-title span {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.blog-hero-sub {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   SEARCH BAR
+   ============================================================ */
+.blog-search-wrap {
+  display: flex;
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.blog-search-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 14px 24px 14px 50px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: var(--transition);
+}
+.blog-search-input::placeholder { color: var(--text-muted); }
+.blog-search-input:focus {
+  border-color: rgba(59,130,246,0.45);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.blog-search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.blog-search-clear {
+  position: absolute;
+  right: 18px;
+  top: 50%; transform: translateY(-50%);
+  background: none; border: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  padding: 4px;
+}
+.blog-search-clear.visible { opacity: 1; }
+.blog-search-clear:hover { color: var(--text); }
+
+/* ============================================================
+   TAG FILTERS
+   ============================================================ */
+.tag-filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 56px;
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 16px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  font-family: var(--font-body);
+  user-select: none;
+}
+.tag-pill:hover {
+  border-color: rgba(59,130,246,0.4);
+  color: var(--accent);
+  background: rgba(59,130,246,0.06);
+}
+.tag-pill.active {
+  background: linear-gradient(135deg, var(--accent), #2563EB);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(59,130,246,0.3);
+}
+
+.tag-pill .pill-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  font-size: 0.65rem;
+}
+.tag-pill:not(.active) .pill-count {
+  background: var(--bg-glass);
+}
+
+/* ============================================================
+   FEATURED POST (first / pinned)
+   ============================================================ */
+.featured-post {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-bottom: 56px;
+  transition: var(--transition);
+  position: relative;
+}
+.featured-post::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+}
+.featured-post:hover {
+  border-color: rgba(59,130,246,0.25);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+  transform: translateY(-2px);
+}
+
+.featured-img-wrap {
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  background: var(--bg);
+}
+.featured-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  display: block;
+}
+.featured-post:hover .featured-img-wrap img { transform: scale(1.04); }
+
+.featured-img-placeholder {
+  width: 100%; height: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.08));
+  font-size: 5rem;
+  color: rgba(59,130,246,0.3);
+}
+
+.featured-body {
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.featured-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  color: var(--accent);
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+.featured-badge i { font-size: 0.65rem; }
+
+.featured-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+  color: var(--text);
+  transition: color 0.2s;
+}
+.featured-post:hover .featured-title { color: var(--accent-2); }
+
+.featured-excerpt {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.featured-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.meta-chip i { color: var(--accent-2); font-size: 0.7rem; }
+
+.featured-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; }
+.blog-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 50px;
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.2);
+  color: #A78BFA;
+  letter-spacing: 0.04em;
+}
+
+.btn-read-featured {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--accent), #2563EB);
+  color: #fff;
+  padding: 12px 26px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 6px 24px rgba(59,130,246,0.3);
+  width: fit-content;
+  font-family: var(--font-body);
+}
+.btn-read-featured:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 36px rgba(59,130,246,0.5);
+  color: #fff;
+}
+
+/* ============================================================
+   SECTION HEADER ROW
+   ============================================================ */
+.posts-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.posts-count {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+.posts-count span { color: var(--accent); font-weight: 700; }
+
+/* ============================================================
+   BLOG GRID
+   ============================================================ */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 22px;
+}
+
+/* ============================================================
+   BLOG CARD
+   ============================================================ */
+.blog-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+  cursor: pointer;
+  position: relative;
+}
+.blog-card:hover {
+  border-color: rgba(59,130,246,0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+/* Top accent bar — colour varies by category */
+.blog-card-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.blog-card:hover .blog-card-bar { transform: scaleX(1); }
+
+/* Cover image */
+.blog-cover-wrap {
+  position: relative;
+  height: 192px;
+  overflow: hidden;
+  background: var(--bg);
+}
+.blog-cover-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.55s ease;
+}
+.blog-card:hover .blog-cover-wrap img { transform: scale(1.05); }
+
+.blog-cover-placeholder {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: rgba(59,130,246,0.2);
+}
+/* Different placeholder gradients per card accent colour */
+.accent-blue .blog-cover-placeholder  { background: linear-gradient(135deg,rgba(59,130,246,0.1),rgba(6,182,212,0.06)); }
+.accent-purple .blog-cover-placeholder { background: linear-gradient(135deg,rgba(139,92,246,0.1),rgba(59,130,246,0.06)); }
+.accent-cyan .blog-cover-placeholder   { background: linear-gradient(135deg,rgba(6,182,212,0.1),rgba(16,185,129,0.06)); }
+.accent-green .blog-cover-placeholder  { background: linear-gradient(135deg,rgba(16,185,129,0.1),rgba(6,182,212,0.06)); }
+.accent-amber .blog-cover-placeholder  { background: linear-gradient(135deg,rgba(245,158,11,0.1),rgba(239,68,68,0.06)); }
+.accent-red .blog-cover-placeholder    { background: linear-gradient(135deg,rgba(239,68,68,0.1),rgba(245,158,11,0.06)); }
+
+/* Override bar colour per accent */
+.accent-purple .blog-card-bar { background: linear-gradient(90deg,var(--accent-3),var(--accent)); }
+.accent-cyan .blog-card-bar   { background: linear-gradient(90deg,var(--accent-2),var(--green)); }
+.accent-green .blog-card-bar  { background: linear-gradient(90deg,var(--green),var(--accent-2)); }
+.accent-amber .blog-card-bar  { background: linear-gradient(90deg,#F59E0B,#EF4444); }
+.accent-red .blog-card-bar    { background: linear-gradient(90deg,#EF4444,#F59E0B); }
+
+.blog-card-body {
+  padding: 26px 26px 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.blog-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.blog-card-date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.blog-read-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: rgba(6,182,212,0.1);
+  border: 1px solid rgba(6,182,212,0.18);
+  color: var(--accent-2);
+  padding: 2px 9px;
+  border-radius: 50px;
+}
+
+.blog-card-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.38;
+  color: var(--text);
+  margin-bottom: 10px;
+  transition: color 0.2s;
+  letter-spacing: -0.01em;
+}
+.blog-card:hover .blog-card-title { color: var(--accent-2); }
+
+.blog-card-excerpt {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  line-height: 1.65;
+  flex: 1;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.blog-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.blog-card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.blog-card-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 50px;
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.18);
+  color: #A78BFA;
+}
+
+.blog-card-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+  transition: gap 0.2s;
+}
+.blog-card:hover .blog-card-arrow { gap: 8px; }
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted);
+}
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  display: block;
+  color: var(--border);
+}
+.empty-state h4 {
+  font-size: 1.1rem;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+/* ============================================================
+   SIDEBAR — NEWSLETTER / CTA
+   ============================================================ */
+.blog-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 36px;
+  align-items: start;
+}
+
+.blog-sidebar { display: flex; flex-direction: column; gap: 22px; }
+
+.sidebar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-card-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sidebar-card-title i { color: var(--accent); }
+
+/* Newsletter box */
+.newsletter-card::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.newsletter-text {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.newsletter-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  outline: none;
+  transition: var(--transition);
+  margin-bottom: 10px;
+}
+.newsletter-input::placeholder { color: var(--text-muted); }
+.newsletter-input:focus { border-color: rgba(59,130,246,0.4); }
+
+.newsletter-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), #2563EB);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+.newsletter-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* Popular tags sidebar */
+.sidebar-tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+.sidebar-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 50px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+.sidebar-tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(59,130,246,0.06);
+}
+
+/* Freelance CTA sidebar card */
+.sidebar-cta-card {
+  background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.08));
+  border-color: rgba(59,130,246,0.2);
+  text-align: center;
+}
+.sidebar-cta-card .cta-emoji { font-size: 2rem; margin-bottom: 12px; display: block; }
+.sidebar-cta-card h4 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.sidebar-cta-card p {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+.sidebar-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), #2563EB);
+  color: #fff;
+  padding: 11px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.84rem;
+  transition: var(--transition);
+}
+.sidebar-cta-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(59,130,246,0.4);
+  color: #fff;
+}
+
+/* ============================================================
+   LOAD MORE / PAGINATION
+   ============================================================ */
+.load-more-wrap { text-align: center; margin-top: 52px; }
+
+.btn-load-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 13px 32px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+.btn-load-more:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(59,130,246,0.06);
+}
+
+/* ============================================================
+   NO RESULTS SEARCH
+   ============================================================ */
+#no-results-msg {
+  display: none;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+#no-results-msg i { font-size: 2.5rem; display: block; margin-bottom: 14px; color: var(--border); }
+#no-results-msg h4 { color: var(--text-dim); margin-bottom: 6px; }
+
+/* ============================================================
+   SECTION DIVIDER
+   ============================================================ */
+.section-divider { width:100%; height:1px; background:var(--border); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .blog-layout { grid-template-columns: 1fr; }
+  .blog-sidebar { display: grid; grid-template-columns: 1fr 1fr; }
+  .sidebar-cta-card { grid-column: 1 / -1; }
+}
+
+@media (max-width: 768px) {
+  .featured-post { grid-template-columns: 1fr; }
+  .featured-img-wrap { min-height: 220px; }
+  .featured-body { padding: 32px 26px; }
+  .blog-sidebar { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .blog-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ========================================================
+     HERO
+     ======================================================== -->
+<section class="blog-hero">
+  <div class="blog-hero-orb-1"></div>
+  <div class="blog-hero-orb-2"></div>
+  <div class="blog-hero-grid"></div>
+
+  <div class="container">
+    <div class="blog-hero-inner reveal">
+
+      <div class="blog-hero-eyebrow">Thinking Out Loud</div>
+
+      <h1 class="blog-hero-title">
+        Blog &amp; <span>Insights</span>
+      </h1>
+
+      <p class="blog-hero-sub">
+        Engineering breakdowns, Django tutorials, AI system deep-dives, and
+        freelancing lessons — written by someone actually building things.
+      </p>
+
+      <!-- Search -->
+      <div class="blog-search-wrap">
+        <i class="bi bi-search blog-search-icon"></i>
+        <input
+          type="text"
+          id="blogSearch"
+          class="blog-search-input"
+          placeholder="Search articles…"
+          autocomplete="off"
+        >
+        <button class="blog-search-clear" id="searchClear" title="Clear search">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================
+     MAIN CONTENT
+     ======================================================== -->
+<div class="container" style="padding-top:64px; padding-bottom:100px;">
+
+  <!-- TAG FILTER BAR -->
+  <div class="tag-filter-bar" id="tagFilterBar">
+    <button class="tag-pill active" data-tag="all">
+      <i class="bi bi-grid-3x3-gap-fill"></i>
+      All
+      <span class="pill-count" id="countAll">{{ posts|length }}</span>
+    </button>
+    {% for tag in all_tags %}
+    <button class="tag-pill" data-tag="{{ tag|lower }}">
+      {{ tag }}
+    </button>
+    {% empty %}
+    <button class="tag-pill" data-tag="django">Django</button>
+    <button class="tag-pill" data-tag="ai">AI &amp; LLMs</button>
+    <button class="tag-pill" data-tag="automation">Automation</button>
+    <button class="tag-pill" data-tag="python">Python</button>
+    <button class="tag-pill" data-tag="freelancing">Freelancing</button>
+    <button class="tag-pill" data-tag="tutorial">Tutorials</button>
+    {% endfor %}
+  </div>
+
+  <!-- FEATURED POST (first pinned / latest) -->
+  {% for post in posts|slice:":1" %}
+  <div class="featured-post reveal" id="featuredPost"
+       data-tags="{{ post.get_tags|join:',' |lower }}"
+       data-title="{{ post.title|lower }}"
+       data-excerpt="{{ post.content|truncatewords:30|lower }}">
+
+    <div class="featured-img-wrap">
+      {% if post.cover_image %}
+        <img src="{{ post.cover_image.url }}" alt="{{ post.title }}">
+      {% else %}
+        <div class="featured-img-placeholder">
+          <i class="bi bi-file-richtext"></i>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="featured-body">
+      <div class="featured-badge">
+        <i class="bi bi-bookmark-star-fill"></i>
+        Featured Article
+      </div>
+      <h2 class="featured-title">{{ post.title }}</h2>
+      <p class="featured-excerpt">{{ post.content|truncatewords:36 }}</p>
+      <div class="featured-meta">
+        <span class="meta-chip"><i class="bi bi-calendar3"></i> {{ post.published_at|date:"M j, Y" }}</span>
+        <span class="meta-chip"><i class="bi bi-clock"></i> {{ post.reading_time }} min read</span>
+      </div>
+      <div class="featured-tags">
+        {% for tag in post.get_tags %}
+        <span class="blog-tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      <a href="{% url 'blog_detail' post.slug %}" class="btn-read-featured">
+        Read Full Article <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+  </div>
+  {% empty %}
+  <!-- Fallback featured when DB is empty -->
+  <div class="featured-post reveal" id="featuredPost"
+       data-tags="ai,python,automation"
+       data-title="how i built a self-hosted ai chatbot with voice i/o"
+       data-excerpt="deep dive into building a fully local ai assistant document parsing openrouter integration voice input output">
+    <div class="featured-img-wrap">
+      <div class="featured-img-placeholder">
+        <i class="bi bi-cpu-fill"></i>
+      </div>
+    </div>
+    <div class="featured-body">
+      <div class="featured-badge">
+        <i class="bi bi-bookmark-star-fill"></i>
+        Featured Article
+      </div>
+      <h2 class="featured-title">How I Built a Self-Hosted AI Chatbot with Voice I/O</h2>
+      <p class="featured-excerpt">A complete deep dive into building a fully local AI assistant — document parsing, OpenRouter integration, voice input/output, and persistent chat history. All running on your own machine.</p>
+      <div class="featured-meta">
+        <span class="meta-chip"><i class="bi bi-calendar3"></i> Coming Soon</span>
+        <span class="meta-chip"><i class="bi bi-clock"></i> 12 min read</span>
+      </div>
+      <div class="featured-tags">
+        <span class="blog-tag">AI</span>
+        <span class="blog-tag">Python</span>
+        <span class="blog-tag">OpenRouter</span>
+      </div>
+      <a href="{% url 'blog' %}" class="btn-read-featured">
+        Read Full Article <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="section-divider" style="margin-bottom:52px;"></div>
+
+  <!-- BLOG LAYOUT: grid + sidebar -->
+  <div class="blog-layout">
+
+    <!-- ====================================================
+         MAIN POSTS COLUMN
+         ==================================================== -->
+    <div>
+
+      <div class="posts-header">
+        <div>
+          <p class="section-eyebrow" style="margin-bottom:6px;">All Articles</p>
+          <p class="posts-count" id="postsCountText">
+            Showing <span id="visibleCount">{{ posts|length }}</span> articles
+          </p>
+        </div>
+      </div>
+
+      <!-- No results message (JS-shown) -->
+      <div id="no-results-msg">
+        <i class="bi bi-search"></i>
+        <h4>No articles found</h4>
+        <p>Try a different search term or browse all articles.</p>
+      </div>
+
+      <div class="blog-grid" id="blogGrid">
+
+        {% for post in posts %}
+        {% cycle 'accent-blue' 'accent-purple' 'accent-cyan' 'accent-green' 'accent-amber' 'accent-red' as accent_cycle silent %}
+        <article
+          class="blog-card reveal {{ accent_cycle }}"
+          style="transition-delay: {{ forloop.counter0 }}0ms"
+          data-tags="{{ post.get_tags|join:',' |lower }}"
+          data-title="{{ post.title|lower }}"
+          data-excerpt="{{ post.content|truncatewords:20|lower }}"
+          onclick="window.location='{% url 'blog_detail' post.slug %}'">
+
+          <div class="blog-card-bar"></div>
+
+          <div class="blog-cover-wrap">
+            {% if post.cover_image %}
+              <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" loading="lazy">
+            {% else %}
+              <div class="blog-cover-placeholder">
+                {% if forloop.counter|divisibleby:3 %}
+                  <i class="bi bi-robot"></i>
+                {% elif forloop.counter|divisibleby:2 %}
+                  <i class="bi bi-gear-wide-connected"></i>
+                {% else %}
+                  <i class="bi bi-braces-asterisk"></i>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date">
+                <i class="bi bi-calendar3"></i>
+                {{ post.published_at|date:"M j, Y" }}
+              </span>
+              <span class="blog-read-badge">{{ post.reading_time }} min read</span>
+            </div>
+
+            <h3 class="blog-card-title">{{ post.title }}</h3>
+            <p class="blog-card-excerpt">{{ post.content|truncatewords:22 }}</p>
+
+            <div class="blog-card-footer">
+              <div class="blog-card-tags">
+                {% for tag in post.get_tags|slice:":2" %}
+                <span class="blog-card-tag">{{ tag }}</span>
+                {% endfor %}
+              </div>
+              <span class="blog-card-arrow">
+                Read <i class="bi bi-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+
+        </article>
+        {% empty %}
+        <!-- ── Fallback placeholder cards ── -->
+        <article class="blog-card reveal accent-blue"
+          data-tags="ai,python,automation"
+          data-title="how i built a self-hosted ai chatbot with voice i/o"
+          data-excerpt="deep dive local ai assistant document parsing openrouter integration voice">
+          <div class="blog-card-bar"></div>
+          <div class="blog-cover-wrap">
+            <div class="blog-cover-placeholder"><i class="bi bi-cpu-fill"></i></div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date"><i class="bi bi-calendar3"></i> Coming Soon</span>
+              <span class="blog-read-badge">12 min read</span>
+            </div>
+            <h3 class="blog-card-title">How I Built a Self-Hosted AI Chatbot with Voice I/O</h3>
+            <p class="blog-card-excerpt">A deep dive into building a fully local AI assistant — document parsing, OpenRouter integration, voice input/output, and persistent chat history.</p>
+            <div class="blog-card-footer">
+              <div class="blog-card-tags"><span class="blog-card-tag">AI</span><span class="blog-card-tag">Python</span></div>
+              <span class="blog-card-arrow">Read <i class="bi bi-arrow-right"></i></span>
+            </div>
+          </div>
+        </article>
+
+        <article class="blog-card reveal accent-purple"
+          data-tags="django,python,automation,tutorial"
+          data-title="django tradingview alerts building a python trading bot"
+          data-excerpt="webhook order execution tradingview alerts bitget api python backend email triggering">
+          <div class="blog-card-bar"></div>
+          <div class="blog-cover-wrap">
+            <div class="blog-cover-placeholder"><i class="bi bi-graph-up-arrow"></i></div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date"><i class="bi bi-calendar3"></i> Coming Soon</span>
+              <span class="blog-read-badge">7 min read</span>
+            </div>
+            <h3 class="blog-card-title">Django + TradingView Alerts: Building a Python Trading Bot</h3>
+            <p class="blog-card-excerpt">From webhook to order execution — connecting TradingView alerts to the Bitget API with a self-hosted Python backend and email-based triggering.</p>
+            <div class="blog-card-footer">
+              <div class="blog-card-tags"><span class="blog-card-tag">Django</span><span class="blog-card-tag">Automation</span></div>
+              <span class="blog-card-arrow">Read <i class="bi bi-arrow-right"></i></span>
+            </div>
+          </div>
+        </article>
+
+        <article class="blog-card reveal accent-cyan"
+          data-tags="freelancing,django"
+          data-title="my freelancing stack how i set up price and deliver projects"
+          data-excerpt="tools templates process first inquiry deployed project django lean client communication">
+          <div class="blog-card-bar"></div>
+          <div class="blog-cover-wrap">
+            <div class="blog-cover-placeholder"><i class="bi bi-briefcase-fill"></i></div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date"><i class="bi bi-calendar3"></i> Coming Soon</span>
+              <span class="blog-read-badge">4 min read</span>
+            </div>
+            <h3 class="blog-card-title">My Freelancing Stack: How I Set Up, Price, and Deliver Projects</h3>
+            <p class="blog-card-excerpt">The tools, templates, and process I use to go from first inquiry to deployed project — built around Django and a lean client communication workflow.</p>
+            <div class="blog-card-footer">
+              <div class="blog-card-tags"><span class="blog-card-tag">Freelancing</span><span class="blog-card-tag">Django</span></div>
+              <span class="blog-card-arrow">Read <i class="bi bi-arrow-right"></i></span>
+            </div>
+          </div>
+        </article>
+
+        <article class="blog-card reveal accent-green"
+          data-tags="django,tutorial,python"
+          data-title="building a saas platform with django in 2025"
+          data-excerpt="subscriptions stripe payments multi tenancy custom admin django rest framework">
+          <div class="blog-card-bar"></div>
+          <div class="blog-cover-wrap">
+            <div class="blog-cover-placeholder"><i class="bi bi-cloud-upload-fill"></i></div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date"><i class="bi bi-calendar3"></i> Coming Soon</span>
+              <span class="blog-read-badge">9 min read</span>
+            </div>
+            <h3 class="blog-card-title">Building a SaaS Platform with Django in 2025</h3>
+            <p class="blog-card-excerpt">Everything I learned building QuantumTask — multi-tenancy, subscriptions, custom admin, REST APIs, and a full analytics dashboard from scratch.</p>
+            <div class="blog-card-footer">
+              <div class="blog-card-tags"><span class="blog-card-tag">Django</span><span class="blog-card-tag">Tutorial</span></div>
+              <span class="blog-card-arrow">Read <i class="bi bi-arrow-right"></i></span>
+            </div>
+          </div>
+        </article>
+
+        <article class="blog-card reveal accent-amber"
+          data-tags="automation,python,tutorial"
+          data-title="automating repetitive tasks with python and selenium"
+          data-excerpt="web scraping browser automation selenium headless chrome python scheduling">
+          <div class="blog-card-bar"></div>
+          <div class="blog-cover-wrap">
+            <div class="blog-cover-placeholder"><i class="bi bi-terminal-fill"></i></div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date"><i class="bi bi-calendar3"></i> Coming Soon</span>
+              <span class="blog-read-badge">6 min read</span>
+            </div>
+            <h3 class="blog-card-title">Automating Repetitive Tasks with Python and Selenium</h3>
+            <p class="blog-card-excerpt">From web scraping to full browser automation — the patterns, pitfalls, and practical setups I use on real client projects.</p>
+            <div class="blog-card-footer">
+              <div class="blog-card-tags"><span class="blog-card-tag">Automation</span><span class="blog-card-tag">Python</span></div>
+              <span class="blog-card-arrow">Read <i class="bi bi-arrow-right"></i></span>
+            </div>
+          </div>
+        </article>
+
+        <article class="blog-card reveal accent-red"
+          data-tags="ai,django,tutorial"
+          data-title="integrating openrouter llm api into django application"
+          data-excerpt="llm api openrouter langchain django integration streaming response chatbot">
+          <div class="blog-card-bar"></div>
+          <div class="blog-cover-wrap">
+            <div class="blog-cover-placeholder"><i class="bi bi-stars"></i></div>
+          </div>
+          <div class="blog-card-body">
+            <div class="blog-card-meta">
+              <span class="blog-card-date"><i class="bi bi-calendar3"></i> Coming Soon</span>
+              <span class="blog-read-badge">8 min read</span>
+            </div>
+            <h3 class="blog-card-title">Integrating the OpenRouter LLM API into a Django Application</h3>
+            <p class="blog-card-excerpt">Step-by-step guide to wiring OpenRouter's multi-model API into a Django backend — streaming responses, conversation memory, and clean error handling.</p>
+            <div class="blog-card-footer">
+              <div class="blog-card-tags"><span class="blog-card-tag">AI</span><span class="blog-card-tag">Django</span></div>
+              <span class="blog-card-arrow">Read <i class="bi bi-arrow-right"></i></span>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+
+      </div><!-- /blog-grid -->
+
+      <!-- Load more (future pagination hook) -->
+      {% if posts.has_next %}
+      <div class="load-more-wrap">
+        <a href="?page={{ posts.next_page_number }}{% if active_tag %}&tag={{ active_tag }}{% endif %}"
+           class="btn-load-more">
+          Load More Articles <i class="bi bi-arrow-down"></i>
+        </a>
+      </div>
+      {% endif %}
+
+    </div><!-- /main posts column -->
+
+    <!-- ====================================================
+         SIDEBAR
+         ==================================================== -->
+    <aside class="blog-sidebar">
+
+      <!-- Newsletter -->
+      <div class="sidebar-card newsletter-card reveal">
+        <p class="sidebar-card-title"><i class="bi bi-envelope-paper-fill"></i> Stay Updated</p>
+        <p class="newsletter-text">Get new articles, tutorials, and project breakdowns delivered directly to your inbox.</p>
+        <input type="email" class="newsletter-input" placeholder="Your email address">
+        <button class="newsletter-btn">Subscribe <i class="bi bi-send-fill"></i></button>
+      </div>
+
+      <!-- Tag cloud -->
+      <div class="sidebar-card reveal">
+        <p class="sidebar-card-title"><i class="bi bi-tags-fill"></i> Browse by Topic</p>
+        <div class="sidebar-tag-cloud">
+          {% for tag in all_tags %}
+          <button class="sidebar-tag" data-tag="{{ tag|lower }}">{{ tag }}</button>
+          {% empty %}
+          <button class="sidebar-tag" data-tag="django">Django</button>
+          <button class="sidebar-tag" data-tag="python">Python</button>
+          <button class="sidebar-tag" data-tag="ai">AI</button>
+          <button class="sidebar-tag" data-tag="automation">Automation</button>
+          <button class="sidebar-tag" data-tag="freelancing">Freelancing</button>
+          <button class="sidebar-tag" data-tag="tutorial">Tutorials</button>
+          <button class="sidebar-tag" data-tag="rest-api">REST APIs</button>
+          <button class="sidebar-tag" data-tag="postgresql">PostgreSQL</button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Freelance CTA -->
+      <div class="sidebar-card sidebar-cta-card reveal">
+        <span class="cta-emoji">⚡</span>
+        <h4>Need something built?</h4>
+        <p>I take on a small number of freelance projects per month. If you have an idea, reach out early.</p>
+        <a href="/freelance/" class="sidebar-cta-btn">
+          <i class="bi bi-lightning-charge-fill"></i>
+          Start a Project
+        </a>
+      </div>
+
+    </aside>
+
+  </div><!-- /blog-layout -->
+
+</div><!-- /container -->
+
+<!-- ========================================================
+     FINAL CTA STRIP
+     ======================================================== -->
+<div style="background:var(--bg-card); border-top:1px solid var(--border); padding:64px 0;">
+  <div class="container text-center reveal">
+    <p class="section-eyebrow" style="justify-content:center; margin-bottom:16px;">Let's Work Together</p>
+    <h2 style="font-family:var(--font-display);font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;">
+      Enjoyed the reading?<br>
+      <span style="background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+        Let's build together.
+      </span>
+    </h2>
+    <p style="color:var(--text-muted);max-width:440px;margin:0 auto 36px;font-size:0.98rem;line-height:1.7;">
+      These articles document real projects. If you need something similar built, I'm available for freelance work.
+    </p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="/freelance/" class="btn-primary-cta" style="background:linear-gradient(135deg,var(--accent),#2563EB);color:#fff;padding:13px 30px;border-radius:50px;font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 24px rgba(59,130,246,0.3);transition:var(--transition);">
+        <i class="bi bi-lightning-charge-fill"></i> Start a Project
+      </a>
+      <a href="{% url 'projects' %}" style="background:transparent;color:var(--text-dim);padding:13px 30px;border-radius:50px;font-weight:600;font-size:0.9rem;border:1px solid var(--border);display:inline-flex;align-items:center;gap:8px;transition:var(--transition);">
+        <i class="bi bi-grid-3x3-gap"></i> View My Work
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ============================================================
+   REAL-TIME SEARCH + TAG FILTER SYSTEM
+   ============================================================ */
+(function () {
+  const grid       = document.getElementById('blogGrid');
+  const featured   = document.getElementById('featuredPost');
+  const searchEl   = document.getElementById('blogSearch');
+  const clearBtn   = document.getElementById('searchClear');
+  const noResults  = document.getElementById('no-results-msg');
+  const countEl    = document.getElementById('visibleCount');
+  const tagBtns    = document.querySelectorAll('#tagFilterBar .tag-pill');
+  const sidebarTags = document.querySelectorAll('.sidebar-tag');
+
+  // Also collect ALL cards including featured
+  function getCards() {
+    return grid.querySelectorAll('.blog-card');
+  }
+
+  let activeTag  = 'all';
+  let searchTerm = '';
+
+  function filterCards() {
+    const cards   = getCards();
+    let visible   = 0;
+
+    // Filter featured post
+    if (featured) {
+      const fTags    = (featured.dataset.tags || '').toLowerCase();
+      const fTitle   = (featured.dataset.title || '').toLowerCase();
+      const fExcerpt = (featured.dataset.excerpt || '').toLowerCase();
+      const tagMatch = activeTag === 'all' || fTags.includes(activeTag);
+      const searchMatch = !searchTerm ||
+        fTitle.includes(searchTerm) || fExcerpt.includes(searchTerm) || fTags.includes(searchTerm);
+      featured.style.display = (tagMatch && searchMatch) ? '' : 'none';
+    }
+
+    cards.forEach(card => {
+      const cardTags    = (card.dataset.tags    || '').toLowerCase();
+      const cardTitle   = (card.dataset.title   || '').toLowerCase();
+      const cardExcerpt = (card.dataset.excerpt || '').toLowerCase();
+
+      const tagMatch    = activeTag === 'all' || cardTags.includes(activeTag);
+      const searchMatch = !searchTerm ||
+        cardTitle.includes(searchTerm) ||
+        cardExcerpt.includes(searchTerm) ||
+        cardTags.includes(searchTerm);
+
+      const show = tagMatch && searchMatch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // Count text
+    if (countEl) countEl.textContent = visible;
+
+    // No results message
+    if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  // Tag filter click
+  function setTag(tag) {
+    activeTag = tag;
+    tagBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.tag === tag));
+    filterCards();
+  }
+
+  tagBtns.forEach(btn => {
+    btn.addEventListener('click', () => setTag(btn.dataset.tag));
+  });
+
+  // Sidebar tag cloud also triggers filter
+  sidebarTags.forEach(btn => {
+    btn.addEventListener('click', () => {
+      setTag(btn.dataset.tag);
+      // Scroll to filter bar
+      document.getElementById('tagFilterBar')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  });
+
+  // Search input
+  searchEl?.addEventListener('input', () => {
+    searchTerm = searchEl.value.trim().toLowerCase();
+    clearBtn?.classList.toggle('visible', searchTerm.length > 0);
+    filterCards();
+  });
+
+  clearBtn?.addEventListener('click', () => {
+    searchEl.value = '';
+    searchTerm = '';
+    clearBtn.classList.remove('visible');
+    filterCards();
+    searchEl.focus();
+  });
+
+})();
+
+/* ============================================================
+   SCROLL REVEAL (complements base.html observer)
+   ============================================================ */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      ro.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+/* ============================================================
+   STAGGERED CARD REVEAL DELAYS
+   ============================================================ */
+document.querySelectorAll('#blogGrid .blog-card').forEach((card, i) => {
+  card.style.transitionDelay = (i * 0.07) + 's';
+});
+
+</script>
+{% endblock %}

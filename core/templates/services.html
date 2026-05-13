@@ -1,0 +1,1410 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Services — Muhammad Ahmad{% endblock %}
+{% block meta_description %}Full Stack Development, AI Integration, Automation, and more. Clear deliverables, transparent pricing, and a proven process. Available for freelance projects.{% endblock %}
+{% block og_title %}Services — Muhammad Ahmad{% endblock %}
+{% block og_description %}From concept to deployment — Django, AI, automation, e-commerce. Browse services and start a project.{% endblock %}
+
+{% block extra_head %}
+<style>
+
+  /* ============================================================
+     PAGE HERO
+     ============================================================ */
+  .services-hero {
+    position: relative;
+    padding: 90px 0 80px;
+    overflow: hidden;
+  }
+
+  .services-hero-orb-1 {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%);
+    top: -200px; left: -200px;
+    pointer-events: none;
+  }
+  .services-hero-orb-2 {
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
+    bottom: -100px; right: -100px;
+    pointer-events: none;
+  }
+
+  .services-hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  .services-hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin-bottom: 20px;
+  }
+  .services-hero-title span {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .services-hero-sub {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    max-width: 580px;
+    margin-bottom: 36px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn-outline-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    color: var(--text-dim);
+    padding: 12px 24px;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: var(--transition);
+    font-family: var(--font-body);
+  }
+  .btn-outline-custom:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(59,130,246,0.06);
+  }
+
+  /* ============================================================
+     QUICK STATS STRIP
+     ============================================================ */
+  .services-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 0 0 80px;
+  }
+  @media (max-width: 640px) {
+    .services-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .svc-stat {
+    background: var(--bg-card);
+    padding: 32px 20px;
+    text-align: center;
+    transition: var(--transition);
+  }
+  .svc-stat:hover { background: rgba(59,130,246,0.05); }
+
+  .svc-stat-num {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .svc-stat-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     SECTION COMMONS
+     ============================================================ */
+  .svc-section {
+    padding: 80px 0;
+    position: relative;
+  }
+
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--accent);
+  }
+
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .section-heading span {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-subheading {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 500px;
+    margin-bottom: 48px;
+    line-height: 1.75;
+  }
+
+  /* ============================================================
+     CATEGORY FILTER
+     ============================================================ */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: var(--font-body);
+  }
+  .filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(59,130,246,0.07);
+  }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 18px rgba(59,130,246,0.35);
+  }
+
+  /* ============================================================
+     SERVICES GRID
+     ============================================================ */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 22px;
+  }
+
+  .service-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 30px;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Top accent line on hover */
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: var(--transition);
+  }
+  .service-card[data-accent="blue"]::before   { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  .service-card[data-accent="purple"]::before { background: linear-gradient(90deg, var(--accent-3), var(--accent)); }
+  .service-card[data-accent="cyan"]::before   { background: linear-gradient(90deg, var(--accent-2), var(--green)); }
+  .service-card[data-accent="green"]::before  { background: linear-gradient(90deg, var(--green), var(--accent-2)); }
+  .service-card[data-accent="amber"]::before  { background: linear-gradient(90deg, #F59E0B, #EF4444); }
+  .service-card[data-accent="red"]::before    { background: linear-gradient(90deg, #EF4444, var(--accent-3)); }
+
+  .service-card:hover {
+    border-color: rgba(59,130,246,0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  /* Featured badge */
+  .featured-badge {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 50px;
+  }
+
+  .service-icon-wrap {
+    width: 52px; height: 52px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    transition: var(--transition);
+    flex-shrink: 0;
+  }
+  .service-card:hover .service-icon-wrap { transform: scale(1.08); }
+
+  .service-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .service-card-desc {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.70;
+    flex: 1;
+    margin-bottom: 22px;
+  }
+
+  /* Deliverables list */
+  .deliverables {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 22px;
+  }
+  .deliverables li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+  .deliverables li i {
+    color: var(--green);
+    font-size: 0.8rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* Card meta row */
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 22px;
+    padding: 14px 16px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  }
+
+  .meta-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.76rem;
+    color: var(--text-dim);
+  }
+  .meta-badge i { font-size: 0.8rem; color: var(--accent); }
+
+  .price-tag {
+    font-family: var(--font-display);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  /* Tech tags */
+  .svc-tech-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .svc-tech-tag {
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.16);
+    color: var(--accent-2);
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 50px;
+    letter-spacing: 0.04em;
+  }
+
+  .btn-request {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent), #2563EB);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: var(--font-body);
+    box-shadow: 0 6px 22px rgba(59,130,246,0.3);
+  }
+  .btn-request:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 32px rgba(59,130,246,0.5);
+    color: #fff;
+  }
+
+  /* ============================================================
+     PRICING TABLE
+     ============================================================ */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-top: 48px;
+  }
+  @media (max-width: 768px) {
+    .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
+  }
+
+  .pricing-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 28px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+    overflow: hidden;
+  }
+  .pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+  }
+
+  .pricing-card.popular {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), 0 20px 60px rgba(59,130,246,0.15);
+  }
+  .pricing-card.popular::after {
+    content: 'Most Popular';
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  }
+
+  .pricing-tier {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .pricing-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .pricing-from {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .pricing-price {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+  }
+  .pricing-currency {
+    font-size: 1.2rem;
+    font-weight: 700;
+    vertical-align: super;
+  }
+
+  .pricing-desc {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 16px 0 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pricing-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    margin-bottom: 32px;
+    flex: 1;
+  }
+  .pricing-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.84rem;
+    color: var(--text-dim);
+  }
+  .pricing-features li i.bi-check-circle-fill { color: var(--green); flex-shrink: 0; margin-top: 2px; }
+  .pricing-features li i.bi-x-circle { color: var(--text-muted); flex-shrink: 0; margin-top: 2px; opacity: 0.5; }
+  .pricing-features li.muted { opacity: 0.45; }
+
+  .btn-pricing {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 13px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    transition: var(--transition);
+    font-family: var(--font-body);
+    border: none;
+    cursor: pointer;
+  }
+  .btn-pricing-primary {
+    background: linear-gradient(135deg, var(--accent), #2563EB);
+    color: #fff;
+    box-shadow: 0 6px 22px rgba(59,130,246,0.35);
+  }
+  .btn-pricing-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 32px rgba(59,130,246,0.5);
+    color: #fff;
+  }
+  .btn-pricing-outline {
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid var(--border) !important;
+  }
+  .btn-pricing-outline:hover {
+    border-color: var(--accent) !important;
+    color: var(--accent);
+    background: rgba(59,130,246,0.06);
+  }
+
+  /* ============================================================
+     PROCESS SECTION
+     ============================================================ */
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0;
+    margin-top: 48px;
+    position: relative;
+  }
+
+  /* Connector line between steps */
+  .process-grid::before {
+    content: '';
+    position: absolute;
+    top: 36px; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), var(--border), transparent);
+  }
+  @media (max-width: 640px) { .process-grid::before { display: none; } }
+
+  .process-step {
+    padding: 0 20px 0;
+    text-align: center;
+    position: relative;
+  }
+
+  .process-num-wrap {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    position: relative;
+    z-index: 1;
+    transition: var(--transition);
+  }
+  .process-step:hover .process-num-wrap {
+    border-color: var(--accent);
+    background: rgba(59,130,246,0.08);
+    transform: scale(1.06);
+    box-shadow: 0 0 0 8px rgba(59,130,246,0.06);
+  }
+
+  .process-num {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  .process-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .process-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* ============================================================
+     WHAT I DON'T DO
+     ============================================================ */
+  .dont-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 36px;
+  }
+
+  .dont-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid rgba(239,68,68,0.5);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: var(--transition);
+  }
+  .dont-item:hover { border-left-color: #EF4444; }
+
+  .dont-icon {
+    color: #EF4444;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+    opacity: 0.8;
+  }
+  .dont-text {
+    font-size: 0.875rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+
+  /* ============================================================
+     CTA BOX
+     ============================================================ */
+  .services-cta {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 72px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 80px;
+  }
+  .services-cta::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 280px;
+    background: radial-gradient(ellipse, rgba(59,130,246,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .services-cta::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    position: relative; z-index: 1;
+  }
+  .cta-title span {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .cta-sub {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 440px;
+    margin: 0 auto 36px;
+    position: relative; z-index: 1;
+    line-height: 1.75;
+  }
+  .cta-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+
+  /* ============================================================
+     PLATFORM LINKS STRIP
+     ============================================================ */
+  .platform-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    position: relative; z-index: 1;
+  }
+  .platform-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: var(--transition);
+    backdrop-filter: blur(6px);
+  }
+  .platform-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(59,130,246,0.07);
+  }
+
+  /* ============================================================
+     HIDDEN state for filter
+     ============================================================ */
+  .service-card.hidden {
+    display: none;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 768px) {
+    .services-cta { padding: 48px 24px; }
+    .pricing-grid { margin: 0 auto; }
+    .process-step { padding-bottom: 32px; }
+  }
+  @media (max-width: 480px) {
+    .services-grid { grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="services-hero">
+  <div class="services-hero-orb-1"></div>
+  <div class="services-hero-orb-2"></div>
+  <div class="container">
+
+    <div class="services-hero-inner reveal">
+      <p class="hero-eyebrow">What I Build</p>
+      <h1 class="services-hero-title">
+        Professional Services<br>
+        <span>Built to Deliver.</span>
+      </h1>
+      <p class="services-hero-sub">
+        From Django applications to AI-powered systems and automation pipelines — I build production-grade software with clear scope, transparent pricing, and a process designed to get you from idea to shipped.
+      </p>
+      <div class="hero-actions">
+        <a href="/freelance/" class="btn-primary-custom">
+          <i class="bi bi-lightning-charge-fill"></i>
+          Start a Project
+        </a>
+        <a href="#pricing" class="btn-outline-custom">
+          <i class="bi bi-tags"></i>
+          View Pricing
+        </a>
+      </div>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="services-stats reveal" style="margin-top:60px;">
+      <div class="svc-stat">
+        <div class="svc-stat-num" data-target="10" data-suffix="+">0+</div>
+        <div class="svc-stat-label">Projects Delivered</div>
+      </div>
+      <div class="svc-stat">
+        <div class="svc-stat-num" data-target="6" data-suffix="+">0+</div>
+        <div class="svc-stat-label">Service Categories</div>
+      </div>
+      <div class="svc-stat">
+        <div class="svc-stat-num" data-target="3" data-suffix=" days">0 days</div>
+        <div class="svc-stat-label">Avg. First Response</div>
+      </div>
+      <div class="svc-stat">
+        <div class="svc-stat-num" data-target="100" data-suffix="%">0%</div>
+        <div class="svc-stat-label">Satisfaction Goal</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     SERVICES CATALOGUE
+     ============================================================ -->
+<section class="svc-section">
+  <div class="container">
+
+    <div class="reveal">
+      <p class="section-eyebrow">Service Catalogue</p>
+      <h2 class="section-heading">Everything I <span>Offer</span></h2>
+      <p class="section-subheading">Full-stack and specialised. Filter by what you need or browse everything.</p>
+    </div>
+
+    <!-- Category filter -->
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" data-filter="all">
+        <i class="bi bi-grid-3x3-gap"></i> All Services
+      </button>
+      <button class="filter-btn" data-filter="web">
+        <i class="bi bi-globe2"></i> Web Dev
+      </button>
+      <button class="filter-btn" data-filter="ai">
+        <i class="bi bi-robot"></i> AI
+      </button>
+      <button class="filter-btn" data-filter="automation">
+        <i class="bi bi-gear-wide-connected"></i> Automation
+      </button>
+      <button class="filter-btn" data-filter="ecommerce">
+        <i class="bi bi-cart3"></i> E-Commerce
+      </button>
+      <button class="filter-btn" data-filter="backend">
+        <i class="bi bi-server"></i> Backend
+      </button>
+    </div>
+
+    <div class="services-grid" id="servicesGrid">
+
+      <!-- FEATURED SERVICES from DB -->
+      {% for service in featured_services %}
+      <div class="service-card reveal" data-category="{{ service.category|default:'web' }}" data-accent="blue">
+        <span class="featured-badge"><i class="bi bi-star-fill"></i> Featured</span>
+        <div class="service-icon-wrap" style="background:rgba(59,130,246,0.1);color:var(--accent)">
+          <i class="{{ service.icon_class|default:'bi bi-star' }}"></i>
+        </div>
+        <h3 class="service-card-title">{{ service.title }}</h3>
+        <p class="service-card-desc">{{ service.description }}</p>
+        <div class="card-meta">
+          <span class="meta-badge"><i class="bi bi-clock"></i> {{ service.turnaround|default:'Discuss' }}</span>
+          {% if service.price_range %}
+          <span class="price-tag">{{ service.price_range }}</span>
+          {% endif %}
+        </div>
+        <a href="{% url 'contact' %}?subject=Service Request: {{ service.title }}" class="btn-request">
+          <i class="bi bi-send-fill"></i> Request This Service
+        </a>
+      </div>
+      {% endfor %}
+
+      <!-- ALL NORMAL SERVICES from DB -->
+      {% for service in normal_services %}
+      <div class="service-card reveal" data-category="{{ service.category|default:'web' }}" data-accent="blue">
+        <div class="service-icon-wrap" style="background:rgba(59,130,246,0.1);color:var(--accent)">
+          <i class="{{ service.icon_class|default:'bi bi-code-slash' }}"></i>
+        </div>
+        <h3 class="service-card-title">{{ service.title }}</h3>
+        <p class="service-card-desc">{{ service.description }}</p>
+        <div class="card-meta">
+          <span class="meta-badge"><i class="bi bi-clock"></i> {{ service.turnaround|default:'Discuss' }}</span>
+          {% if service.price_range %}
+          <span class="price-tag">{{ service.price_range }}</span>
+          {% endif %}
+        </div>
+        <a href="{% url 'contact' %}?subject=Service Request: {{ service.title }}" class="btn-request">
+          <i class="bi bi-send-fill"></i> Request This Service
+        </a>
+      </div>
+      {% empty %}
+
+      <!-- FALLBACK CARDS when DB is empty -->
+
+      <!-- Web Development -->
+      <div class="service-card reveal" data-category="web" data-accent="blue">
+        <span class="featured-badge"><i class="bi bi-star-fill"></i> Featured</span>
+        <div class="service-icon-wrap" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);color:var(--accent)">
+          <i class="bi bi-globe2"></i>
+        </div>
+        <h3 class="service-card-title">Full Stack Web Application</h3>
+        <p class="service-card-desc">End-to-end Django web applications — custom models, authentication, admin, REST API, and a polished frontend. From portfolio sites to complex SaaS platforms.</p>
+        <ul class="deliverables">
+          <li><i class="bi bi-check-circle-fill"></i> Custom Django project scaffold</li>
+          <li><i class="bi bi-check-circle-fill"></i> User authentication & permissions</li>
+          <li><i class="bi bi-check-circle-fill"></i> Responsive frontend (Bootstrap / Tailwind)</li>
+          <li><i class="bi bi-check-circle-fill"></i> Admin panel configuration</li>
+          <li><i class="bi bi-check-circle-fill"></i> Deployment-ready setup</li>
+        </ul>
+        <div class="svc-tech-tags">
+          <span class="svc-tech-tag">Django</span>
+          <span class="svc-tech-tag">PostgreSQL</span>
+          <span class="svc-tech-tag">Bootstrap</span>
+          <span class="svc-tech-tag">REST API</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-badge"><i class="bi bi-clock"></i> 1–3 weeks</span>
+          <span class="price-tag">From $300</span>
+        </div>
+        <a href="{% url 'contact' %}?subject=Service Request: Web Application" class="btn-request">
+          <i class="bi bi-send-fill"></i> Request This Service
+        </a>
+      </div>
+
+      <!-- AI Integration -->
+      <div class="service-card reveal" data-category="ai" data-accent="purple" style="transition-delay:0.1s">
+        <span class="featured-badge"><i class="bi bi-star-fill"></i> Featured</span>
+        <div class="service-icon-wrap" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);color:var(--accent-3)">
+          <i class="bi bi-robot"></i>
+        </div>
+        <h3 class="service-card-title">AI Integration & LLM Systems</h3>
+        <p class="service-card-desc">Embed AI into your product or build a new AI-native tool from scratch. Chatbots, document intelligence, voice I/O, RAG pipelines — wired to your business logic.</p>
+        <ul class="deliverables">
+          <li><i class="bi bi-check-circle-fill"></i> LLM-powered chatbot (OpenRouter / OpenAI)</li>
+          <li><i class="bi bi-check-circle-fill"></i> Document/image understanding</li>
+          <li><i class="bi bi-check-circle-fill"></i> Voice input & output pipeline</li>
+          <li><i class="bi bi-check-circle-fill"></i> Persistent memory / chat history</li>
+          <li><i class="bi bi-check-circle-fill"></i> Django integration & API layer</li>
+        </ul>
+        <div class="svc-tech-tags">
+          <span class="svc-tech-tag" style="background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.2);color:#A78BFA">OpenRouter</span>
+          <span class="svc-tech-tag" style="background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.2);color:#A78BFA">LangChain</span>
+          <span class="svc-tech-tag" style="background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.2);color:#A78BFA">Python</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-badge"><i class="bi bi-clock"></i> 1–2 weeks</span>
+          <span class="price-tag">From $250</span>
+        </div>
+        <a href="{% url 'contact' %}?subject=Service Request: AI Integration" class="btn-request" style="background:linear-gradient(135deg,var(--accent-3),var(--accent));">
+          <i class="bi bi-send-fill"></i> Request This Service
+        </a>
+      </div>
+
+      <!-- Automation -->
+      <div class="service-card reveal" data-category="automation" data-accent="cyan" style="transition-delay:0.2s">
+        <div class="service-icon-wrap" style="background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);color:var(--accent-2)">
+          <i class="bi bi-gear-wide-connected"></i>
+        </div>
+        <h3 class="service-card-title">Automation & Bot Systems</h3>
+        <p class="service-card-desc">Python scripts, web scrapers, trading bots, scheduled tasks, and workflow automation. Repetitive work handled programmatically — 24/7, zero human input.</p>
+        <ul class="deliverables">
+          <li><i class="bi bi-check-circle-fill"></i> Web scraping & data extraction</li>
+          <li><i class="bi bi-check-circle-fill"></i> Scheduled / cron-based jobs</li>
+          <li><i class="bi bi-check-circle-fill"></i> API integration pipelines</li>
+          <li><i class="bi bi-check-circle-fill"></i> Trading signal bots</li>
+          <li><i class="bi bi-check-circle-fill"></i> Email / notification systems</li>
+        </ul>
+        <div class="svc-tech-tags">
+          <span class="svc-tech-tag" style="background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.2);color:var(--accent-2)">Python</span>
+          <span class="svc-tech-tag" style="background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.2);color:var(--accent-2)">Selenium</span>
+          <span class="svc-tech-tag" style="background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.2);color:var(--accent-2)">APIs</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-badge"><i class="bi bi-clock"></i> 3–7 days</span>
+          <span class="price-tag">From $80</span>
+        </div>
+        <a href="{% url 'contact' %}?subject=Service Request: Automation" class="btn-request" style="background:linear-gradient(135deg,var(--accent-2),var(--accent));">
+          <i class="bi bi-send-fill"></i> Request This Service
+        </a>
+      </div>
+
+      <!-- E-Commerce -->
+      <div class="service-card reveal" data-category="ecommerce" data-accent="green" style="transition-delay:0.1s">
+        <div class="service-icon-wrap" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:var(--green)">
+          <i class="bi bi-cart3"></i>
+        </div>
+        <h3 class="service-card-title">E-Commerce Platform</h3>
+        <p class="service-card-desc">Custom Django storefronts with full product catalogues, cart, checkout, payments, and order management. Built clean — no Shopify bloat, no licensing fees.</p>
+        <ul class="deliverables">
+          <li><i class="bi bi-check-circle-fill"></i> Product & category management</li>
+          <li><i class="bi bi-check-circle-fill"></i> Cart & checkout flow</li>
+          <li><i class="bi bi-check-circle-fill"></i> Stripe / manual payment integration</li>
+          <li><i class="bi bi-check-circle-fill"></i> Order tracking dashboard</li>
+          <li><i class="bi bi-check-circle-fill"></i> Admin & inventory management</li>
+        </ul>
+        <div class="svc-tech-tags">
+          <span class="svc-tech-tag" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.2);color:var(--green)">Django</span>
+          <span class="svc-tech-tag" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.2);color:var(--green)">Stripe</span>
+          <span class="svc-tech-tag" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.2);color:var(--green)">MySQL</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-badge"><i class="bi bi-clock"></i> 2–4 weeks</span>
+          <span class="price-tag">From $400</span>
+        </div>
+        <a href="{% url 'contact' %}?subject=Service Request: E-Commerce" class="btn-request" style="background:linear-gradient(135deg,var(--green),var(--accent-2));">
+          <i class="bi bi-send-fill"></i> Request This Service
+        </a>
+      </div>
+
+      <!-- Dashboards & CMS -->
+      <div class="service-card reveal" data-category="web" data-accent="amber" style="transition-delay:0.2s">
+        <div class="service-icon-wrap" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);color:#FCD34D">
+          <i class="bi bi-bar-chart-line"></i>
+        </div>
+        <h3 class="service-card-title">Dashboards & CMS</h3>
+        <p class="service-card-desc">Real-time analytics dashboards, internal admin panels, and content management systems designed around your data model and team workflow — not a template.</p>
+        <ul class="deliverables">
+          <li><i class="bi bi-check-circle-fill"></i> Custom dashboard layout</li>
+          <li><i class="bi bi-check-circle-fill"></i> Charts & data visualisation</li>
+          <li><i class="bi bi-check-circle-fill"></i> CMS for non-technical users</li>
+          <li><i class="bi bi-check-circle-fill"></i> Role-based access control</li>
+          <li><i class="bi bi-check-circle-fill"></i> Export & reporting tools</li>
+        </ul>
+        <div class="svc-tech-tags">
+          <span class="svc-tech-tag" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#FCD34D">Django</span>
+          <span class="svc-tech-tag" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#FCD34D">Chart.js</span>
+          <span class="svc-tech-tag" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#FCD34D">REST</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-badge"><i class="bi bi-clock"></i> 1–3 weeks</span>
+          <span class="price-tag">From $200</span>
+        </div>
+        <a href="{% url 'contact' %}?subject=Service Request: Dashboard/CMS" class="btn-request" style="background:linear-gradient(135deg,#F59E0B,var(--accent));">
+          <i class="bi bi-send-fill"></i> Request This Service
+        </a>
+      </div>
+
+      <!-- Backend & APIs -->
+      <div class="service-card reveal" data-category="backend" data-accent="red" style="transition-delay:0.3s">
+        <div class="service-icon-wrap" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#F87171">
+          <i class="bi bi-server"></i>
+        </div>
+        <h3 class="service-card-title">Backend Architecture & APIs</h3>
+        <p class="service-card-desc">Clean RESTful APIs, JWT auth, rate limiting, and database design you won't need to rip out in six months. Built for integration, documentation included.</p>
+        <ul class="deliverables">
+          <li><i class="bi bi-check-circle-fill"></i> Django REST Framework API</li>
+          <li><i class="bi bi-check-circle-fill"></i> JWT / Token authentication</li>
+          <li><i class="bi bi-check-circle-fill"></i> Database schema & migrations</li>
+          <li><i class="bi bi-check-circle-fill"></i> API documentation (Swagger/DRF)</li>
+          <li><i class="bi bi-check-circle-fill"></i> Rate limiting & security hardening</li>
+        </ul>
+        <div class="svc-tech-tags">
+          <span class="svc-tech-tag" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);color:#F87171">DRF</span>
+          <span class="svc-tech-tag" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);color:#F87171">JWT</span>
+          <span class="svc-tech-tag" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);color:#F87171">PostgreSQL</span>
+        </div>
+        <div class="card-meta">
+          <span class="meta-badge"><i class="bi bi-clock"></i> 5–10 days</span>
+          <span class="price-tag">From $150</span>
+        </div>
+        <a href="{% url 'contact' %}?subject=Service Request: Backend API" class="btn-request" style="background:linear-gradient(135deg,#EF4444,var(--accent-3));">
+          <i class="bi bi-send-fill"></i> Request This Service
+        </a>
+      </div>
+
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     PRICING TABLE
+     ============================================================ -->
+<section class="svc-section" id="pricing">
+  <div class="container">
+
+    <div class="reveal" style="text-align:center; max-width:560px; margin:0 auto;">
+      <p class="section-eyebrow" style="justify-content:center;">Transparent Pricing</p>
+      <h2 class="section-heading" style="text-align:center;">Pick Your <span>Package</span></h2>
+      <p class="section-subheading" style="margin:0 auto 0; text-align:center;">
+        Starting points — most projects are scoped individually. No hidden fees, no retainers, no surprises.
+      </p>
+    </div>
+
+    <div class="pricing-grid">
+
+      <!-- BASIC -->
+      <div class="pricing-card reveal">
+        <div class="pricing-tier">Tier 01</div>
+        <div class="pricing-name">Starter</div>
+        <div class="pricing-from">From</div>
+        <div class="pricing-price"><span class="pricing-currency">$</span>80</div>
+        <p class="pricing-desc">Perfect for single-purpose scripts, landing pages, or small automation tasks. Fast turnaround, clean code.</p>
+        <ul class="pricing-features">
+          <li><i class="bi bi-check-circle-fill"></i> Single-feature scope</li>
+          <li><i class="bi bi-check-circle-fill"></i> Up to 2 revision rounds</li>
+          <li><i class="bi bi-check-circle-fill"></i> Clean, commented code</li>
+          <li><i class="bi bi-check-circle-fill"></i> 3–7 day delivery</li>
+          <li><i class="bi bi-check-circle-fill"></i> Basic README / setup guide</li>
+          <li class="muted"><i class="bi bi-x-circle"></i> Multi-page application</li>
+          <li class="muted"><i class="bi bi-x-circle"></i> Third-party API integrations</li>
+          <li class="muted"><i class="bi bi-x-circle"></i> Ongoing support</li>
+        </ul>
+        <a href="{% url 'contact' %}?package=starter" class="btn-pricing btn-pricing-outline">
+          Get a Quote
+        </a>
+      </div>
+
+      <!-- STANDARD — POPULAR -->
+      <div class="pricing-card popular reveal" style="transition-delay:0.12s">
+        <div class="pricing-tier" style="margin-top:24px;">Tier 02</div>
+        <div class="pricing-name">Professional</div>
+        <div class="pricing-from">From</div>
+        <div class="pricing-price"><span class="pricing-currency">$</span>300</div>
+        <p class="pricing-desc">Full web application, AI integration, or multi-feature automation system. Most freelance projects land here.</p>
+        <ul class="pricing-features">
+          <li><i class="bi bi-check-circle-fill"></i> Full-stack Django application</li>
+          <li><i class="bi bi-check-circle-fill"></i> Up to 4 revision rounds</li>
+          <li><i class="bi bi-check-circle-fill"></i> Database design & admin panel</li>
+          <li><i class="bi bi-check-circle-fill"></i> User auth & permissions</li>
+          <li><i class="bi bi-check-circle-fill"></i> 1–3 week delivery</li>
+          <li><i class="bi bi-check-circle-fill"></i> Deployment assistance</li>
+          <li><i class="bi bi-check-circle-fill"></i> 14-day post-delivery support</li>
+          <li class="muted"><i class="bi bi-x-circle"></i> Ongoing retainer maintenance</li>
+        </ul>
+        <a href="/freelance/?package=professional" class="btn-pricing btn-pricing-primary">
+          <i class="bi bi-lightning-charge-fill"></i> Start This Package
+        </a>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="pricing-card reveal" style="transition-delay:0.24s">
+        <div class="pricing-tier">Tier 03</div>
+        <div class="pricing-name">Enterprise</div>
+        <div class="pricing-from">From</div>
+        <div class="pricing-price"><span class="pricing-currency">$</span>700</div>
+        <p class="pricing-desc">Large-scale platforms, SaaS products, e-commerce systems, or complex AI pipelines requiring architecture planning.</p>
+        <ul class="pricing-features">
+          <li><i class="bi bi-check-circle-fill"></i> Everything in Professional</li>
+          <li><i class="bi bi-check-circle-fill"></i> Architecture planning session</li>
+          <li><i class="bi bi-check-circle-fill"></i> Multi-module system design</li>
+          <li><i class="bi bi-check-circle-fill"></i> Payment gateway integration</li>
+          <li><i class="bi bi-check-circle-fill"></i> Advanced AI / automation layer</li>
+          <li><i class="bi bi-check-circle-fill"></i> Full deployment & DevOps setup</li>
+          <li><i class="bi bi-check-circle-fill"></i> 30-day post-delivery support</li>
+          <li><i class="bi bi-check-circle-fill"></i> NDA available on request</li>
+        </ul>
+        <a href="/freelance/?package=enterprise" class="btn-pricing btn-pricing-outline">
+          Discuss Scope
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Note -->
+    <p class="reveal" style="text-align:center; color:var(--text-muted); font-size:0.82rem; margin-top:28px; line-height:1.7;">
+      <i class="bi bi-info-circle" style="color:var(--accent)"></i>
+      &nbsp; All prices are starting points — exact quotes are provided after scoping. I don't start work without a clear agreement.
+    </p>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     PROCESS SECTION
+     ============================================================ -->
+<section class="svc-section">
+  <div class="container">
+
+    <div class="reveal" style="text-align:center; max-width:560px; margin:0 auto 0;">
+      <p class="section-eyebrow" style="justify-content:center;">How It Works</p>
+      <h2 class="section-heading" style="text-align:center;">Simple, <span>Transparent</span> Process</h2>
+      <p class="section-subheading" style="margin:0 auto 48px; text-align:center;">
+        No surprises. No ghost updates. Just a clean workflow from first message to finished product.
+      </p>
+    </div>
+
+    <div class="process-grid reveal">
+
+      <div class="process-step">
+        <div class="process-num-wrap">
+          <span class="process-num">01</span>
+        </div>
+        <h3 class="process-title">Discovery Call</h3>
+        <p class="process-desc">We discuss your project — what you need, what you already have, budget, timeline, and any constraints. Takes 20–30 minutes.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="process-num-wrap">
+          <span class="process-num">02</span>
+        </div>
+        <h3 class="process-title">Proposal & Scope</h3>
+        <p class="process-desc">I send a written proposal — deliverables, timeline, price, payment terms. No work starts without mutual sign-off.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="process-num-wrap">
+          <span class="process-num">03</span>
+        </div>
+        <h3 class="process-title">Build & Update</h3>
+        <p class="process-desc">I build in stages, sharing progress updates at agreed checkpoints. You stay informed without being micromanaged.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="process-num-wrap">
+          <span class="process-num">04</span>
+        </div>
+        <h3 class="process-title">Deliver & Support</h3>
+        <p class="process-desc">Final delivery includes code, documentation, and deployment. Post-delivery support window included in every package.</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     WHAT I DON'T DO
+     ============================================================ -->
+<section class="svc-section">
+  <div class="container">
+
+    <div class="reveal">
+      <p class="section-eyebrow">Scope Boundaries</p>
+      <h2 class="section-heading">What I <span>Don't</span> Take On</h2>
+      <p class="section-subheading">Being upfront about scope helps us both. Here's what I decline regardless of budget.</p>
+    </div>
+
+    <div class="dont-grid">
+      <div class="dont-item reveal">
+        <i class="bi bi-slash-circle dont-icon"></i>
+        <span class="dont-text">Illegal, unethical, or deceptive systems — scam sites, fake reviews, spam tools, or anything designed to harm or mislead users.</span>
+      </div>
+      <div class="dont-item reveal" style="transition-delay:0.07s">
+        <i class="bi bi-slash-circle dont-icon"></i>
+        <span class="dont-text">Adult, explicit, or harmful content platforms — no exceptions, regardless of how the request is framed.</span>
+      </div>
+      <div class="dont-item reveal" style="transition-delay:0.14s">
+        <i class="bi bi-slash-circle dont-icon"></i>
+        <span class="dont-text">Low-quality churn work — SEO spam sites, copy-paste template resells, or anything without a legitimate business purpose.</span>
+      </div>
+      <div class="dont-item reveal" style="transition-delay:0.21s">
+        <i class="bi bi-slash-circle dont-icon"></i>
+        <span class="dont-text">Direct SaaS clones without meaningful differentiation — copying a product feature-for-feature with the intent to pass it off as original work.</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     FINAL CTA
+     ============================================================ -->
+<div class="container" style="padding-top:80px;">
+  <div class="services-cta reveal">
+    <p class="section-eyebrow" style="justify-content:center; margin-bottom:18px;">Let's Build Together</p>
+    <h2 class="cta-title">
+      Found the service<br>you're looking for?<br>
+      <span>Let's scope it out.</span>
+    </h2>
+    <p class="cta-sub">
+      I take on a limited number of projects at a time. If you have something in mind — even a rough idea — reach out and let's talk scope.
+    </p>
+    <div class="cta-btns">
+      <a href="/freelance/" class="btn-primary-custom">
+        <i class="bi bi-lightning-charge-fill"></i>
+        Start a Project
+      </a>
+      <a href="{% url 'contact' %}" class="btn-outline-custom">
+        <i class="bi bi-envelope"></i>
+        Send a Message
+      </a>
+    </div>
+    <!-- Platform links -->
+    <div class="platform-strip">
+      <span style="font-size:0.75rem; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase;">Also available on</span>
+      <a href="#" target="_blank" rel="noopener" class="platform-link">
+        <i class="bi bi-star-fill" style="color:#1DBF73"></i> Fiverr
+      </a>
+      <a href="#" target="_blank" rel="noopener" class="platform-link">
+        <i class="bi bi-briefcase-fill" style="color:#6FDA44"></i> Upwork
+      </a>
+      <a href="https://www.linkedin.com/in/muhammad-ahmad-203523289/" target="_blank" rel="noopener" class="platform-link">
+        <i class="bi bi-linkedin" style="color:#0A66C2"></i> LinkedIn
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+/* ============================================================
+   ANIMATED COUNTERS
+   ============================================================ */
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target);
+  const suffix = el.dataset.suffix || '+';
+  const duration = 1400;
+  const steps = 55;
+  const increment = target / steps;
+  let current = 0;
+  const interval = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      current = target;
+      clearInterval(interval);
+    }
+    el.textContent = Math.floor(current) + suffix;
+  }, duration / steps);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('[data-target]').forEach(animateCounter);
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.35 });
+
+document.querySelectorAll('.services-stats').forEach(el => counterObserver.observe(el));
+
+/* ============================================================
+   REAL-TIME CATEGORY FILTER
+   ============================================================ */
+const filterBtns = document.querySelectorAll('.filter-btn');
+const cards = document.querySelectorAll('#servicesGrid .service-card');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Update active state
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+
+    cards.forEach((card, i) => {
+      const category = card.dataset.category || 'web';
+      const show = filter === 'all' || category === filter;
+
+      if (show) {
+        card.classList.remove('hidden');
+        // Stagger re-reveal
+        card.style.animationDelay = (i * 0.06) + 's';
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  });
+});
+
+/* ============================================================
+   STAGGER SERVICE CARDS
+   ============================================================ */
+document.querySelectorAll('#servicesGrid .service-card.reveal').forEach((el, i) => {
+  if (!el.style.transitionDelay) {
+    el.style.transitionDelay = (i * 0.09) + 's';
+  }
+});
+
+/* ============================================================
+   STAGGER PROCESS STEPS
+   ============================================================ */
+document.querySelectorAll('.process-step').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.1) + 's';
+});
+</script>
+{% endblock %}

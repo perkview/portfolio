@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import About, Education, Experience, CoreValue, SkillsHeader, TechnicalSkill, Tool, SoftSkill, SummarySkill, Project, Testimonial, ContactMessage, ContactInfo, BasicInfo, Technologies
+from .models import *
 
 # Register your models here.
 admin.site.register(About)
@@ -17,3 +17,11 @@ admin.site.register(ContactMessage)
 admin.site.register(ContactInfo)
 admin.site.register(BasicInfo)
 admin.site.register(Technologies)
+admin.site.register(Service)
+admin.site.register(FreelanceStatus)
+admin.site.register(FAQ)
+admin.site.register(BlogPost)
+admin.site.register(ProjectInquiry)
+admin.site.register(CaseStudy)
+admin.site.register(AboutStat)
+admin.site.register(AboutCTA)

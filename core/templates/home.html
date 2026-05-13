@@ -1,80 +1,1310 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %}Home - Portfolio{% endblock %}
+{% block title %}Muhammad Ahmad — Full Stack Developer{% endblock %}
+
+{% block extra_head %}
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+/* ============================================================
+   DESIGN SYSTEM — CSS VARIABLES
+   (already defined in base.html; repeated here for safety)
+   ============================================================ */
+:root {
+  --bg:         #0A0C10;
+  --bg-card:    #111318;
+  --bg-glass:   rgba(255,255,255,0.04);
+  --border:     rgba(255,255,255,0.07);
+  --accent:     #3B82F6;
+  --accent-2:   #06B6D4;
+  --accent-3:   #8B5CF6;
+  --text:       #F1F5F9;
+  --text-muted: #64748B;
+  --text-dim:   #94A3B8;
+  --green:      #10B981;
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'Space Grotesk', sans-serif;
+  --radius:     16px;
+  --radius-sm:  10px;
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   NOISE OVERLAY (TEXTURE)
+   ============================================================ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ============================================================
+   GRID BACKGROUND
+   ============================================================ */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* ============================================================
+   OPEN TO WORK BANNER
+   ============================================================ */
+{% if open_to_work %}
+.availability-banner {
+  background: linear-gradient(90deg, rgba(16,185,129,0.15), rgba(16,185,129,0.08), rgba(16,185,129,0.15));
+  border-bottom: 1px solid rgba(16,185,129,0.2);
+  padding: 9px 0;
+  text-align: center;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  color: var(--green);
+  position: relative;
+  overflow: hidden;
+}
+.availability-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(16,185,129,0.1), transparent);
+  animation: shimmer 3s infinite;
+}
+@keyframes shimmer { to { left: 200%; } }
+{% endif %}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 120px 20px 80px;
+}
+
+/* Gradient orbs */
+.hero-orb-1 {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+  top: -200px;
+  left: -200px;
+  animation: float1 12s ease-in-out infinite;
+  pointer-events: none;
+}
+.hero-orb-2 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%);
+  bottom: -100px;
+  right: -150px;
+  animation: float2 15s ease-in-out infinite;
+  pointer-events: none;
+}
+.hero-orb-3 {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%);
+  top: 40%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  animation: float3 10s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,20px)} }
+@keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-20px,30px)} }
+@keyframes float3 { 0%,100%{transform:translate(-50%,-50%)} 50%{transform:translate(-50%,-55%)} }
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+}
+
+/* Status badge */
+.hero-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16,185,129,0.1);
+  border: 1px solid rgba(16,185,129,0.25);
+  color: var(--green);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  animation: fadeDown 0.6s ease both;
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  /* FIX: renamed from pulse-dot to status-pulse to avoid collision with base.html's pulse-dot */
+  animation: status-pulse 2s infinite;
+}
+@keyframes status-pulse {
+  0%,100%{ box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+  50%{ box-shadow: 0 0 0 5px rgba(16,185,129,0); }
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  animation: fadeDown 0.6s 0.1s ease both;
+  margin-bottom: 16px;
+}
+
+.hero-name .accent-text {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Typed role */
+.hero-role-line {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: var(--text-dim);
+  margin-bottom: 32px;
+  animation: fadeDown 0.6s 0.2s ease both;
+  min-height: 2em;
+}
+.typed-text {
+  color: var(--accent-2);
+  font-weight: 600;
+  border-right: 2px solid var(--accent-2);
+  padding-right: 3px;
+  animation: blink 0.75s step-end infinite;
+}
+@keyframes blink { 50%{ border-color: transparent; } }
+
+.hero-sub {
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 560px;
+  margin: 0 auto 44px;
+  animation: fadeDown 0.6s 0.3s ease both;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeDown 0.6s 0.4s ease both;
+}
+
+.btn-primary-cta {
+  background: linear-gradient(135deg, var(--accent), #2563EB);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 32px rgba(59,130,246,0.35);
+}
+.btn-primary-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(59,130,246,0.5);
+  color: #fff;
+}
+
+.btn-secondary-cta {
+  background: transparent;
+  color: var(--text);
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(8px);
+}
+.btn-secondary-cta:hover {
+  background: var(--bg-glass);
+  border-color: rgba(255,255,255,0.18);
+  transform: translateY(-2px);
+  color: var(--text);
+}
+
+/* Tech stack under hero */
+.hero-tech {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 52px;
+  animation: fadeDown 0.6s 0.5s ease both;
+}
+.tech-tag {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  padding: 5px 14px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  backdrop-filter: blur(6px);
+  transition: var(--transition);
+}
+.tech-tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: fadeIn 1s 1s ease both;
+}
+.scroll-line {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, var(--border), transparent);
+  animation: scrollPulse 2s infinite;
+}
+@keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+/* ============================================================
+   STATS SECTION
+   ============================================================ */
+.stats-section {
+  position: relative;
+  padding: 80px 0;
+  overflow: hidden;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.stat-item {
+  background: var(--bg-card);
+  padding: 40px 30px;
+  text-align: center;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.stat-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(59,130,246,0.05), transparent);
+  opacity: 0;
+  transition: var(--transition);
+}
+.stat-item:hover::before { opacity: 1; }
+.stat-item:hover { transform: scale(1.02); z-index: 1; }
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   SECTION COMMONS
+   ============================================================ */
+section { position: relative; padding: 100px 0; }
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.section-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 520px;
+}
+
+/* ============================================================
+   SERVICES SECTION
+   ============================================================ */
+.services-section { background: transparent; }
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.service-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+.service-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: var(--transition);
+}
+.service-card:hover {
+  border-color: rgba(59,130,246,0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.service-card:hover::after { transform: scaleX(1); }
+
+.service-icon {
+  width: 52px;
+  height: 52px;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--accent);
+  margin-bottom: 20px;
+  transition: var(--transition);
+}
+.service-card:hover .service-icon {
+  background: rgba(59,130,246,0.18);
+  transform: scale(1.05);
+}
+
+.service-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.service-desc {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+.service-tag {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   MARQUEE — TECH STACK
+   ============================================================ */
+.marquee-section {
+  padding: 50px 0;
+  margin-top: 80px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg-card);
+}
+
+.marquee-label {
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 28px;
+  white-space: nowrap;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  border-right: 1px solid var(--border);
+  transition: color 0.2s;
+}
+.marquee-item:hover { color: var(--text); }
+.marquee-item img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: grayscale(1) brightness(1.5);
+  transition: filter 0.2s;
+}
+.marquee-item:hover img { filter: none; }
+
+/* ============================================================
+   CASE STUDIES SECTION
+   ============================================================ */
+.case-studies-section { background: transparent; }
+
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.case-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.case-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-3));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: var(--transition);
+}
+.case-card:hover {
+  border-color: rgba(59,130,246,0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+}
+.case-card:hover::before { transform: scaleX(1); }
+
+.case-number {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.case-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.case-desc {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  flex: 1;
+  line-height: 1.65;
+}
+.case-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 20px 0 24px;
+}
+.case-tag {
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.2);
+  color: #A78BFA;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.case-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: gap 0.2s;
+}
+.case-link:hover { gap: 10px; color: var(--accent); }
+
+/* ============================================================
+   BLOG SECTION
+   ============================================================ */
+.blog-section { background: transparent; }
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.blog-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: var(--transition);
+}
+.blog-card:hover {
+  border-color: rgba(59,130,246,0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.blog-card-header {
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+.blog-card-body {
+  padding: 28px;
+}
+
+.blog-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.blog-date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+.blog-read-time {
+  font-size: 0.72rem;
+  color: var(--accent-2);
+  background: rgba(6,182,212,0.08);
+  padding: 2px 8px;
+  border-radius: 50px;
+}
+
+.blog-title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  color: var(--text);
+  transition: color 0.2s;
+}
+.blog-card:hover .blog-title { color: var(--accent-2); }
+
+.blog-excerpt {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  margin-bottom: 20px;
+  line-height: 1.65;
+}
+
+.blog-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  transition: gap 0.2s;
+}
+.blog-card:hover .blog-arrow { gap: 9px; }
+
+/* ============================================================
+   FINAL CTA SECTION
+   ============================================================ */
+.cta-section {
+  padding: 100px 0;
+}
+
+.cta-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 80px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-box::before {
+  content: '';
+  position: absolute;
+  top: -120px; left: 50%; transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(59,130,246,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.cta-title span {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cta-sub {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 480px;
+  margin: 0 auto 40px;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   SECTION DIVIDERS
+   ============================================================ */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+}
+
+/* ============================================================
+   VIEW ALL BUTTON
+   ============================================================ */
+.view-all-wrap {
+  text-align: center;
+  margin-top: 44px;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-dim);
+  padding: 12px 28px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(59,130,246,0.06);
+}
+
+/* ============================================================
+   ANIMATION KEYFRAMES
+   ============================================================ */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .hero { padding: 100px 20px 70px; }
+  .hero-cta { flex-direction: column; align-items: center; }
+  .cta-box { padding: 50px 24px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+{% endblock %}
 
 {% block content %}
 
-<!-- 🏠 Hero Section -->
-<section class="hero-section text-center text-white py-5"
-         style="background: linear-gradient(135deg, #007BFF 40%, #40E0D0); border-radius: 0 0 60px 60px;">
-  <div class="container py-5">
-    {% if basic_info.hero_image %}
-      <img src="{{ basic_info.hero_image.url }}" alt="Profile"
-           class="rounded-circle mb-4" width="140" height="140">
-    {% endif %}
-    <h1 class="fw-bold">
-      Hi, I’m <span style="color:#FFC107;">{{ basic_info.full_name }}</span>
+<!-- ========================================================
+     OPEN TO WORK BANNER
+     ======================================================== -->
+{% if open_to_work %}
+<div class="availability-banner">
+  <span>🟢</span>
+  &nbsp;Currently accepting freelance projects —&nbsp;
+  <a href="/freelance/" style="color:var(--green);font-weight:700;text-decoration:underline;">Let's Talk</a>
+</div>
+{% endif %}
+
+<!-- ========================================================
+     HERO
+     ======================================================== -->
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="hero-orb-1"></div>
+  <div class="hero-orb-2"></div>
+  <div class="hero-orb-3"></div>
+
+  <div class="hero-inner">
+
+    <!-- Availability status -->
+    <div class="hero-status">
+      <span class="status-dot"></span>
+      Available for Freelance Work
+    </div>
+
+    <!-- Name -->
+    <h1 class="hero-name">
+      Muhammad<br>
+      <span class="accent-text">Ahmad</span>
     </h1>
-    <p class="lead mb-4">{{ basic_info.tagline }}</p>
-    <a href="{% url 'projects' %}" class="btn btn-primary-custom me-2">
-      {{ basic_info.work_button_text }}
-    </a>
-    <a href="{% url 'contact' %}" class="btn btn-outline-light border-2 text-white">
-      {{ basic_info.contact_button_text }}
-    </a>
+
+    <!-- Typed role line -->
+    <p class="hero-role-line">
+      I build <span class="typed-text" id="typed"></span>
+    </p>
+
+    <!-- Sub description -->
+    <p class="hero-sub">
+      Full stack developer specialising in Django, automation systems, and AI-powered web applications. 
+      I turn complex ideas into clean, scalable software.
+    </p>
+
+    <!-- CTA buttons -->
+    <div class="hero-cta">
+      <a href="/freelance/" class="btn-primary-cta">
+        <i class="bi bi-lightning-charge-fill"></i>
+        Work With Me
+      </a>
+      <a href="{% url 'projects' %}" class="btn-secondary-cta">
+        <i class="bi bi-grid-3x3-gap"></i>
+        View Projects
+      </a>
+    </div>
+
+    <!-- Tech tags -->
+    <div class="hero-tech">
+      <span class="tech-tag">Django</span>
+      <span class="tech-tag">Python</span>
+      <span class="tech-tag">AI / LLMs</span>
+      <span class="tech-tag">REST APIs</span>
+      <span class="tech-tag">PostgreSQL</span>
+      <span class="tech-tag">Bootstrap</span>
+      <span class="tech-tag">Automation</span>
+    </div>
+
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- 👤 About Preview -->
-<section class="py-5 bg-white text-center">
+<!-- ========================================================
+     STATS
+     ======================================================== -->
+<div class="container" style="padding: 0 20px;">
+  <!-- FIX: Added data-suffix="+" to first three stat items so the counter
+       animates correctly to "10+", "8+", "3+" instead of bare numbers -->
+  <div class="stats-grid reveal">
+    <div class="stat-item">
+      <div class="stat-num" data-target="10" data-suffix="+">0+</div>
+      <div class="stat-label">Projects Built</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-target="8" data-suffix="+">0+</div>
+      <div class="stat-label">Technologies Mastered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-target="3" data-suffix="+">0+</div>
+      <div class="stat-label">Years Building</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-target="100" data-suffix="%">0%</div>
+      <div class="stat-label">Dedication</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================
+     MARQUEE — TECH STACK
+     (FIX: moved margin-top from inline style to CSS class .marquee-section)
+     ======================================================== -->
+<div class="marquee-section">
+  <p class="marquee-label">Tech Stack</p>
+  <div class="marquee-track" id="marqueeTrack">
+    <!-- Items will be duplicated by JS for seamless loop -->
+    {% for tech in technologies %}
+    <div class="marquee-item">
+      {% if tech.icon %}<img src="{{ tech.icon.url }}" alt="{{ tech.name }}">{% endif %}
+      {{ tech.name }}
+    </div>
+    {% empty %}
+    <div class="marquee-item"><i class="bi bi-braces" style="margin-right:6px;color:var(--accent)"></i>Django</div>
+    <div class="marquee-item"><i class="bi bi-filetype-py" style="margin-right:6px;color:var(--accent)"></i>Python</div>
+    <div class="marquee-item"><i class="bi bi-database" style="margin-right:6px;color:var(--accent)"></i>PostgreSQL</div>
+    <div class="marquee-item"><i class="bi bi-bootstrap" style="margin-right:6px;color:var(--accent)"></i>Bootstrap</div>
+    <div class="marquee-item"><i class="bi bi-git" style="margin-right:6px;color:var(--accent)"></i>Git</div>
+    <div class="marquee-item"><i class="bi bi-cpu" style="margin-right:6px;color:var(--accent)"></i>AI APIs</div>
+    <div class="marquee-item"><i class="bi bi-lightning" style="margin-right:6px;color:var(--accent)"></i>Automation</div>
+    <div class="marquee-item"><i class="bi bi-cloud" style="margin-right:6px;color:var(--accent)"></i>REST APIs</div>
+    <div class="marquee-item"><i class="bi bi-code-slash" style="margin-right:6px;color:var(--accent)"></i>JavaScript</div>
+    <div class="marquee-item"><i class="bi bi-layout-text-window" style="margin-right:6px;color:var(--accent)"></i>HTML / CSS</div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ========================================================
+     SERVICES PREVIEW
+     ======================================================== -->
+<section class="services-section">
   <div class="container">
-    <h2 class="fw-semibold mb-4">{{ basic_info.about_heading }}</h2>
-    <p class="lead mb-4">{{ basic_info.about_short_description }}</p>
-    <a href="{% url 'about' %}" class="btn btn-primary-custom">Learn More</a>
+    <div class="reveal">
+      <p class="section-eyebrow">What I Do</p>
+      <h2 class="section-title">Services</h2>
+      <p class="section-subtitle">From concept to deployment — I handle the full stack so you don't have to.</p>
+    </div>
+
+    <div class="service-grid">
+
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="bi bi-globe2"></i></div>
+        <h3 class="service-title">Web Development</h3>
+        <p class="service-desc">Production-grade Django apps, admin dashboards, e-commerce platforms, and customer-facing websites built for scale.</p>
+        <span class="service-tag">Django · Bootstrap · PostgreSQL</span>
+      </div>
+
+      <div class="service-card reveal" style="transition-delay:0.1s">
+        <div class="service-icon" style="background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.2);color:var(--accent-3)"><i class="bi bi-robot"></i></div>
+        <h3 class="service-title">AI Integration</h3>
+        <p class="service-desc">Embed LLM-powered chatbots, document analysis, voice I/O, and AI automation into your existing product or new build.</p>
+        <span class="service-tag" style="color:#A78BFA">OpenRouter · LangChain · APIs</span>
+      </div>
+
+      <div class="service-card reveal" style="transition-delay:0.2s">
+        <div class="service-icon" style="background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.2);color:var(--accent-2)"><i class="bi bi-gear-wide-connected"></i></div>
+        <h3 class="service-title">Automation</h3>
+        <p class="service-desc">Python scripts, bots, scheduled workflows, trading systems, and data pipelines that work while you sleep.</p>
+        <span class="service-tag" style="color:var(--accent-2)">Python · Selenium · APIs</span>
+      </div>
+
+      <div class="service-card reveal" style="transition-delay:0.3s">
+        <div class="service-icon" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.2);color:var(--green)"><i class="bi bi-cart3"></i></div>
+        <h3 class="service-title">E-Commerce</h3>
+        <p class="service-desc">Custom storefronts with product management, payments, order tracking, and CMS — built on Django from scratch.</p>
+        <span class="service-tag" style="color:var(--green)">Django · Stripe · MySQL</span>
+      </div>
+
+      <div class="service-card reveal" style="transition-delay:0.4s">
+        <div class="service-icon" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);color:#FCD34D"><i class="bi bi-bar-chart-line"></i></div>
+        <h3 class="service-title">Dashboards & CMS</h3>
+        <p class="service-desc">Real-time analytics dashboards, admin panels, and content management systems tailored to your data model.</p>
+        <span class="service-tag" style="color:#FCD34D">Django Admin · Charts · REST</span>
+      </div>
+
+      <div class="service-card reveal" style="transition-delay:0.5s">
+        <div class="service-icon" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);color:#F87171"><i class="bi bi-shield-check"></i></div>
+        <h3 class="service-title">Backend & APIs</h3>
+        <p class="service-desc">RESTful APIs, authentication systems, database architecture, and backend logic built for reliability and maintainability.</p>
+        <span class="service-tag" style="color:#F87171">DRF · JWT · PostgreSQL</span>
+      </div>
+
+    </div>
+
+    <div class="view-all-wrap reveal">
+      <a href="{% url 'services' %}" class="btn-ghost">
+        View All Services <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
   </div>
 </section>
 
-<!-- 🧩 Featured Projects -->
-<section class="py-5">
-  <div class="container">
-    <h2 class="fw-semibold text-center mb-5">Featured Projects</h2>
-    <div class="row g-4">
+<div class="section-divider"></div>
 
-      {% for project in featured_projects %}
-      <div class="col-md-4">
-        <div class="card shadow-sm border-0 h-100">
-          {% if project.image %}
-            <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
-          {% endif %}
-          <div class="card-body">
-            <h5 class="fw-semibold">{{ project.title }}</h5>
-            <p class="text-muted">{{ project.description|truncatewords:20 }}</p>
-            {% if project.live_demo_link %}
-              <a href="{{ project.live_demo_link }}" target="_blank" class="text-primary fw-bold">View Project →</a>
-            {% endif %}
+<!-- ========================================================
+     CASE STUDIES PREVIEW
+     ======================================================== -->
+<section class="case-studies-section">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-eyebrow">Real Work</p>
+      <h2 class="section-title">Case Studies</h2>
+      <p class="section-subtitle">Not just projects — documented problems, technical decisions, and measurable outcomes.</p>
+    </div>
+
+    <div class="case-grid">
+      {% for case in cases %}
+      <div class="case-card reveal">
+        <div class="case-number">Case Study 0{{ forloop.counter }}</div>
+        <h3 class="case-title">{{ case.title }}</h3>
+        <p class="case-desc">{{ case.problem|truncatewords:24 }}</p>
+        <div class="case-tags">
+          {% for tag in case.tags_list %}
+          <span class="case-tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+        <a href="{% url 'case_study_detail' case.slug %}" class="case-link">
+          Read Full Breakdown <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+      {% empty %}
+      <!-- Fallback placeholders if DB is empty -->
+      <div class="case-card reveal">
+        <div class="case-number">Case Study 01</div>
+        <h3 class="case-title">Video Platform with Reward System</h3>
+        <p class="case-desc">Building a YouTube-style platform where viewers earn rewards for watching — including accounts, subscriptions, ads, and a full monetisation engine.</p>
+        <div class="case-tags">
+          <span class="case-tag">Django</span>
+          <span class="case-tag">Payments</span>
+          <span class="case-tag">SaaS</span>
+        </div>
+        <a href="{% url 'case_studies' %}" class="case-link">Read Full Breakdown <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <div class="case-card reveal" style="transition-delay:0.1s">
+        <div class="case-number">Case Study 02</div>
+        <h3 class="case-title">QuantumTask — Productivity SaaS</h3>
+        <p class="case-desc">A Django-based productivity system with dashboards, task management, habit tracking, goals, analytics, and team collaboration — built with a clean minimal UI.</p>
+        <div class="case-tags">
+          <span class="case-tag">Django</span>
+          <span class="case-tag">SaaS</span>
+          <span class="case-tag">Analytics</span>
+        </div>
+        <a href="{% url 'case_studies' %}" class="case-link">Read Full Breakdown <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <div class="case-card reveal" style="transition-delay:0.2s">
+        <div class="case-number">Case Study 03</div>
+        <h3 class="case-title">Self-Hosted AI Chatbot System</h3>
+        <p class="case-desc">A fully self-hosted AI assistant with document and image understanding, voice I/O, persistent chat history, and OpenRouter API integration.</p>
+        <div class="case-tags">
+          <span class="case-tag">AI</span>
+          <span class="case-tag">OpenRouter</span>
+          <span class="case-tag">Python</span>
+        </div>
+        <a href="{% url 'case_studies' %}" class="case-link">Read Full Breakdown <i class="bi bi-arrow-right"></i></a>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="view-all-wrap reveal">
+      <a href="{% url 'case_studies' %}" class="btn-ghost">
+        View All Case Studies <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ========================================================
+     BLOG PREVIEW
+     ======================================================== -->
+<section class="blog-section">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-eyebrow">Thinking Out Loud</p>
+      <h2 class="section-title">Latest Articles</h2>
+      <p class="section-subtitle">Engineering breakdowns, tutorials, and freelancing insights — written by someone actually building things.</p>
+    </div>
+
+    <div class="blog-grid">
+      {% for blog in blogs %}
+      <div class="blog-card reveal">
+        <div class="blog-card-header"></div>
+        <div class="blog-card-body">
+          <div class="blog-meta">
+            <span class="blog-date">{{ blog.published_at|date:"M j, Y" }}</span>
+            <span class="blog-read-time">{{ blog.read_time }} min read</span>
           </div>
+          <h3 class="blog-title">{{ blog.title }}</h3>
+          <p class="blog-excerpt">{{ blog.content|truncatewords:22 }}</p>
+          <a href="{% url 'blog_detail' blog.slug %}" class="blog-arrow">
+            Read Article <i class="bi bi-arrow-right"></i>
+          </a>
         </div>
       </div>
       {% empty %}
-      <p class="text-center text-muted">No featured projects available yet.</p>
+      <div class="blog-card reveal">
+        <div class="blog-card-header"></div>
+        <div class="blog-card-body">
+          <div class="blog-meta">
+            <span class="blog-date">Coming Soon</span>
+            <span class="blog-read-time">5 min read</span>
+          </div>
+          <h3 class="blog-title">How I Built a Self-Hosted AI Chatbot with Voice I/O</h3>
+          <p class="blog-excerpt">A deep dive into building a fully local AI assistant — document parsing, OpenRouter integration, voice input and output, all running on your own machine.</p>
+          <a href="{% url 'blog' %}" class="blog-arrow">Read Article <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="blog-card reveal" style="transition-delay:0.1s">
+        <div class="blog-card-header" style="background:linear-gradient(90deg,var(--accent-3),var(--accent))"></div>
+        <div class="blog-card-body">
+          <div class="blog-meta">
+            <span class="blog-date">Coming Soon</span>
+            <span class="blog-read-time">7 min read</span>
+          </div>
+          <h3 class="blog-title">Django + TradingView Alerts: Building a Python Trading Bot</h3>
+          <p class="blog-excerpt">From webhook to order execution — connecting TradingView alerts to the Bitget API with a fully self-hosted Python backend and email-based triggering.</p>
+          <a href="{% url 'blog' %}" class="blog-arrow">Read Article <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="blog-card reveal" style="transition-delay:0.2s">
+        <div class="blog-card-header" style="background:linear-gradient(90deg,var(--accent-2),var(--green))"></div>
+        <div class="blog-card-body">
+          <div class="blog-meta">
+            <span class="blog-date">Coming Soon</span>
+            <span class="blog-read-time">4 min read</span>
+          </div>
+          <h3 class="blog-title">My Freelancing Stack: How I Set Up, Price, and Deliver Projects</h3>
+          <p class="blog-excerpt">The tools, templates, and process I use to go from first inquiry to deployed project — built around Django and a lean client communication workflow.</p>
+          <a href="{% url 'blog' %}" class="blog-arrow">Read Article <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
       {% endfor %}
-      
     </div>
 
-    <div class="text-center mt-5">
-      <a href="{% url 'projects' %}" class="btn btn-primary-custom">View All Projects</a>
+    <div class="view-all-wrap reveal">
+      <a href="{% url 'blog' %}" class="btn-ghost">
+        Read All Articles <i class="bi bi-arrow-right"></i>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- 📬 Contact Preview -->
-<section class="py-5 bg-white text-center">
+<!-- ========================================================
+     FINAL CTA
+     ======================================================== -->
+<section class="cta-section">
   <div class="container">
-    <h2 class="fw-semibold mb-4">{{ basic_info.contact_preview_heading }}</h2>
-    <p class="lead mb-4">{{ basic_info.contact_preview_text }}</p>
-    <a href="{% url 'contact' %}" class="btn btn-primary-custom">Get In Touch</a>
+    <div class="cta-box reveal">
+      <p class="section-eyebrow" style="justify-content:center;margin-bottom:20px;">Let's Build Together</p>
+      <h2 class="cta-title">Got a project idea?<br><span>Let's make it real.</span></h2>
+      <p class="cta-sub">I take on a limited number of freelance projects at a time — so if you have something in mind, reach out early.</p>
+      <div class="cta-actions">
+        <a href="/freelance/" class="btn-primary-cta">
+          <i class="bi bi-lightning-charge-fill"></i>
+          Start a Project
+        </a>
+        <a href="{% url 'projects' %}" class="btn-secondary-cta">
+          <i class="bi bi-grid-3x3-gap"></i>
+          Browse My Work
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 
+<!-- ========================================================
+     NOTE: WhatsApp float and back-to-top button are intentionally
+     removed here — base.html already renders both site-wide.
+     The originals were duplicates causing two overlapping buttons.
+     ======================================================== -->
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ============================================================
+   TYPED ANIMATION
+   ============================================================ */
+(function() {
+  const roles = [
+    'Django Applications',
+    'AI-Powered Systems',
+    'Automation Bots',
+    'Full Stack Platforms',
+    'E-Commerce Stores',
+    'REST APIs',
+  ];
+  const el = document.getElementById('typed');
+  if (!el) return;
+
+  let rIdx = 0, cIdx = 0, deleting = false;
+
+  function type() {
+    const current = roles[rIdx];
+    if (!deleting) {
+      el.textContent = current.slice(0, ++cIdx);
+      if (cIdx === current.length) {
+        deleting = true;
+        setTimeout(type, 1800);
+        return;
+      }
+      setTimeout(type, 70);
+    } else {
+      el.textContent = current.slice(0, --cIdx);
+      if (cIdx === 0) {
+        deleting = false;
+        rIdx = (rIdx + 1) % roles.length;
+        setTimeout(type, 300);
+        return;
+      }
+      setTimeout(type, 40);
+    }
+  }
+  type();
+})();
+
+/* ============================================================
+   ANIMATED COUNTERS (on scroll)
+   FIX: Uses a unique observer name (homeCounterObserver) so it
+   does not collide with any observer declared in base.html.
+   ============================================================ */
+function animateHomeCounter(el) {
+  const target = parseInt(el.dataset.target);
+  const suffix = el.dataset.suffix || '+';
+  const duration = 1500;
+  const step = target / (duration / 16);
+  let current = 0;
+
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    el.textContent = Math.floor(current) + suffix;
+  }, 16);
+}
+
+const homeCounterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.stat-num[data-target]').forEach(animateHomeCounter);
+      homeCounterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.stats-grid').forEach(el => homeCounterObserver.observe(el));
+
+/* ============================================================
+   MARQUEE — DUPLICATE ITEMS FOR SEAMLESS LOOP
+   ============================================================ */
+(function() {
+  const track = document.getElementById('marqueeTrack');
+  if (!track) return;
+  const clone = track.innerHTML;
+  track.innerHTML = clone + clone;
+})();
+
+/* ============================================================
+   FIX: Removed duplicate revealObserver — base.html already
+   handles all .reveal elements site-wide via its own observer.
+   Declaring it again here would double-observe every element
+   on this page.
+
+   FIX: Removed duplicate back-to-top scroll listener — base.html
+   already manages the #back-top button's show/hide on scroll.
+
+   FIX: Removed staggered reveal delay loop for service cards —
+   delays are already applied via inline style="transition-delay"
+   on each card in the HTML, so the JS loop was redundant.
+   ============================================================ */
+</script>
 {% endblock %}

@@ -1,0 +1,832 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Case Studies — Muhammad Ahmad{% endblock %}
+
+{% block meta_description %}Deep engineering breakdowns of real systems I've built — problems, decisions, outcomes, and lessons learned.{% endblock %}
+
+{% block extra_head %}
+<style>
+/* ============================================================
+   CASE STUDIES PAGE — DESIGN SYSTEM EXTENSION
+   ============================================================ */
+
+/* PAGE HERO */
+.cs-hero {
+  position: relative;
+  padding: 100px 0 80px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.cs-hero .grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.cs-hero-orb {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%);
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.cs-hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* FILTER BAR */
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 52px 0 48px;
+}
+
+.filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+  letter-spacing: 0.02em;
+}
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(59,130,246,0.35);
+}
+
+/* CASE CARDS GRID */
+.cs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 28px;
+  margin-bottom: 80px;
+}
+
+/* CASE CARD */
+.case-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+  position: relative;
+}
+.case-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-3));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: var(--transition);
+}
+.case-card:hover {
+  border-color: rgba(59,130,246,0.28);
+  transform: translateY(-5px);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+}
+.case-card:hover::before { transform: scaleX(1); }
+
+/* Card cover image */
+.case-cover {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-glass);
+  border-bottom: 1px solid var(--border);
+}
+
+/* No-image placeholder */
+.case-cover-placeholder {
+  width: 100%;
+  height: 210px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.07), rgba(139,92,246,0.07));
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  color: var(--border);
+}
+
+/* Card body */
+.case-body {
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Eyebrow */
+.case-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.case-number-badge {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.case-project-badge {
+  background: rgba(139,92,246,0.12);
+  border: 1px solid rgba(139,92,246,0.22);
+  color: #A78BFA;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Title */
+.case-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+  margin-bottom: 12px;
+  transition: color 0.2s;
+}
+.case-card:hover .case-title { color: var(--accent-2); }
+
+/* Problem snippet */
+.case-problem {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  flex: 1;
+  margin-bottom: 24px;
+}
+
+/* Tech tags */
+.case-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.case-tag {
+  background: rgba(59,130,246,0.08);
+  border: 1px solid rgba(59,130,246,0.18);
+  color: #93C5FD;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Outcome metric */
+.case-metric {
+  background: rgba(16,185,129,0.07);
+  border: 1px solid rgba(16,185,129,0.18);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  margin-bottom: 24px;
+  font-size: 0.8rem;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.case-metric i { font-size: 0.95rem; }
+
+/* Footer CTAs */
+.case-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.case-read-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: gap 0.2s;
+  text-decoration: none;
+}
+.case-read-link:hover { gap: 10px; color: var(--accent); }
+
+.case-hire-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  color: var(--accent);
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: var(--transition);
+  text-decoration: none;
+}
+.case-hire-link:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(59,130,246,0.35);
+}
+
+/* FEATURED CASE (wide card) */
+.case-card.featured {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: stretch;
+}
+.case-card.featured .case-cover,
+.case-card.featured .case-cover-placeholder {
+  width: 340px;
+  height: auto;
+  min-height: 280px;
+  flex-shrink: 0;
+  border-bottom: none;
+  border-right: 1px solid var(--border);
+  border-radius: 0;
+}
+.case-card.featured::before {
+  top: 0; left: 0; right: auto;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-3));
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.case-card.featured:hover::before { transform: scaleY(1); }
+
+/* EMPTY STATE */
+.cs-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 40px;
+  color: var(--text-muted);
+}
+.cs-empty i {
+  font-size: 3rem;
+  color: var(--border);
+  display: block;
+  margin-bottom: 16px;
+}
+
+/* BOTTOM CTA STRIP */
+.cs-cta-strip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 60px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 100px;
+}
+.cs-cta-strip::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cs-cta-text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  line-height: 1.15;
+}
+.cs-cta-text h2 span {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cs-cta-text p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 440px;
+}
+
+.cs-cta-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+/* Hide cards during filter */
+.case-card-wrap.hidden {
+  display: none;
+}
+
+/* ANIMATED STATS BAR */
+.cs-stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 60px;
+}
+.cs-stat {
+  background: var(--bg-card);
+  padding: 30px 24px;
+  text-align: center;
+  transition: var(--transition);
+}
+.cs-stat:hover { background: rgba(59,130,246,0.04); }
+.cs-stat-num {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.cs-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* SECTION DIVIDER */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .case-card.featured {
+    flex-direction: column;
+  }
+  .case-card.featured .case-cover,
+  .case-card.featured .case-cover-placeholder {
+    width: 100%;
+    height: 220px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .cs-cta-strip { flex-direction: column; padding: 40px 28px; }
+}
+
+@media (max-width: 640px) {
+  .cs-grid { grid-template-columns: 1fr; }
+  .case-card.featured { grid-column: auto; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================================================
+     PAGE HERO
+     ========================================================= -->
+<section class="cs-hero">
+  <div class="grid-bg"></div>
+  <div class="cs-hero-orb"></div>
+
+  <div class="cs-hero-inner">
+    <div class="hero-status" style="margin-bottom:24px;">
+      <span class="status-dot"></span>
+      Deep Engineering Breakdowns
+    </div>
+
+    <h1 class="hero-name" style="font-size:clamp(2rem,5vw,3.8rem);">
+      Case <span class="accent-text">Studies</span>
+    </h1>
+
+    <p class="hero-sub" style="margin-top:18px;">
+      Not just projects. Documented problems, architectural decisions, and measurable outcomes —
+      so you know exactly how I think before we work together.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================
+     QUICK STATS
+     ========================================================= -->
+<div class="container reveal">
+  <div class="cs-stats-row">
+    <div class="cs-stat">
+      <div class="cs-stat-num" data-target="{% if cases %}{{ cases|length }}{% else %}3{% endif %}">0</div>
+      <div class="cs-stat-label">Case Studies</div>
+    </div>
+    <div class="cs-stat">
+      <div class="cs-stat-num" data-target="10">0</div>
+      <div class="cs-stat-label">Systems Built</div>
+    </div>
+    <div class="cs-stat">
+      <div class="cs-stat-num" data-target="6">0</div>
+      <div class="cs-stat-label">Tech Stacks Covered</div>
+    </div>
+    <div class="cs-stat">
+      <div class="cs-stat-num" data-target="100" data-suffix="%">0</div>
+      <div class="cs-stat-label">Problems Solved</div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     FILTER BAR
+     ========================================================= -->
+<div class="container">
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="all">All Projects</button>
+    <button class="filter-btn" data-filter="django">Django</button>
+    <button class="filter-btn" data-filter="ai">AI / LLM</button>
+    <button class="filter-btn" data-filter="automation">Automation</button>
+    <button class="filter-btn" data-filter="saas">SaaS</button>
+    <button class="filter-btn" data-filter="api">REST APIs</button>
+  </div>
+</div>
+
+<!-- =========================================================
+     CASE STUDIES GRID
+     ========================================================= -->
+<div class="container">
+  <div class="cs-grid" id="csGrid">
+
+    {% for case in cases %}
+    <div class="case-card-wrap reveal {% if forloop.first %}featured-wrap{% endif %}"
+         data-tags="{{ case.tags_list|join:','|lower }}">
+
+      <article class="case-card {% if forloop.first %}featured{% endif %}">
+
+        {% if case.cover_image %}
+          <img src="{{ case.cover_image.url }}" alt="{{ case.title }}" class="case-cover">
+        {% else %}
+          <div class="case-cover-placeholder">
+            <i class="bi bi-layers"></i>
+          </div>
+        {% endif %}
+
+        <div class="case-body">
+
+          <div class="case-eyebrow">
+            <span class="case-number-badge">Case {{ forloop.counter|stringformat:"02d" }}</span>
+            {% if case.project %}
+            <span class="case-project-badge">{{ case.project }}</span>
+            {% endif %}
+          </div>
+
+          <h2 class="case-title">{{ case.title }}</h2>
+
+          <p class="case-problem">{{ case.problem|truncatewords:32 }}</p>
+
+          {% if case.outcome_metric %}
+          <div class="case-metric">
+            <i class="bi bi-graph-up-arrow"></i>
+            {{ case.outcome_metric }}
+          </div>
+          {% endif %}
+
+          <div class="case-tags">
+            {% for tag in case.tags_list %}
+            <span class="case-tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="case-footer">
+            <a href="{% url 'case_study_detail' case.slug %}" class="case-read-link">
+              Full Breakdown <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="/freelance/?service={{ case.project|urlencode }}" class="case-hire-link">
+              <i class="bi bi-lightning-charge-fill"></i> Build Similar
+            </a>
+          </div>
+
+        </div>
+      </article>
+    </div>
+
+    {% empty %}
+
+    <!-- ===================== FALLBACK PLACEHOLDERS ===================== -->
+
+    <!-- FEATURED (first) -->
+    <div class="case-card-wrap reveal" data-tags="django,saas,api">
+      <article class="case-card featured">
+        <div class="case-cover-placeholder"><i class="bi bi-play-circle"></i></div>
+        <div class="case-body">
+          <div class="case-eyebrow">
+            <span class="case-number-badge">Case 01</span>
+            <span class="case-project-badge">SaaS Platform</span>
+          </div>
+          <h2 class="case-title">Video Platform with a Viewer Reward Engine</h2>
+          <p class="case-problem">
+            A client needed a YouTube-style platform where viewers earn real currency for watch time —
+            complete with account management, creator payouts, ad integration,
+            and a tamper-resistant reward verification layer. The challenge was preventing fraud
+            without destroying user experience.
+          </p>
+          <div class="case-metric">
+            <i class="bi bi-graph-up-arrow"></i>
+            Reward fraud rate reduced to &lt; 0.3% via server-side session verification
+          </div>
+          <div class="case-tags">
+            <span class="case-tag">Django</span>
+            <span class="case-tag">PostgreSQL</span>
+            <span class="case-tag">Celery</span>
+            <span class="case-tag">REST API</span>
+            <span class="case-tag">SaaS</span>
+          </div>
+          <div class="case-footer">
+            <a href="{% url 'case_studies' %}" class="case-read-link">
+              Full Breakdown <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="/freelance/?service=Video+Platform" class="case-hire-link">
+              <i class="bi bi-lightning-charge-fill"></i> Build Similar
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="case-card-wrap reveal" data-tags="django,saas,automation" style="transition-delay:0.1s">
+      <article class="case-card">
+        <div class="case-cover-placeholder"><i class="bi bi-check2-square"></i></div>
+        <div class="case-body">
+          <div class="case-eyebrow">
+            <span class="case-number-badge">Case 02</span>
+            <span class="case-project-badge">Productivity SaaS</span>
+          </div>
+          <h2 class="case-title">QuantumTask — Multi-User Productivity Platform</h2>
+          <p class="case-problem">
+            Building a lean productivity SaaS with dashboards, task management, habit tracking,
+            team collaboration, goals, and analytics — with a clean, non-bloated UI
+            and a fully custom Django backend.
+          </p>
+          <div class="case-metric">
+            <i class="bi bi-graph-up-arrow"></i>
+            Sub-200ms dashboard load for datasets with 50k+ rows
+          </div>
+          <div class="case-tags">
+            <span class="case-tag">Django</span>
+            <span class="case-tag">SaaS</span>
+            <span class="case-tag">Analytics</span>
+            <span class="case-tag">PostgreSQL</span>
+          </div>
+          <div class="case-footer">
+            <a href="{% url 'case_studies' %}" class="case-read-link">
+              Full Breakdown <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="/freelance/?service=Productivity+SaaS" class="case-hire-link">
+              <i class="bi bi-lightning-charge-fill"></i> Build Similar
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="case-card-wrap reveal" data-tags="ai,automation,api" style="transition-delay:0.2s">
+      <article class="case-card">
+        <div class="case-cover-placeholder"><i class="bi bi-robot"></i></div>
+        <div class="case-body">
+          <div class="case-eyebrow">
+            <span class="case-number-badge">Case 03</span>
+            <span class="case-project-badge">AI System</span>
+          </div>
+          <h2 class="case-title">Self-Hosted AI Chatbot with Voice & Document I/O</h2>
+          <p class="case-problem">
+            Designing a fully self-hosted AI assistant with multimodal input —
+            PDF and image understanding, voice input/output, persistent chat history,
+            and pluggable model backends via OpenRouter. Built to run on a single VPS.
+          </p>
+          <div class="case-metric">
+            <i class="bi bi-graph-up-arrow"></i>
+            Full multimodal pipeline with &lt; 2s first-token latency on consumer hardware
+          </div>
+          <div class="case-tags">
+            <span class="case-tag">AI</span>
+            <span class="case-tag">OpenRouter</span>
+            <span class="case-tag">Python</span>
+            <span class="case-tag">REST API</span>
+          </div>
+          <div class="case-footer">
+            <a href="{% url 'case_studies' %}" class="case-read-link">
+              Full Breakdown <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="/freelance/?service=AI+Chatbot" class="case-hire-link">
+              <i class="bi bi-lightning-charge-fill"></i> Build Similar
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="case-card-wrap reveal" data-tags="automation,api,django" style="transition-delay:0.3s">
+      <article class="case-card">
+        <div class="case-cover-placeholder"><i class="bi bi-currency-bitcoin"></i></div>
+        <div class="case-body">
+          <div class="case-eyebrow">
+            <span class="case-number-badge">Case 04</span>
+            <span class="case-project-badge">Automation</span>
+          </div>
+          <h2 class="case-title">TradingView → Bitget Algo Trading Bot</h2>
+          <p class="case-problem">
+            Connecting TradingView Pine Script alerts to the Bitget futures API via a
+            self-hosted Django webhook server — with email-triggered failsafe, order deduplication,
+            and a live trade log dashboard.
+          </p>
+          <div class="case-metric">
+            <i class="bi bi-graph-up-arrow"></i>
+            Alert-to-order execution in under 800ms end-to-end
+          </div>
+          <div class="case-tags">
+            <span class="case-tag">Python</span>
+            <span class="case-tag">Automation</span>
+            <span class="case-tag">REST API</span>
+            <span class="case-tag">Django</span>
+          </div>
+          <div class="case-footer">
+            <a href="{% url 'case_studies' %}" class="case-read-link">
+              Full Breakdown <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="/freelance/?service=Trading+Bot" class="case-hire-link">
+              <i class="bi bi-lightning-charge-fill"></i> Build Similar
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    {% endfor %}
+
+  </div><!-- /cs-grid -->
+</div>
+
+<div class="section-divider" style="margin-bottom:80px;"></div>
+
+<!-- =========================================================
+     BOTTOM CTA STRIP
+     ========================================================= -->
+<div class="container">
+  <div class="cs-cta-strip reveal">
+    <div class="cs-cta-text">
+      <h2>Seen something <span>similar to your idea?</span></h2>
+      <p>
+        Each case study is a repeatable system — not a one-off. If your project fits a pattern
+        I've already solved, we can move faster and ship cleaner.
+      </p>
+    </div>
+    <div class="cs-cta-actions">
+      <a href="/freelance/" class="btn-primary-custom">
+        <i class="bi bi-lightning-charge-fill"></i>
+        Discuss My Project
+      </a>
+      <a href="{% url 'projects' %}" class="btn-ghost" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text-dim);padding:12px 24px;border-radius:50px;border:1px solid var(--border);font-weight:600;font-size:0.9rem;transition:var(--transition);text-decoration:none;">
+        <i class="bi bi-grid-3x3-gap"></i> Browse All Projects
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ============================================================
+   REAL-TIME FILTER BY TECH TAG
+   ============================================================ */
+(function () {
+  const filterBar = document.getElementById('filterBar');
+  const wraps     = document.querySelectorAll('.case-card-wrap');
+
+  if (!filterBar) return;
+
+  filterBar.addEventListener('click', function (e) {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+
+    filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+
+    wraps.forEach(wrap => {
+      if (filter === 'all') {
+        wrap.classList.remove('hidden');
+        return;
+      }
+      const tags = (wrap.dataset.tags || '').split(',').map(t => t.trim());
+      wrap.classList.toggle('hidden', !tags.includes(filter));
+    });
+  });
+})();
+
+/* ============================================================
+   ANIMATED COUNTERS (scroll-triggered)
+   ============================================================ */
+function animateCounter(el) {
+  const target   = parseInt(el.dataset.target);
+  const suffix   = el.dataset.suffix || '+';
+  const duration = 1400;
+  const step     = target / (duration / 16);
+  let current    = 0;
+
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    el.textContent = Math.floor(current) + suffix;
+  }, 16);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.cs-stat-num[data-target]').forEach(animateCounter);
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.cs-stats-row').forEach(el => counterObserver.observe(el));
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ============================================================
+   STAGGER CARD DELAYS
+   ============================================================ */
+document.querySelectorAll('.case-card-wrap.reveal').forEach((el, i) => {
+  if (!el.style.transitionDelay) {
+    el.style.transitionDelay = (i * 0.09) + 's';
+  }
+});
+</script>
+{% endblock %}
