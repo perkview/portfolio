@@ -8,15 +8,24 @@
 {% block extra_head %}
 <style>
 /* ============================================================
-   CASE STUDIES PAGE — DESIGN SYSTEM EXTENSION
+   CASE STUDIES PAGE — DESIGN TOKENS
    ============================================================ */
+:root {
+  --cs-hero-pt: clamp(72px, 10vw, 110px);
+  --cs-hero-pb: clamp(56px, 8vw, 90px);
+  --cs-card-radius: 16px;
+  --cs-cover-h: clamp(180px, 22vw, 210px);
+}
 
-/* PAGE HERO */
+/* ============================================================
+   PAGE HERO
+   ============================================================ */
 .cs-hero {
   position: relative;
-  padding: 100px 0 80px;
+  padding: var(--cs-hero-pt) 0 var(--cs-hero-pb);
   overflow: hidden;
   text-align: center;
+  border-bottom: 1px solid var(--border);
 }
 
 .cs-hero .grid-bg {
@@ -31,10 +40,10 @@
 
 .cs-hero-orb {
   position: absolute;
-  width: 600px;
-  height: 600px;
+  width: clamp(300px, 55vw, 600px);
+  height: clamp(300px, 55vw, 600px);
   background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%);
-  top: -200px;
+  top: -30%;
   left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
@@ -45,16 +54,83 @@
   z-index: 2;
   max-width: 720px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 clamp(16px, 5vw, 24px);
 }
 
-/* FILTER BAR */
+.cs-hero-title {
+  font-size: clamp(2rem, 6vw, 3.8rem);
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 0;
+}
+
+.cs-hero-sub {
+  margin-top: clamp(14px, 3vw, 18px);
+  color: var(--text-muted);
+  font-size: clamp(0.9rem, 2.2vw, 1rem);
+  line-height: 1.7;
+  max-width: 580px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================================
+   QUICK STATS ROW
+   ============================================================ */
+.cs-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--cs-card-radius);
+  overflow: hidden;
+  margin: clamp(36px, 6vw, 60px) 0;
+}
+
+.cs-stat {
+  background: var(--bg-card);
+  padding: clamp(20px, 4vw, 30px) clamp(16px, 3vw, 24px);
+  text-align: center;
+  transition: var(--transition);
+}
+.cs-stat:hover { background: rgba(59,130,246,0.04); }
+
+.cs-stat-num {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.cs-stat-label {
+  font-size: clamp(0.68rem, 1.5vw, 0.78rem);
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+.filter-bar-outer {
+  overflow: hidden;
+  padding: clamp(16px, 3vw, 24px) 0 clamp(24px, 4vw, 40px);
+}
+
 .filter-bar {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 52px 0 48px;
 }
 
 .filter-btn {
@@ -69,10 +145,16 @@
   transition: var(--transition);
   font-family: var(--font-body);
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
 }
 .filter-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
+  background: rgba(59,130,246,0.06);
 }
 .filter-btn.active {
   background: var(--accent);
@@ -81,24 +163,29 @@
   box-shadow: 0 4px 18px rgba(59,130,246,0.35);
 }
 
-/* CASE CARDS GRID */
+/* ============================================================
+   CASE STUDIES GRID
+   ============================================================ */
 .cs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 28px;
-  margin-bottom: 80px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: clamp(18px, 3vw, 28px);
+  margin-bottom: clamp(52px, 8vw, 80px);
 }
 
-/* CASE CARD */
+/* ============================================================
+   CASE CARD
+   ============================================================ */
 .case-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--cs-card-radius);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: var(--transition);
   position: relative;
+  height: 100%;
 }
 .case-card::before {
   content: '';
@@ -109,28 +196,36 @@
   transform: scaleX(0);
   transform-origin: left;
   transition: var(--transition);
+  z-index: 1;
 }
 .case-card:hover {
   border-color: rgba(59,130,246,0.28);
   transform: translateY(-5px);
-  box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.28);
 }
 .case-card:hover::before { transform: scaleX(1); }
 
-/* Card cover image */
+/* Card wrapper */
+.case-card-wrap {
+  display: flex;
+  flex-direction: column;
+}
+.case-card-wrap.hidden { display: none; }
+
+/* Cover */
 .case-cover {
   width: 100%;
-  height: 210px;
+  height: var(--cs-cover-h);
   object-fit: cover;
   display: block;
   background: var(--bg-glass);
   border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
-/* No-image placeholder */
 .case-cover-placeholder {
   width: 100%;
-  height: 210px;
+  height: var(--cs-cover-h);
   background: linear-gradient(135deg, rgba(59,130,246,0.07), rgba(139,92,246,0.07));
   border-bottom: 1px solid var(--border);
   display: flex;
@@ -138,11 +233,12 @@
   justify-content: center;
   font-size: 2.8rem;
   color: var(--border);
+  flex-shrink: 0;
 }
 
 /* Card body */
 .case-body {
-  padding: 32px 28px;
+  padding: clamp(22px, 4vw, 32px) clamp(20px, 3.5vw, 28px);
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -153,7 +249,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
 .case-number-badge {
@@ -178,35 +275,35 @@
 
 /* Title */
 .case-title {
-  font-size: 1.15rem;
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.32;
   color: var(--text);
   margin-bottom: 12px;
   transition: color 0.2s;
 }
 .case-card:hover .case-title { color: var(--accent-2); }
 
-/* Problem snippet */
+/* Problem */
 .case-problem {
   color: var(--text-muted);
-  font-size: 0.875rem;
+  font-size: clamp(0.83rem, 1.8vw, 0.875rem);
   line-height: 1.7;
   flex: 1;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 /* Tech tags */
 .case-tags {
   display: flex;
-  gap: 8px;
+  gap: 7px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 .case-tag {
-  background: rgba(59,130,246,0.08);
-  border: 1px solid rgba(59,130,246,0.18);
-  color: #93C5FD;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  color: var(--accent);
   padding: 3px 10px;
   border-radius: 50px;
   font-size: 0.68rem;
@@ -217,26 +314,27 @@
 /* Outcome metric */
 .case-metric {
   background: rgba(16,185,129,0.07);
-  border: 1px solid rgba(16,185,129,0.18);
-  border-radius: var(--radius-sm);
-  padding: 10px 16px;
-  margin-bottom: 24px;
+  border: 1px solid rgba(16,185,129,0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
   font-size: 0.8rem;
   color: var(--green);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
+  line-height: 1.5;
 }
-.case-metric i { font-size: 0.95rem; }
+.case-metric i { font-size: 0.95rem; flex-shrink: 0; margin-top: 1px; }
 
-/* Footer CTAs */
+/* Footer */
 .case-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
-  padding-top: 20px;
+  padding-top: 18px;
   border-top: 1px solid var(--border);
   margin-top: auto;
 }
@@ -248,8 +346,9 @@
   color: var(--accent);
   font-size: 0.85rem;
   font-weight: 600;
-  transition: gap 0.2s;
+  transition: gap 0.2s, color 0.2s;
   text-decoration: none;
+  min-height: 38px;
 }
 .case-read-link:hover { gap: 10px; color: var(--accent); }
 
@@ -260,21 +359,25 @@
   background: rgba(59,130,246,0.1);
   border: 1px solid rgba(59,130,246,0.2);
   color: var(--accent);
-  padding: 6px 14px;
+  padding: 7px 14px;
   border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 600;
   transition: var(--transition);
   text-decoration: none;
+  white-space: nowrap;
+  min-height: 36px;
 }
 .case-hire-link:hover {
   background: var(--accent);
-  color: #fff;
+  color: #fff !important;
   border-color: var(--accent);
   box-shadow: 0 4px 16px rgba(59,130,246,0.35);
 }
 
-/* FEATURED CASE (wide card) */
+/* ============================================================
+   FEATURED CASE CARD (wide / first)
+   ============================================================ */
 .case-card.featured {
   grid-column: 1 / -1;
   flex-direction: row;
@@ -282,7 +385,7 @@
 }
 .case-card.featured .case-cover,
 .case-card.featured .case-cover-placeholder {
-  width: 340px;
+  width: clamp(240px, 30%, 340px);
   height: auto;
   min-height: 280px;
   flex-shrink: 0;
@@ -299,12 +402,20 @@
   transform-origin: top;
 }
 .case-card.featured:hover::before { transform: scaleY(1); }
+.case-card.featured .case-problem {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
-/* EMPTY STATE */
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
 .cs-empty {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 80px 40px;
+  padding: clamp(48px, 10vw, 80px) 40px;
   color: var(--text-muted);
 }
 .cs-empty i {
@@ -314,20 +425,31 @@
   margin-bottom: 16px;
 }
 
-/* BOTTOM CTA STRIP */
+/* ============================================================
+   SECTION DIVIDER
+   ============================================================ */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ============================================================
+   BOTTOM CTA STRIP
+   ============================================================ */
 .cs-cta-strip {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 60px 48px;
+  padding: clamp(36px, 6vw, 60px) clamp(28px, 5vw, 52px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
+  gap: clamp(24px, 4vw, 36px);
   flex-wrap: wrap;
   position: relative;
   overflow: hidden;
-  margin-bottom: 100px;
+  margin-bottom: clamp(60px, 10vw, 100px);
 }
 .cs-cta-strip::before {
   content: '';
@@ -338,14 +460,30 @@
   background: radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 70%);
   pointer-events: none;
 }
+.cs-cta-strip::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -60px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
 
+.cs-cta-text {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 240px;
+}
 .cs-cta-text h2 {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-size: clamp(1.3rem, 3.5vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   margin-bottom: 10px;
-  line-height: 1.15;
+  line-height: 1.18;
+  color: var(--text);
 }
 .cs-cta-text h2 span {
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -355,8 +493,9 @@
 }
 .cs-cta-text p {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: clamp(0.88rem, 1.8vw, 0.95rem);
   max-width: 440px;
+  line-height: 1.65;
 }
 
 .cs-cta-actions {
@@ -364,58 +503,63 @@
   gap: 12px;
   flex-wrap: wrap;
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
 
-/* Hide cards during filter */
-.case-card-wrap.hidden {
-  display: none;
-}
-
-/* ANIMATED STATS BAR */
-.cs-stats-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  margin-bottom: 60px;
-}
-.cs-stat {
-  background: var(--bg-card);
-  padding: 30px 24px;
-  text-align: center;
+.btn-cs-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--accent), #2563EB);
+  color: #fff !important;
+  padding: 13px 26px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: clamp(0.84rem, 2vw, 0.9rem);
+  box-shadow: 0 6px 24px rgba(59,130,246,0.3);
   transition: var(--transition);
+  text-decoration: none;
+  min-height: 46px;
 }
-.cs-stat:hover { background: rgba(59,130,246,0.04); }
-.cs-stat-num {
-  font-family: var(--font-display);
-  font-size: 2.2rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-  margin-bottom: 6px;
-}
-.cs-stat-label {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.btn-cs-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(59,130,246,0.45);
 }
 
-/* SECTION DIVIDER */
-.section-divider {
-  width: 100%;
-  height: 1px;
-  background: var(--border);
-  margin: 0;
+.btn-cs-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-dim) !important;
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: clamp(0.84rem, 2vw, 0.9rem);
+  transition: var(--transition);
+  text-decoration: none;
+  min-height: 46px;
+}
+.btn-cs-ghost:hover {
+  border-color: rgba(59,130,246,0.4);
+  color: var(--accent) !important;
+  background: rgba(59,130,246,0.06);
 }
 
-/* RESPONSIVE */
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* 1024px — stats become 2×2 grid */
+@media (max-width: 1024px) {
+  .cs-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 900px — featured card stacks vertically */
 @media (max-width: 900px) {
   .case-card.featured {
     flex-direction: column;
@@ -423,62 +567,121 @@
   .case-card.featured .case-cover,
   .case-card.featured .case-cover-placeholder {
     width: 100%;
-    height: 220px;
+    height: clamp(200px, 35vw, 280px);
+    min-height: 0;
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
-  .cs-cta-strip { flex-direction: column; padding: 40px 28px; }
+  .case-card.featured .case-problem {
+    -webkit-line-clamp: 5;
+  }
+  .cs-cta-strip {
+    flex-direction: column;
+    text-align: center;
+  }
+  .cs-cta-text p { max-width: 100%; }
+  .cs-cta-actions { justify-content: center; }
 }
 
-@media (max-width: 640px) {
-  .cs-grid { grid-template-columns: 1fr; }
-  .case-card.featured { grid-column: auto; }
+/* 768px — filter bar becomes scrollable */
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 16px, black calc(100% - 16px), transparent);
+    mask-image: linear-gradient(90deg, transparent, black 16px, black calc(100% - 16px), transparent);
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-bar-outer {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
+
+/* 600px — single column grid */
+@media (max-width: 600px) {
+  .cs-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .case-card.featured {
+    grid-column: auto;
+  }
+  .cs-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .btn-cs-primary,
+  .btn-cs-ghost {
+    width: 100%;
+    justify-content: center;
+  }
+  .cs-cta-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+/* 400px — stats go 2×2 and shrink */
+@media (max-width: 400px) {
+  .cs-stat-num { font-size: 1.4rem; }
+}
+
+/* Ultra-wide */
+@media (min-width: 1400px) {
+  .cs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  }
+}
+
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- =========================================================
+<!-- ============================================================
      PAGE HERO
-     ========================================================= -->
+     ============================================================ -->
 <section class="cs-hero">
   <div class="grid-bg"></div>
   <div class="cs-hero-orb"></div>
 
   <div class="cs-hero-inner">
-    <div class="hero-status" style="margin-bottom:24px;">
+    <div class="hero-status" style="margin-bottom: clamp(16px, 3vw, 24px);">
       <span class="status-dot"></span>
       Deep Engineering Breakdowns
     </div>
 
-    <h1 class="hero-name" style="font-size:clamp(2rem,5vw,3.8rem);">
+    <h1 class="cs-hero-title">
       Case <span class="accent-text">Studies</span>
     </h1>
 
-    <p class="hero-sub" style="margin-top:18px;">
+    <p class="cs-hero-sub">
       Not just projects. Documented problems, architectural decisions, and measurable outcomes —
       so you know exactly how I think before we work together.
     </p>
   </div>
 </section>
 
-<!-- =========================================================
+<!-- ============================================================
      QUICK STATS
-     ========================================================= -->
+     ============================================================ -->
 <div class="container reveal">
   <div class="cs-stats-row">
     <div class="cs-stat">
-      <div class="cs-stat-num" data-target="{% if cases %}{{ cases|length }}{% else %}3{% endif %}">0</div>
+      <div class="cs-stat-num" data-target="{% if cases %}{{ cases|length }}{% else %}4{% endif %}" data-suffix="+">0</div>
       <div class="cs-stat-label">Case Studies</div>
     </div>
     <div class="cs-stat">
-      <div class="cs-stat-num" data-target="10">0</div>
+      <div class="cs-stat-num" data-target="10" data-suffix="+">0</div>
       <div class="cs-stat-label">Systems Built</div>
     </div>
     <div class="cs-stat">
-      <div class="cs-stat-num" data-target="6">0</div>
-      <div class="cs-stat-label">Tech Stacks Covered</div>
+      <div class="cs-stat-num" data-target="6" data-suffix="+">0</div>
+      <div class="cs-stat-label">Tech Stacks</div>
     </div>
     <div class="cs-stat">
       <div class="cs-stat-num" data-target="100" data-suffix="%">0</div>
@@ -487,42 +690,46 @@
   </div>
 </div>
 
-<!-- =========================================================
+<!-- ============================================================
      FILTER BAR
-     ========================================================= -->
+     ============================================================ -->
 <div class="container">
-  <div class="filter-bar" id="filterBar">
-    <button class="filter-btn active" data-filter="all">All Projects</button>
-    <button class="filter-btn" data-filter="django">Django</button>
-    <button class="filter-btn" data-filter="ai">AI / LLM</button>
-    <button class="filter-btn" data-filter="automation">Automation</button>
-    <button class="filter-btn" data-filter="saas">SaaS</button>
-    <button class="filter-btn" data-filter="api">REST APIs</button>
+  <div class="filter-bar-outer">
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" data-filter="all">All Projects</button>
+      <button class="filter-btn" data-filter="django">Django</button>
+      <button class="filter-btn" data-filter="ai">AI / LLM</button>
+      <button class="filter-btn" data-filter="automation">Automation</button>
+      <button class="filter-btn" data-filter="saas">SaaS</button>
+      <button class="filter-btn" data-filter="api">REST APIs</button>
+    </div>
   </div>
 </div>
 
-<!-- =========================================================
+<!-- ============================================================
      CASE STUDIES GRID
-     ========================================================= -->
+     ============================================================ -->
 <div class="container">
   <div class="cs-grid" id="csGrid">
 
     {% for case in cases %}
     <div class="case-card-wrap reveal {% if forloop.first %}featured-wrap{% endif %}"
-         data-tags="{{ case.tags_list|join:','|lower }}">
+         data-tags="{{ case.tags_list|join:','|lower }}"
+         style="transition-delay: {{ forloop.counter0 }}00ms">
 
-      <article class="case-card {% if forloop.first %}featured{% endif %}">
+      <article class="case-card {% if forloop.first %}featured{% endif %}"
+               role="article"
+               aria-label="{{ case.title }}">
 
         {% if case.cover_image %}
-          <img src="{{ case.cover_image.url }}" alt="{{ case.title }}" class="case-cover">
+          <img src="{{ case.cover_image.url }}" alt="{{ case.title }}" class="case-cover" loading="lazy">
         {% else %}
-          <div class="case-cover-placeholder">
+          <div class="case-cover-placeholder" aria-hidden="true">
             <i class="bi bi-layers"></i>
           </div>
         {% endif %}
 
         <div class="case-body">
-
           <div class="case-eyebrow">
             <span class="case-number-badge">Case {{ forloop.counter|stringformat:"02d" }}</span>
             {% if case.project %}
@@ -531,7 +738,6 @@
           </div>
 
           <h2 class="case-title">{{ case.title }}</h2>
-
           <p class="case-problem">{{ case.problem|truncatewords:32 }}</p>
 
           {% if case.outcome_metric %}
@@ -555,19 +761,16 @@
               <i class="bi bi-lightning-charge-fill"></i> Build Similar
             </a>
           </div>
-
         </div>
       </article>
     </div>
 
     {% empty %}
 
-    <!-- ===================== FALLBACK PLACEHOLDERS ===================== -->
-
-    <!-- FEATURED (first) -->
+    <!-- ── Fallback placeholder cards ── -->
     <div class="case-card-wrap reveal" data-tags="django,saas,api">
       <article class="case-card featured">
-        <div class="case-cover-placeholder"><i class="bi bi-play-circle"></i></div>
+        <div class="case-cover-placeholder" aria-hidden="true"><i class="bi bi-play-circle"></i></div>
         <div class="case-body">
           <div class="case-eyebrow">
             <span class="case-number-badge">Case 01</span>
@@ -582,7 +785,7 @@
           </p>
           <div class="case-metric">
             <i class="bi bi-graph-up-arrow"></i>
-            Reward fraud rate reduced to &lt; 0.3% via server-side session verification
+            Reward fraud rate reduced to &lt;0.3% via server-side session verification
           </div>
           <div class="case-tags">
             <span class="case-tag">Django</span>
@@ -592,20 +795,16 @@
             <span class="case-tag">SaaS</span>
           </div>
           <div class="case-footer">
-            <a href="{% url 'case_studies' %}" class="case-read-link">
-              Full Breakdown <i class="bi bi-arrow-right"></i>
-            </a>
-            <a href="/freelance/?service=Video+Platform" class="case-hire-link">
-              <i class="bi bi-lightning-charge-fill"></i> Build Similar
-            </a>
+            <a href="{% url 'case_studies' %}" class="case-read-link">Full Breakdown <i class="bi bi-arrow-right"></i></a>
+            <a href="/freelance/?service=Video+Platform" class="case-hire-link"><i class="bi bi-lightning-charge-fill"></i> Build Similar</a>
           </div>
         </div>
       </article>
     </div>
 
-    <div class="case-card-wrap reveal" data-tags="django,saas,automation" style="transition-delay:0.1s">
+    <div class="case-card-wrap reveal" data-tags="django,saas,automation" style="transition-delay:.1s">
       <article class="case-card">
-        <div class="case-cover-placeholder"><i class="bi bi-check2-square"></i></div>
+        <div class="case-cover-placeholder" aria-hidden="true"><i class="bi bi-check2-square"></i></div>
         <div class="case-body">
           <div class="case-eyebrow">
             <span class="case-number-badge">Case 02</span>
@@ -628,26 +827,22 @@
             <span class="case-tag">PostgreSQL</span>
           </div>
           <div class="case-footer">
-            <a href="{% url 'case_studies' %}" class="case-read-link">
-              Full Breakdown <i class="bi bi-arrow-right"></i>
-            </a>
-            <a href="/freelance/?service=Productivity+SaaS" class="case-hire-link">
-              <i class="bi bi-lightning-charge-fill"></i> Build Similar
-            </a>
+            <a href="{% url 'case_studies' %}" class="case-read-link">Full Breakdown <i class="bi bi-arrow-right"></i></a>
+            <a href="/freelance/?service=Productivity+SaaS" class="case-hire-link"><i class="bi bi-lightning-charge-fill"></i> Build Similar</a>
           </div>
         </div>
       </article>
     </div>
 
-    <div class="case-card-wrap reveal" data-tags="ai,automation,api" style="transition-delay:0.2s">
+    <div class="case-card-wrap reveal" data-tags="ai,automation,api" style="transition-delay:.2s">
       <article class="case-card">
-        <div class="case-cover-placeholder"><i class="bi bi-robot"></i></div>
+        <div class="case-cover-placeholder" aria-hidden="true"><i class="bi bi-robot"></i></div>
         <div class="case-body">
           <div class="case-eyebrow">
             <span class="case-number-badge">Case 03</span>
             <span class="case-project-badge">AI System</span>
           </div>
-          <h2 class="case-title">Self-Hosted AI Chatbot with Voice & Document I/O</h2>
+          <h2 class="case-title">Self-Hosted AI Chatbot with Voice &amp; Document I/O</h2>
           <p class="case-problem">
             Designing a fully self-hosted AI assistant with multimodal input —
             PDF and image understanding, voice input/output, persistent chat history,
@@ -655,7 +850,7 @@
           </p>
           <div class="case-metric">
             <i class="bi bi-graph-up-arrow"></i>
-            Full multimodal pipeline with &lt; 2s first-token latency on consumer hardware
+            Full multimodal pipeline with &lt;2s first-token latency on consumer hardware
           </div>
           <div class="case-tags">
             <span class="case-tag">AI</span>
@@ -664,20 +859,16 @@
             <span class="case-tag">REST API</span>
           </div>
           <div class="case-footer">
-            <a href="{% url 'case_studies' %}" class="case-read-link">
-              Full Breakdown <i class="bi bi-arrow-right"></i>
-            </a>
-            <a href="/freelance/?service=AI+Chatbot" class="case-hire-link">
-              <i class="bi bi-lightning-charge-fill"></i> Build Similar
-            </a>
+            <a href="{% url 'case_studies' %}" class="case-read-link">Full Breakdown <i class="bi bi-arrow-right"></i></a>
+            <a href="/freelance/?service=AI+Chatbot" class="case-hire-link"><i class="bi bi-lightning-charge-fill"></i> Build Similar</a>
           </div>
         </div>
       </article>
     </div>
 
-    <div class="case-card-wrap reveal" data-tags="automation,api,django" style="transition-delay:0.3s">
+    <div class="case-card-wrap reveal" data-tags="automation,api,django" style="transition-delay:.3s">
       <article class="case-card">
-        <div class="case-cover-placeholder"><i class="bi bi-currency-bitcoin"></i></div>
+        <div class="case-cover-placeholder" aria-hidden="true"><i class="bi bi-currency-bitcoin"></i></div>
         <div class="case-body">
           <div class="case-eyebrow">
             <span class="case-number-badge">Case 04</span>
@@ -700,12 +891,8 @@
             <span class="case-tag">Django</span>
           </div>
           <div class="case-footer">
-            <a href="{% url 'case_studies' %}" class="case-read-link">
-              Full Breakdown <i class="bi bi-arrow-right"></i>
-            </a>
-            <a href="/freelance/?service=Trading+Bot" class="case-hire-link">
-              <i class="bi bi-lightning-charge-fill"></i> Build Similar
-            </a>
+            <a href="{% url 'case_studies' %}" class="case-read-link">Full Breakdown <i class="bi bi-arrow-right"></i></a>
+            <a href="/freelance/?service=Trading+Bot" class="case-hire-link"><i class="bi bi-lightning-charge-fill"></i> Build Similar</a>
           </div>
         </div>
       </article>
@@ -716,11 +903,16 @@
   </div><!-- /cs-grid -->
 </div>
 
-<div class="section-divider" style="margin-bottom:80px;"></div>
+<!-- ============================================================
+     SECTION DIVIDER
+     ============================================================ -->
+<div class="container">
+  <div class="section-divider" style="margin-bottom: clamp(40px, 7vw, 80px);"></div>
+</div>
 
-<!-- =========================================================
+<!-- ============================================================
      BOTTOM CTA STRIP
-     ========================================================= -->
+     ============================================================ -->
 <div class="container">
   <div class="cs-cta-strip reveal">
     <div class="cs-cta-text">
@@ -731,11 +923,11 @@
       </p>
     </div>
     <div class="cs-cta-actions">
-      <a href="/freelance/" class="btn-primary-custom">
+      <a href="/freelance/" class="btn-cs-primary">
         <i class="bi bi-lightning-charge-fill"></i>
         Discuss My Project
       </a>
-      <a href="{% url 'projects' %}" class="btn-ghost" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text-dim);padding:12px 24px;border-radius:50px;border:1px solid var(--border);font-weight:600;font-size:0.9rem;transition:var(--transition);text-decoration:none;">
+      <a href="{% url 'projects' %}" class="btn-cs-ghost">
         <i class="bi bi-grid-3x3-gap"></i> Browse All Projects
       </a>
     </div>
@@ -747,9 +939,11 @@
 {% block extra_js %}
 <script>
 /* ============================================================
-   REAL-TIME FILTER BY TECH TAG
+   TAG FILTER
    ============================================================ */
 (function () {
+  'use strict';
+
   const filterBar = document.getElementById('filterBar');
   const wraps     = document.querySelectorAll('.case-card-wrap');
 
@@ -769,7 +963,7 @@
         wrap.classList.remove('hidden');
         return;
       }
-      const tags = (wrap.dataset.tags || '').split(',').map(t => t.trim());
+      const tags = (wrap.dataset.tags || '').split(',').map(t => t.trim().toLowerCase());
       wrap.classList.toggle('hidden', !tags.includes(filter));
     });
   });
@@ -778,55 +972,52 @@
 /* ============================================================
    ANIMATED COUNTERS (scroll-triggered)
    ============================================================ */
-function animateCounter(el) {
-  const target   = parseInt(el.dataset.target);
-  const suffix   = el.dataset.suffix || '+';
-  const duration = 1400;
-  const step     = target / (duration / 16);
-  let current    = 0;
+(function () {
+  function animateCounter(el) {
+    const target   = parseInt(el.dataset.target, 10);
+    const suffix   = el.dataset.suffix || '+';
+    const duration = 1400;
+    const fps      = 60;
+    const steps    = duration / (1000 / fps);
+    const inc      = target / steps;
+    let current    = 0;
 
-  const timer = setInterval(() => {
-    current += step;
-    if (current >= target) {
-      current = target;
-      clearInterval(timer);
-    }
-    el.textContent = Math.floor(current) + suffix;
-  }, 16);
-}
+    const timer = setInterval(() => {
+      current += inc;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      el.textContent = Math.floor(current) + suffix;
+    }, 1000 / fps);
+  }
 
-const counterObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.querySelectorAll('.cs-stat-num[data-target]').forEach(animateCounter);
-      counterObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.3 });
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.cs-stat-num[data-target]').forEach(animateCounter);
+        counterObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
 
-document.querySelectorAll('.cs-stats-row').forEach(el => counterObserver.observe(el));
+  document.querySelectorAll('.cs-stats-row').forEach(el => counterObs.observe(el));
+})();
 
 /* ============================================================
    SCROLL REVEAL
    ============================================================ */
-const revealObs = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObs.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1 });
+(function () {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
 
-document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
-/* ============================================================
-   STAGGER CARD DELAYS
-   ============================================================ */
-document.querySelectorAll('.case-card-wrap.reveal').forEach((el, i) => {
-  if (!el.style.transitionDelay) {
-    el.style.transitionDelay = (i * 0.09) + 's';
-  }
-});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
 </script>
 {% endblock %}

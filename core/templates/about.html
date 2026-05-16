@@ -9,22 +9,37 @@
 {% block extra_head %}
 <style>
   /* ============================================================
-     PAGE HERO
+     ABOUT PAGE — DESIGN TOKENS (page-scoped)
+     ============================================================ */
+
+  /* ============================================================
+     HERO SECTION
      ============================================================ */
   .about-hero {
     position: relative;
-    padding: 90px 0 70px;
+    padding: clamp(60px, 9vw, 100px) 0 clamp(48px, 7vw, 80px);
     overflow: hidden;
   }
 
+  /* Atmospheric orbs — decorative only */
   .about-hero-orb {
     position: absolute;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%);
-    top: -100px;
-    right: -100px;
     pointer-events: none;
+    border-radius: 50%;
+  }
+  .about-hero-orb-1 {
+    width: clamp(300px, 45vw, 600px);
+    height: clamp(300px, 45vw, 600px);
+    background: radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 70%);
+    top: -120px;
+    right: -120px;
+  }
+  .about-hero-orb-2 {
+    width: clamp(200px, 30vw, 400px);
+    height: clamp(200px, 30vw, 400px);
+    background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+    bottom: -80px;
+    left: -80px;
   }
 
   /* ============================================================
@@ -32,26 +47,29 @@
      ============================================================ */
   .profile-block {
     display: grid;
-    grid-template-columns: 260px 1fr;
-    gap: 60px;
+    grid-template-columns: clamp(180px, 22vw, 260px) 1fr;
+    gap: clamp(32px, 6vw, 70px);
     align-items: center;
   }
 
+  /* ---- Tablet: stack vertically ---- */
   @media (max-width: 768px) {
     .profile-block {
       grid-template-columns: 1fr;
-      gap: 36px;
+      gap: 32px;
       text-align: center;
     }
     .profile-image-wrap { margin: 0 auto; }
-    .about-meta { justify-content: center; }
-    .about-actions { justify-content: center; }
+    .about-meta          { justify-content: center; }
+    .about-actions       { justify-content: center; }
+    .about-eyebrow::before { display: none; }
   }
 
+  /* Profile image */
   .profile-image-wrap {
     position: relative;
-    width: 220px;
-    height: 220px;
+    width: clamp(160px, 22vw, 230px);
+    height: clamp(160px, 22vw, 230px);
     flex-shrink: 0;
   }
 
@@ -72,49 +90,57 @@
     object-fit: cover;
     border-radius: 50%;
     border: 4px solid var(--bg);
+    display: block;
   }
 
-  /* Status badge on image */
+  /* Status badge */
   .profile-status {
     position: absolute;
-    bottom: 10px;
-    right: 0;
+    bottom: 8px;
+    right: -4px;
     background: var(--bg-card);
-    border: 1px solid rgba(16,185,129,0.4);
+    border: 1px solid rgba(16,185,129,0.35);
     color: var(--green);
     padding: 5px 12px;
     border-radius: 50px;
-    font-size: 0.72rem;
+    font-size: 0.70rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.07em;
     z-index: 2;
     display: flex;
     align-items: center;
     gap: 5px;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
   }
 
-  /* FIX: Renamed from profile-status-dot + pulse-dot to avoid collision
-     with base.html's @keyframes pulse-dot used on .nav-avail-dot */
+  [data-theme="light"] .profile-status {
+    background: #fff;
+    border-color: rgba(16,185,129,0.4);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  }
+
   .profile-status-dot {
     width: 6px;
     height: 6px;
+    min-width: 6px;
     background: var(--green);
     border-radius: 50%;
-    animation: profile-pulse 2s infinite;
+    animation: profile-pulse 2.2s infinite;
   }
   @keyframes profile-pulse {
-    0%,100%{ box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
-    50%{ box-shadow: 0 0 0 4px rgba(16,185,129,0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+    50%       { box-shadow: 0 0 0 4px rgba(16,185,129,0); }
   }
 
-  /* Text side */
+  /* ---- Text side ---- */
   .about-eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.72rem;
+    font-size: 0.70rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--accent);
     margin-bottom: 14px;
@@ -124,15 +150,17 @@
     width: 20px;
     height: 1px;
     background: var(--accent);
+    flex-shrink: 0;
   }
 
   .about-name {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-size: clamp(2rem, 5vw, 3.4rem);
     font-weight: 800;
     letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: 8px;
+    line-height: 1.08;
+    margin-bottom: 14px;
+    color: var(--text);
   }
   .about-name span {
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -142,55 +170,78 @@
   }
 
   .about-title-tag {
-    display: inline-block;
-    background: rgba(59,130,246,0.1);
-    border: 1px solid rgba(59,130,246,0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(59,130,246,0.10);
+    border: 1px solid rgba(59,130,246,0.22);
     color: var(--accent);
-    padding: 4px 14px;
+    padding: 5px 14px;
     border-radius: 50px;
-    font-size: 0.8rem;
+    font-size: 0.80rem;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
+  }
+
+  [data-theme="light"] .about-title-tag {
+    background: rgba(59,130,246,0.08);
+    border-color: rgba(59,130,246,0.25);
   }
 
   .about-intro {
-    font-size: 1.05rem;
+    font-size: clamp(0.95rem, 1.6vw, 1.05rem);
     color: var(--text-dim);
-    line-height: 1.75;
-    margin-bottom: 14px;
+    line-height: 1.78;
+    margin-bottom: 12px;
+  }
+
+  [data-theme="light"] .about-intro {
+    color: var(--text-dim);
   }
 
   .about-desc {
-    font-size: 0.9rem;
+    font-size: clamp(0.85rem, 1.3vw, 0.925rem);
     color: var(--text-muted);
-    line-height: 1.75;
+    line-height: 1.78;
     margin-bottom: 28px;
   }
 
-  /* Meta info row */
+  [data-theme="light"] .about-desc {
+    color: var(--text-dim);
+  }
+
+  /* Meta row */
   .about-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 16px;
     margin-bottom: 28px;
   }
+
   .about-meta-item {
     display: flex;
     align-items: center;
     gap: 7px;
-    font-size: 0.83rem;
+    font-size: 0.82rem;
     color: var(--text-muted);
+    min-height: 28px;
   }
   .about-meta-item i {
     color: var(--accent);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    flex-shrink: 0;
+  }
+
+  [data-theme="light"] .about-meta-item {
+    color: var(--text-dim);
   }
 
   /* Action buttons */
   .about-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
+    align-items: center;
   }
 
   .btn-outline-custom {
@@ -199,19 +250,39 @@
     gap: 7px;
     background: transparent;
     color: var(--text-dim);
-    padding: 11px 22px;
+    padding: 10px 20px;
     border-radius: 50px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-strong);
     font-weight: 600;
-    font-size: 0.875rem;
-    transition: var(--transition);
+    font-size: clamp(0.82rem, 1.3vw, 0.875rem);
+    transition: border-color var(--transition), color var(--transition), background-color var(--transition);
     cursor: pointer;
     font-family: var(--font-body);
+    white-space: nowrap;
+    text-decoration: none;
+    min-height: 44px;
   }
   .btn-outline-custom:hover {
     border-color: var(--accent);
     color: var(--accent);
-    background: rgba(59,130,246,0.06);
+    background: rgba(59,130,246,0.07);
+  }
+
+  [data-theme="light"] .btn-outline-custom {
+    color: var(--text-dim);
+    border-color: var(--border-hover);
+  }
+
+  /* Small screen: stretch buttons */
+  @media (max-width: 480px) {
+    .about-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .about-actions a {
+      justify-content: center;
+      width: 100%;
+    }
   }
 
   /* ============================================================
@@ -225,24 +296,35 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    margin: 60px 0;
+    margin: clamp(40px, 6vw, 70px) 0 0;
   }
 
   @media (max-width: 640px) {
     .about-stats { grid-template-columns: repeat(2, 1fr); }
   }
 
+  @media (max-width: 360px) {
+    .about-stats { grid-template-columns: 1fr; }
+  }
+
   .about-stat {
     background: var(--bg-card);
-    padding: 30px 20px;
+    padding: clamp(20px, 3vw, 32px) clamp(12px, 2vw, 24px);
     text-align: center;
-    transition: var(--transition);
+    transition: background-color var(--transition);
   }
-  .about-stat:hover { background: rgba(59,130,246,0.05); }
+  .about-stat:hover { background: rgba(59,130,246,0.04); }
+
+  [data-theme="light"] .about-stat {
+    background: #fff;
+  }
+  [data-theme="light"] .about-stat:hover {
+    background: rgba(59,130,246,0.04);
+  }
 
   .about-stat-num {
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
     font-weight: 800;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     -webkit-background-clip: text;
@@ -253,17 +335,21 @@
   }
 
   .about-stat-label {
-    font-size: 0.75rem;
+    font-size: clamp(0.68rem, 1.1vw, 0.75rem);
     color: var(--text-muted);
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
+  [data-theme="light"] .about-stat-label {
+    color: var(--text-dim);
+  }
+
   /* ============================================================
-     SECTION COMMONS (within about page)
+     SECTION COMMONS
      ============================================================ */
   .about-section {
-    padding: 80px 0;
+    padding: clamp(56px, 8vw, 90px) 0;
     position: relative;
   }
 
@@ -276,9 +362,9 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.72rem;
+    font-size: 0.70rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--accent);
     margin-bottom: 12px;
@@ -288,22 +374,39 @@
     width: 20px;
     height: 1px;
     background: var(--accent);
+    flex-shrink: 0;
   }
 
   .section-heading {
     font-family: var(--font-display);
-    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-size: clamp(1.5rem, 3.5vw, 2.3rem);
     font-weight: 800;
     letter-spacing: -0.02em;
     margin-bottom: 8px;
+    color: var(--text);
   }
 
   .section-subheading {
     color: var(--text-muted);
-    font-size: 0.95rem;
-    max-width: 480px;
-    margin-bottom: 48px;
+    font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+    max-width: 500px;
+    margin-bottom: clamp(32px, 5vw, 52px);
+    line-height: 1.75;
   }
+
+  [data-theme="light"] .section-subheading {
+    color: var(--text-dim);
+  }
+
+  /* Centre-aligned section header variant */
+  .section-header-center {
+    text-align: center;
+    max-width: 580px;
+    margin: 0 auto clamp(32px, 5vw, 52px);
+  }
+  .section-header-center .section-eyebrow { justify-content: center; }
+  .section-header-center .section-eyebrow::before { display: none; }
+  .section-header-center .section-subheading { margin: 0 auto; }
 
   /* ============================================================
      EDUCATION TIMELINE
@@ -315,7 +418,7 @@
     gap: 0;
   }
 
-  /* Vertical line */
+  /* Vertical connector line */
   .edu-timeline::before {
     content: '';
     position: absolute;
@@ -324,21 +427,35 @@
     bottom: 24px;
     width: 1px;
     background: linear-gradient(to bottom, var(--accent), transparent);
+    z-index: 0;
+  }
+
+  @media (max-width: 480px) {
+    /* On very small screens collapse the side-column layout */
+    .edu-timeline::before { display: none; }
   }
 
   .edu-item {
     display: grid;
     grid-template-columns: 40px 1fr;
-    gap: 20px;
-    padding-bottom: 36px;
+    gap: clamp(14px, 2.5vw, 24px);
+    padding-bottom: clamp(24px, 4vw, 40px);
     align-items: start;
   }
   .edu-item:last-child { padding-bottom: 0; }
 
+  @media (max-width: 480px) {
+    .edu-item {
+      grid-template-columns: 1fr;
+    }
+    .edu-dot { display: none; }
+  }
+
   .edu-dot {
     width: 40px;
     height: 40px;
-    background: rgba(59,130,246,0.1);
+    min-width: 40px;
+    background: rgba(59,130,246,0.10);
     border: 2px solid var(--accent);
     border-radius: 50%;
     display: flex;
@@ -349,7 +466,7 @@
     flex-shrink: 0;
     position: relative;
     z-index: 1;
-    transition: var(--transition);
+    transition: background-color var(--transition), color var(--transition);
   }
   .edu-item:hover .edu-dot {
     background: var(--accent);
@@ -360,8 +477,8 @@
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 24px 28px;
-    transition: var(--transition);
+    padding: clamp(18px, 3vw, 28px) clamp(18px, 3vw, 30px);
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
     position: relative;
     overflow: hidden;
   }
@@ -373,48 +490,67 @@
     background: linear-gradient(to bottom, var(--accent), var(--accent-2));
     transform: scaleY(0);
     transform-origin: top;
-    transition: var(--transition);
+    transition: transform var(--transition);
   }
   .edu-item:hover .edu-card {
-    border-color: rgba(59,130,246,0.25);
+    border-color: rgba(59,130,246,0.28);
     transform: translateX(4px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   }
   .edu-item:hover .edu-card::after { transform: scaleY(1); }
 
+  [data-theme="light"] .edu-card {
+    background: #fff;
+    border-color: var(--border);
+  }
+  [data-theme="light"] .edu-item:hover .edu-card {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.09);
+  }
+
   .edu-degree {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
     font-weight: 700;
     color: var(--text);
     margin-bottom: 4px;
   }
 
   .edu-place {
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     color: var(--accent-2);
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-wrap: wrap;
   }
 
   .edu-year {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 0.72rem;
+    font-size: 0.70rem;
     color: var(--text-muted);
     background: var(--bg-glass);
     border: 1px solid var(--border);
     padding: 3px 10px;
     border-radius: 50px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  [data-theme="light"] .edu-year {
+    background: var(--bg-elevated);
+    color: var(--text-dim);
   }
 
   .edu-desc {
     font-size: 0.84rem;
     color: var(--text-muted);
-    line-height: 1.65;
+    line-height: 1.68;
+  }
+
+  [data-theme="light"] .edu-desc {
+    color: var(--text-dim);
   }
 
   /* ============================================================
@@ -422,16 +558,16 @@
      ============================================================ */
   .exp-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: clamp(14px, 2.5vw, 22px);
   }
 
   .exp-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 28px;
-    transition: var(--transition);
+    padding: clamp(20px, 3vw, 30px);
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
     position: relative;
     overflow: hidden;
   }
@@ -443,37 +579,49 @@
     background: linear-gradient(90deg, var(--accent), var(--accent-3));
     transform: scaleX(0);
     transform-origin: left;
-    transition: var(--transition);
+    transition: transform var(--transition);
   }
   .exp-card:hover {
-    border-color: rgba(59,130,246,0.25);
+    border-color: rgba(59,130,246,0.28);
     transform: translateY(-3px);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.22);
   }
   .exp-card:hover::before { transform: scaleX(1); }
 
+  [data-theme="light"] .exp-card {
+    background: #fff;
+  }
+  [data-theme="light"] .exp-card:hover {
+    box-shadow: 0 12px 36px rgba(0,0,0,0.10);
+  }
+
   .exp-role {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
     font-weight: 700;
     color: var(--text);
     margin-bottom: 4px;
   }
 
   .exp-company {
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     color: var(--accent);
     font-weight: 600;
     margin-bottom: 8px;
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  [data-theme="light"] .exp-company {
+    color: var(--accent-dark);
   }
 
   .exp-year {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 0.72rem;
+    font-size: 0.70rem;
     color: var(--text-muted);
     background: var(--bg-glass);
     border: 1px solid var(--border);
@@ -482,10 +630,19 @@
     margin-bottom: 14px;
   }
 
+  [data-theme="light"] .exp-year {
+    background: var(--bg-elevated);
+    color: var(--text-dim);
+  }
+
   .exp-desc {
     font-size: 0.84rem;
     color: var(--text-muted);
-    line-height: 1.65;
+    line-height: 1.68;
+  }
+
+  [data-theme="light"] .exp-desc {
+    color: var(--text-dim);
   }
 
   /* ============================================================
@@ -493,17 +650,17 @@
      ============================================================ */
   .values-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+    gap: clamp(14px, 2.5vw, 22px);
   }
 
   .value-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 32px 24px;
+    padding: clamp(24px, 3.5vw, 36px) clamp(18px, 2.5vw, 26px);
     text-align: center;
-    transition: var(--transition);
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
     position: relative;
     overflow: hidden;
   }
@@ -513,91 +670,116 @@
     inset: 0;
     background: linear-gradient(135deg, rgba(59,130,246,0.04), transparent);
     opacity: 0;
-    transition: var(--transition);
+    transition: opacity var(--transition);
+    pointer-events: none;
   }
   .value-card:hover {
     border-color: rgba(59,130,246,0.25);
     transform: translateY(-4px);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.20);
   }
   .value-card:hover::after { opacity: 1; }
 
+  [data-theme="light"] .value-card {
+    background: #fff;
+  }
+  [data-theme="light"] .value-card:hover {
+    box-shadow: 0 12px 36px rgba(0,0,0,0.09);
+  }
+
   .value-icon {
-    width: 56px;
-    height: 56px;
+    width: clamp(48px, 6vw, 60px);
+    height: clamp(48px, 6vw, 60px);
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
-    margin: 0 auto 18px;
-    transition: var(--transition);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    margin: 0 auto clamp(14px, 2vw, 20px);
+    transition: transform var(--transition);
   }
-  .value-card:hover .value-icon { transform: scale(1.08); }
+  .value-card:hover .value-icon { transform: scale(1.10); }
 
   .value-title {
-    font-size: 0.95rem;
+    font-size: clamp(0.88rem, 1.4vw, 0.96rem);
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     color: var(--text);
   }
 
   .value-desc {
-    font-size: 0.82rem;
+    font-size: clamp(0.79rem, 1.2vw, 0.83rem);
     color: var(--text-muted);
-    line-height: 1.65;
+    line-height: 1.68;
+  }
+
+  [data-theme="light"] .value-desc {
+    color: var(--text-dim);
   }
 
   /* ============================================================
-     TESTIMONIALS STRIP (inline on about)
+     TESTIMONIALS
      ============================================================ */
   .testimonials-strip {
-    padding: 80px 0;
+    padding: clamp(56px, 8vw, 90px) 0;
   }
 
   .testi-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    margin-top: 48px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(14px, 2.5vw, 22px);
+    margin-top: clamp(32px, 5vw, 52px);
   }
 
   .testi-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 28px;
-    transition: var(--transition);
+    padding: clamp(20px, 3vw, 30px);
+    transition: border-color var(--transition), transform var(--transition);
     position: relative;
   }
   .testi-card::before {
     content: '\201C';
     position: absolute;
-    top: 16px;
-    right: 24px;
-    font-size: 4rem;
+    top: 14px;
+    right: 22px;
+    font-size: 3.5rem;
     line-height: 1;
     color: rgba(59,130,246,0.12);
     font-family: Georgia, serif;
+    pointer-events: none;
   }
   .testi-card:hover {
-    border-color: rgba(59,130,246,0.2);
+    border-color: rgba(59,130,246,0.22);
     transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.16);
+  }
+
+  [data-theme="light"] .testi-card {
+    background: #fff;
+  }
+  [data-theme="light"] .testi-card:hover {
+    box-shadow: 0 12px 36px rgba(0,0,0,0.09);
   }
 
   .testi-stars {
     color: #FCD34D;
     font-size: 0.8rem;
     margin-bottom: 14px;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
   }
 
   .testi-text {
-    font-size: 0.875rem;
+    font-size: clamp(0.83rem, 1.3vw, 0.875rem);
     color: var(--text-dim);
-    line-height: 1.75;
+    line-height: 1.78;
     margin-bottom: 20px;
     font-style: italic;
+  }
+
+  [data-theme="light"] .testi-text {
+    color: var(--text-dim);
   }
 
   .testi-author {
@@ -605,12 +787,14 @@
     align-items: center;
     gap: 12px;
   }
+
   .testi-avatar {
     width: 40px;
     height: 40px;
+    min-width: 40px;
     border-radius: 50%;
     object-fit: cover;
-    background: rgba(59,130,246,0.15);
+    background: rgba(59,130,246,0.12);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -619,45 +803,63 @@
     flex-shrink: 0;
     overflow: hidden;
   }
+
   .testi-name {
     font-size: 0.875rem;
     font-weight: 700;
     color: var(--text);
   }
+
   .testi-position {
     font-size: 0.75rem;
     color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  [data-theme="light"] .testi-position {
+    color: var(--text-dim);
   }
 
   /* ============================================================
-     BOTTOM CTA
+     BOTTOM CTA BLOCK
      ============================================================ */
+  .about-cta-wrap {
+    padding: 0 0 clamp(56px, 8vw, 96px);
+  }
+
   .about-cta {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 60px 48px;
+    padding: clamp(40px, 6vw, 70px) clamp(24px, 5vw, 56px);
     text-align: center;
     position: relative;
     overflow: hidden;
-    margin-bottom: 80px;
   }
+  /* Glow behind CTA */
   .about-cta::before {
     content: '';
     position: absolute;
-    top: -80px; left: 50%;
+    top: -80px;
+    left: 50%;
     transform: translateX(-50%);
-    width: 500px; height: 200px;
-    background: radial-gradient(ellipse, rgba(59,130,246,0.1) 0%, transparent 70%);
+    width: clamp(300px, 50vw, 600px);
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(59,130,246,0.09) 0%, transparent 70%);
     pointer-events: none;
+  }
+
+  [data-theme="light"] .about-cta {
+    background: #fff;
   }
 
   .about-cta-title {
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-size: clamp(1.5rem, 3.5vw, 2.3rem);
     font-weight: 800;
     letter-spacing: -0.02em;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+    color: var(--text);
   }
   .about-cta-title span {
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -668,9 +870,14 @@
 
   .about-cta-sub {
     color: var(--text-muted);
-    font-size: 0.95rem;
-    max-width: 440px;
+    font-size: clamp(0.88rem, 1.5vw, 0.975rem);
+    max-width: 460px;
     margin: 0 auto 32px;
+    line-height: 1.75;
+  }
+
+  [data-theme="light"] .about-cta-sub {
+    color: var(--text-dim);
   }
 
   .about-cta-btns {
@@ -680,9 +887,111 @@
     flex-wrap: wrap;
   }
 
+  /* Availability note chip */
+  .cta-avail-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 20px;
+  }
+  .cta-avail-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: profile-pulse 2.2s infinite;
+    flex-shrink: 0;
+  }
+
+  [data-theme="light"] .cta-avail-note {
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 480px) {
+    .about-cta-btns {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .about-cta-btns a {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+
+  /* ============================================================
+     OPEN TO COLLABORATION BANNER
+     ============================================================ */
+  .collab-banner {
+    background: linear-gradient(135deg,
+      rgba(59,130,246,0.07) 0%,
+      rgba(6,182,212,0.05) 50%,
+      rgba(139,92,246,0.05) 100%
+    );
+    border: 1px solid rgba(59,130,246,0.16);
+    border-radius: var(--radius);
+    padding: clamp(24px, 4vw, 36px) clamp(20px, 4vw, 40px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: clamp(40px, 6vw, 64px);
+  }
+
+  [data-theme="light"] .collab-banner {
+    background: rgba(59,130,246,0.05);
+    border-color: rgba(59,130,246,0.18);
+  }
+
+  .collab-banner-text h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .collab-banner-text p {
+    font-size: clamp(0.82rem, 1.3vw, 0.88rem);
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  [data-theme="light"] .collab-banner-text p {
+    color: var(--text-dim);
+  }
+
+  .collab-banner-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .collab-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    background: var(--bg-glass-2);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: 0.70rem;
+    font-weight: 600;
+    color: var(--text-dim);
+  }
+
+  [data-theme="light"] .collab-tag {
+    background: var(--bg-elevated);
+    color: var(--text-dim);
+  }
+
   @media (max-width: 576px) {
-    .about-cta { padding: 40px 24px; }
-    .about-cta-btns { flex-direction: column; align-items: center; }
+    .collab-banner { flex-direction: column; }
+    .collab-banner > a { width: 100%; justify-content: center; }
   }
 </style>
 {% endblock %}
@@ -693,7 +1002,9 @@
      PAGE HERO — PROFILE
      ============================================================ -->
 <section class="about-hero">
-  <div class="about-hero-orb"></div>
+  <div class="about-hero-orb about-hero-orb-1" aria-hidden="true"></div>
+  <div class="about-hero-orb about-hero-orb-2" aria-hidden="true"></div>
+
   <div class="container">
 
     <div class="profile-block reveal">
@@ -701,14 +1012,14 @@
       <!-- Profile image -->
       <div class="profile-image-wrap">
         {% if about.profile_image %}
-          <img src="{{ about.profile_image.url }}" alt="Muhammad Ahmad">
+          <img src="{{ about.profile_image.url }}" alt="Muhammad Ahmad — Full Stack Developer" loading="eager">
         {% elif basic_info.hero_image %}
-          <img src="{{ basic_info.hero_image.url }}" alt="Muhammad Ahmad">
+          <img src="{{ basic_info.hero_image.url }}" alt="Muhammad Ahmad — Full Stack Developer" loading="eager">
         {% else %}
-          <img src="{% static 'image.jpeg' %}" alt="Muhammad Ahmad">
+          <img src="{% static 'image.jpeg' %}" alt="Muhammad Ahmad — Full Stack Developer" loading="eager">
         {% endif %}
-        <div class="profile-status">
-          <span class="profile-status-dot"></span>
+        <div class="profile-status" aria-label="Currently available for freelance work">
+          <span class="profile-status-dot" aria-hidden="true"></span>
           Available
         </div>
       </div>
@@ -716,11 +1027,13 @@
       <!-- Text -->
       <div>
         <p class="about-eyebrow">About Me</p>
+
         <h1 class="about-name">
           Muhammad<br><span>Ahmad</span>
         </h1>
+
         <span class="about-title-tag">
-          <i class="bi bi-code-slash"></i>
+          <i class="bi bi-code-slash" aria-hidden="true"></i>
           {% if about.title %}{{ about.title }}{% else %}Full Stack Developer{% endif %}
         </span>
 
@@ -743,59 +1056,54 @@
         <!-- Meta info -->
         <div class="about-meta">
           <div class="about-meta-item">
-            <i class="bi bi-geo-alt-fill"></i>
-            Pakistan
+            <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+            Pakistan — Working Globally
           </div>
           <div class="about-meta-item">
-            <i class="bi bi-briefcase-fill"></i>
+            <i class="bi bi-briefcase-fill" aria-hidden="true"></i>
             Open to Freelance
           </div>
           <div class="about-meta-item">
-            <i class="bi bi-envelope-fill"></i>
-            Available for Projects
+            <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+            Student Projects Welcome
           </div>
         </div>
 
         <!-- Actions -->
-        <!-- FIX: Removed {% url 'resume' %} — no resume route exists in urls.py.
-             Replaced with a "View My Work" link to the projects page, which is
-             the most relevant showcase of skills a visitor would want to see.
-             The other two buttons (Work With Me, Get In Touch) are unchanged
-             and both map to valid routes (/freelance/ and 'contact'). -->
         <div class="about-actions">
           <a href="{% url 'projects' %}" class="btn-primary-custom">
-            <i class="bi bi-grid-3x3-gap"></i>
+            <i class="bi bi-grid-3x3-gap" aria-hidden="true"></i>
             View My Work
           </a>
           <a href="/freelance/" class="btn-outline-custom">
-            <i class="bi bi-lightning-charge-fill"></i>
+            <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
             Work With Me
           </a>
           <a href="{% url 'contact' %}" class="btn-outline-custom">
-            <i class="bi bi-envelope"></i>
+            <i class="bi bi-envelope" aria-hidden="true"></i>
             Get In Touch
           </a>
         </div>
       </div>
 
-    </div>
+    </div><!-- /profile-block -->
 
     <!-- Quick stats strip -->
-    <div class="about-stats reveal">
-      <div class="about-stat">
-        <div class="about-stat-num" data-target="10" data-suffix="+">0+</div>
+    <div class="about-stats reveal stagger-2" role="list" aria-label="Quick statistics">
+      <div class="about-stat" role="listitem">
+        <div class="about-stat-num" data-target="10" data-suffix="+">10+</div>
         <div class="about-stat-label">Projects Built</div>
       </div>
-      <div class="about-stat">
-        <div class="about-stat-num" data-target="8" data-suffix="+">0+</div>
+      <div class="about-stat" role="listitem">
+        <div class="about-stat-num" data-target="8" data-suffix="+">8+</div>
         <div class="about-stat-label">Technologies</div>
       </div>
-      <div class="about-stat">
-        <div class="about-stat-num" data-target="3" data-suffix="+">0+</div>
+      <div class="about-stat" role="listitem">
+        <div class="about-stat-num" data-target="3" data-suffix="+">3+</div>
         <div class="about-stat-label">Years Building</div>
       </div>
-      <div class="about-stat">
-        <div class="about-stat-num" data-target="100" data-suffix="%">0%</div>
+      <div class="about-stat" role="listitem">
+        <div class="about-stat-num" data-target="100" data-suffix="%">100%</div>
         <div class="about-stat-label">Commitment</div>
       </div>
     </div>
@@ -803,13 +1111,44 @@
   </div>
 </section>
 
-<div class="about-section-divider"></div>
+<div class="about-section-divider" role="separator"></div>
+
+<!-- ============================================================
+     OPEN TO COLLABORATION BANNER
+     ============================================================ -->
+<section class="about-section" style="padding-bottom: 0;">
+  <div class="container">
+    <div class="collab-banner reveal">
+      <div class="collab-banner-text">
+        <h3>
+          <i class="bi bi-people-fill" aria-hidden="true"></i>
+          Open to Collaboration &amp; Partnerships
+        </h3>
+        <p>Whether you're a startup, student, founder, or growing business — every idea deserves a technical partner.</p>
+        <div class="collab-banner-tags" aria-label="Collaboration types">
+          <span class="collab-tag"><i class="bi bi-mortarboard" aria-hidden="true"></i> Student Projects</span>
+          <span class="collab-tag"><i class="bi bi-rocket-takeoff" aria-hidden="true"></i> MVPs</span>
+          <span class="collab-tag"><i class="bi bi-diagram-3" aria-hidden="true"></i> Startups</span>
+          <span class="collab-tag"><i class="bi bi-currency-dollar" aria-hidden="true"></i> Flexible Pricing</span>
+          <span class="collab-tag"><i class="bi bi-calendar-check" aria-hidden="true"></i> Installments OK</span>
+        </div>
+      </div>
+      <a href="/freelance/" class="btn-primary-custom" style="flex-shrink:0;">
+        <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
+        Discuss Your Idea
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="about-section-divider" role="separator"></div>
 
 <!-- ============================================================
      EDUCATION
      ============================================================ -->
-<section class="about-section">
+<!-- <section class="about-section">
   <div class="container">
+
     <div class="reveal">
       <p class="section-eyebrow">Academic Background</p>
       <h2 class="section-heading">Education</h2>
@@ -819,15 +1158,15 @@
     <div class="edu-timeline">
       {% for edu in education_list %}
       <div class="edu-item reveal">
-        <div class="edu-dot"><i class="bi bi-mortarboard-fill"></i></div>
+        <div class="edu-dot" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></div>
         <div class="edu-card">
           <h3 class="edu-degree">{{ edu.degree }}</h3>
           <div class="edu-place">
-            <i class="bi bi-building"></i>
+            <i class="bi bi-building" aria-hidden="true"></i>
             {{ edu.institution }}
           </div>
           <div class="edu-year">
-            <i class="bi bi-calendar3"></i>
+            <i class="bi bi-calendar3" aria-hidden="true"></i>
             {{ edu.year_range }}
           </div>
           {% if edu.description %}
@@ -837,26 +1176,28 @@
       </div>
       {% empty %}
       <div class="edu-item reveal">
-        <div class="edu-dot"><i class="bi bi-mortarboard-fill"></i></div>
+        <div class="edu-dot" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></div>
         <div class="edu-card">
           <h3 class="edu-degree">Computer Science / Software Engineering</h3>
-          <div class="edu-place"><i class="bi bi-building"></i> University — Pakistan</div>
-          <div class="edu-year"><i class="bi bi-calendar3"></i> 2022 — Present</div>
-          <p class="edu-desc">Studying core CS fundamentals, data structures, algorithms, and applied software development. Supplemented by self-directed learning in web development, AI, and automation.</p>
+          <div class="edu-place"><i class="bi bi-building" aria-hidden="true"></i> University — Pakistan</div>
+          <div class="edu-year"><i class="bi bi-calendar3" aria-hidden="true"></i> 2022 — Present</div>
+          <p class="edu-desc">Studying core CS fundamentals, data structures, algorithms, and applied software development. Supplemented by self-directed learning in web development, AI, and automation systems.</p>
         </div>
       </div>
       {% endfor %}
     </div>
-  </div>
-</section>
 
-<div class="about-section-divider"></div>
+  </div>
+</section> -->
+
+<div class="about-section-divider" role="separator"></div>
 
 <!-- ============================================================
      EXPERIENCE
      ============================================================ -->
 <section class="about-section">
   <div class="container">
+
     <div class="reveal">
       <p class="section-eyebrow">What I've Done</p>
       <h2 class="section-heading">Experience</h2>
@@ -868,11 +1209,11 @@
       <div class="exp-card reveal">
         <h3 class="exp-role">{{ exp.role }}</h3>
         <div class="exp-company">
-          <i class="bi bi-building"></i>
+          <i class="bi bi-building" aria-hidden="true"></i>
           {{ exp.company }}
         </div>
         <div class="exp-year">
-          <i class="bi bi-calendar3"></i>
+          <i class="bi bi-calendar3" aria-hidden="true"></i>
           {{ exp.year_range }}
         </div>
         <p class="exp-desc">{{ exp.description }}</p>
@@ -880,147 +1221,172 @@
       {% empty %}
       <div class="exp-card reveal">
         <h3 class="exp-role">Freelance Full Stack Developer</h3>
-        <div class="exp-company"><i class="bi bi-building"></i> Self-Employed</div>
-        <div class="exp-year"><i class="bi bi-calendar3"></i> 2023 — Present</div>
-        <p class="exp-desc">Building custom Django web apps, automation systems, and AI-integrated tools for clients. Handling everything from requirements gathering through to deployment and maintenance.</p>
+        <div class="exp-company"><i class="bi bi-building" aria-hidden="true"></i> Self-Employed</div>
+        <div class="exp-year"><i class="bi bi-calendar3" aria-hidden="true"></i> 2023 — Present</div>
+        <p class="exp-desc">Building custom Django web apps, automation systems, and AI-integrated tools for clients. Handling everything from requirements gathering through to deployment and ongoing maintenance.</p>
       </div>
-      <div class="exp-card reveal" style="transition-delay:0.1s">
+      <div class="exp-card reveal stagger-2">
         <h3 class="exp-role">Full Stack Developer (Projects)</h3>
-        <div class="exp-company"><i class="bi bi-building"></i> Independent / Open Source</div>
-        <div class="exp-year"><i class="bi bi-calendar3"></i> 2022 — Present</div>
+        <div class="exp-company"><i class="bi bi-building" aria-hidden="true"></i> Independent / Open Source</div>
+        <div class="exp-year"><i class="bi bi-calendar3" aria-hidden="true"></i> 2022 — Present</div>
         <p class="exp-desc">Designed and developed a video-sharing platform with reward systems, a Django productivity SaaS (QuantumTask), a self-hosted AI chatbot, and multiple e-commerce solutions.</p>
       </div>
       {% endfor %}
     </div>
+
   </div>
 </section>
 
-<div class="about-section-divider"></div>
+<div class="about-section-divider" role="separator"></div>
 
 <!-- ============================================================
      CORE VALUES
      ============================================================ -->
 <section class="about-section">
   <div class="container">
-    <div class="reveal" style="text-align:center; max-width:560px; margin:0 auto 48px;">
-      <p class="section-eyebrow" style="justify-content:center;">How I Work</p>
+
+    <div class="section-header-center reveal">
+      <p class="section-eyebrow">How I Work</p>
       <h2 class="section-heading">Core Values</h2>
-      <p class="section-subheading" style="margin:0 auto;">The principles that guide every project, every decision, every line of code.</p>
+      <p class="section-subheading">The principles that guide every project, every decision, every line of code.</p>
     </div>
 
     <div class="values-grid">
       {% for value in values_list %}
       <div class="value-card reveal">
-        <div class="value-icon" style="background:rgba(59,130,246,0.1);color:var(--accent)">
-          <i class="bi bi-star-fill"></i>
+        <div class="value-icon" style="background:rgba(59,130,246,0.10);color:var(--accent)">
+          <i class="bi bi-star-fill" aria-hidden="true"></i>
         </div>
         <h3 class="value-title">{{ value.title }}</h3>
         <p class="value-desc">{{ value.description }}</p>
       </div>
       {% empty %}
-      <!-- Fallback values -->
-      <div class="value-card reveal">
-        <div class="value-icon" style="background:rgba(59,130,246,0.1);color:var(--accent)">
-          <i class="bi bi-lightning-charge-fill"></i>
+
+      <div class="value-card reveal stagger-1">
+        <div class="value-icon" style="background:rgba(59,130,246,0.10);color:var(--accent)">
+          <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
         </div>
         <h3 class="value-title">Shipping Over Perfecting</h3>
         <p class="value-desc">I believe in building, testing, and iterating. Done and deployed beats perfect and pending every time.</p>
       </div>
-      <div class="value-card reveal" style="transition-delay:0.1s">
-        <div class="value-icon" style="background:rgba(6,182,212,0.1);color:var(--accent-2)">
-          <i class="bi bi-layers-fill"></i>
+
+      <div class="value-card reveal stagger-2">
+        <div class="value-icon" style="background:rgba(6,182,212,0.10);color:var(--accent-2)">
+          <i class="bi bi-layers-fill" aria-hidden="true"></i>
         </div>
         <h3 class="value-title">Architecture First</h3>
         <p class="value-desc">I think in systems before I write code. Clean models, sensible URLs, and clear data flow prevent 90% of problems.</p>
       </div>
-      <div class="value-card reveal" style="transition-delay:0.2s">
-        <div class="value-icon" style="background:rgba(139,92,246,0.1);color:var(--accent-3)">
-          <i class="bi bi-chat-dots-fill"></i>
+
+      <div class="value-card reveal stagger-3">
+        <div class="value-icon" style="background:rgba(139,92,246,0.10);color:var(--accent-3)">
+          <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
         </div>
         <h3 class="value-title">Transparent Communication</h3>
         <p class="value-desc">No ghost updates, no excuses. I keep clients informed at every stage and flag issues early, not after the deadline.</p>
       </div>
-      <div class="value-card reveal" style="transition-delay:0.3s">
-        <div class="value-icon" style="background:rgba(16,185,129,0.1);color:var(--green)">
-          <i class="bi bi-graph-up-arrow"></i>
+
+      <div class="value-card reveal stagger-4">
+        <div class="value-icon" style="background:rgba(16,185,129,0.10);color:var(--green)">
+          <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
         </div>
         <h3 class="value-title">Continuous Learning</h3>
         <p class="value-desc">The best developers are always students. I'm constantly exploring AI tooling, new frameworks, and better ways to solve old problems.</p>
       </div>
-      <div class="value-card reveal" style="transition-delay:0.4s">
-        <div class="value-icon" style="background:rgba(245,158,11,0.1);color:#FCD34D">
-          <i class="bi bi-shield-check"></i>
+
+      <div class="value-card reveal stagger-5">
+        <div class="value-icon" style="background:rgba(245,158,11,0.10);color:#F59E0B">
+          <i class="bi bi-shield-check" aria-hidden="true"></i>
         </div>
         <h3 class="value-title">Quality Without Compromise</h3>
         <p class="value-desc">Every project I ship reflects my name. I don't cut corners on security, performance, or maintainability.</p>
       </div>
-      <div class="value-card reveal" style="transition-delay:0.5s">
-        <div class="value-icon" style="background:rgba(239,68,68,0.1);color:#F87171">
-          <i class="bi bi-people-fill"></i>
+
+      <div class="value-card reveal stagger-6">
+        <div class="value-icon" style="background:rgba(239,68,68,0.10);color:#F87171">
+          <i class="bi bi-people-fill" aria-hidden="true"></i>
         </div>
         <h3 class="value-title">Client-Centric Focus</h3>
         <p class="value-desc">My job isn't to write code — it's to solve your problem. I ask the right questions before I write a single line.</p>
       </div>
+
       {% endfor %}
     </div>
+
   </div>
 </section>
 
-<div class="about-section-divider"></div>
+<div class="about-section-divider" role="separator"></div>
 
 <!-- ============================================================
-     TESTIMONIALS
+     TESTIMONIALS  (shown only when data exists)
      ============================================================ -->
 {% if testimonials %}
 <section class="testimonials-strip">
   <div class="container">
-    <div class="reveal" style="text-align:center; margin-bottom:0;">
-      <p class="section-eyebrow" style="justify-content:center;">Social Proof</p>
+
+    <div class="section-header-center reveal">
+      <p class="section-eyebrow">Social Proof</p>
       <h2 class="section-heading">What People Say</h2>
+      <p class="section-subheading">Real feedback from clients and collaborators who've worked with me.</p>
     </div>
+
     <div class="testi-grid">
       {% for t in testimonials %}
-      <div class="testi-card reveal">
-        <div class="testi-stars">★★★★★</div>
+      <article class="testi-card reveal">
+        <div class="testi-stars" aria-label="5 stars">★★★★★</div>
         <p class="testi-text">"{{ t.feedback }}"</p>
         <div class="testi-author">
           {% if t.image %}
-            <img src="{{ t.image.url }}" alt="{{ t.name }}" class="testi-avatar">
+            <img src="{{ t.image.url }}" alt="{{ t.name }}" class="testi-avatar" loading="lazy">
           {% else %}
-            <div class="testi-avatar"><i class="bi bi-person-fill"></i></div>
+            <div class="testi-avatar" aria-hidden="true"><i class="bi bi-person-fill"></i></div>
           {% endif %}
           <div>
             <div class="testi-name">{{ t.name }}</div>
             <div class="testi-position">{{ t.position }}{% if t.company %}, {{ t.company }}{% endif %}</div>
           </div>
         </div>
-      </div>
+      </article>
       {% endfor %}
     </div>
+
   </div>
 </section>
-<div class="about-section-divider"></div>
+<div class="about-section-divider" role="separator"></div>
 {% endif %}
 
 <!-- ============================================================
      BOTTOM CTA
      ============================================================ -->
-<div class="container">
-  <div class="about-cta reveal">
-    <p class="section-eyebrow" style="justify-content:center; margin-bottom:16px;">Ready to Build?</p>
-    <h2 class="about-cta-title">Let's work on something<br><span>worth building.</span></h2>
-    <p class="about-cta-sub">
-      I take on a limited number of projects at a time — so if you have an idea, reach out early.
-    </p>
-    <div class="about-cta-btns">
-      <a href="/freelance/" class="btn-primary-custom">
-        <i class="bi bi-lightning-charge-fill"></i>
-        Start a Project
-      </a>
-      <a href="{% url 'contact' %}" class="btn-outline-custom">
-        <i class="bi bi-envelope"></i>
-        Send a Message
-      </a>
+<div class="about-cta-wrap">
+  <div class="container">
+    <div class="about-cta reveal">
+      <p class="section-eyebrow" style="justify-content:center; margin-bottom:16px;">Ready to Build?</p>
+      <h2 class="about-cta-title">
+        Let's work on something<br><span>worth building.</span>
+      </h2>
+      <p class="about-cta-sub">
+        I take on a limited number of projects at a time — so if you have an idea, reach out early. Student projects, MVPs, and startups are always welcome.
+      </p>
+      <div class="about-cta-btns">
+        <a href="/freelance/" class="btn-primary-custom">
+          <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+          Start a Project
+        </a>
+        <a href="{% url 'contact' %}" class="btn-outline-custom">
+          <i class="bi bi-envelope" aria-hidden="true"></i>
+          Send a Message
+        </a>
+        <a href="{% url 'services' %}" class="btn-outline-custom">
+          <i class="bi bi-grid-3x3-gap" aria-hidden="true"></i>
+          Explore Services
+        </a>
+      </div>
+      <p class="cta-avail-note">
+        <span class="cta-avail-dot" aria-hidden="true"></span>
+        Currently available · Flexible pricing · Installments considered
+      </p>
     </div>
   </div>
 </div>
@@ -1030,50 +1396,61 @@
 {% block extra_js %}
 <script>
   /* ============================================================
-     ANIMATED COUNTERS (on scroll)
-     FIX: Renamed function and observer to aboutAnimateCounter /
-     aboutCounterObserver to avoid any collision with identically
-     named variables that might exist in other page scripts.
+     ANIMATED COUNTERS — triggered on scroll
+     Uses prefixed names to avoid any collision across pages.
      ============================================================ */
-  function aboutAnimateCounter(el) {
-    const target = parseInt(el.dataset.target);
-    const suffix = el.dataset.suffix || '+';
-    const duration = 1400;
-    const steps = 60;
-    const increment = target / steps;
-    let current = 0;
-    const interval = setInterval(() => {
-      current += increment;
-      if (current >= target) {
-        current = target;
-        clearInterval(interval);
-      }
-      el.textContent = Math.floor(current) + suffix;
-    }, duration / steps);
-  }
+  (function () {
+    // Respect reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const aboutCounterObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.querySelectorAll('.about-stat-num[data-target]').forEach(aboutAnimateCounter);
-        aboutCounterObserver.unobserve(entry.target);
-      }
+    function aboutAnimateCounter(el) {
+      const target    = parseInt(el.dataset.target, 10);
+      const suffix    = el.dataset.suffix || '+';
+      const duration  = 1400;
+      const steps     = 55;
+      const increment = target / steps;
+      let   current   = 0;
+
+      const interval = setInterval(function () {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(interval);
+        }
+        el.textContent = Math.floor(current) + suffix;
+      }, duration / steps);
+    }
+
+    var aboutCounterObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.about-stat-num[data-target]').forEach(aboutAnimateCounter);
+          aboutCounterObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.35 });
+
+    document.querySelectorAll('.about-stats').forEach(function (el) {
+      aboutCounterObs.observe(el);
     });
-  }, { threshold: 0.4 });
-
-  document.querySelectorAll('.about-stats').forEach(el => aboutCounterObserver.observe(el));
+  })();
 
   /* ============================================================
-     STAGGERED VALUE CARDS
-     FIX: Only applies delays when the DB is empty and fallback
-     cards are rendered. When values come from the DB they already
-     have no delay set, which is correct — the JS loop below
-     overwrites inline delays set on fallback cards, but that's
-     fine because it computes the same values (i * 0.07s).
-     This is kept as-is since it causes no functional breakage.
+     VALUE CARDS — reset to stagger-class based delays
+     (overrides any inline style left from DB-driven loops)
      ============================================================ */
-  document.querySelectorAll('.value-card.reveal').forEach((el, i) => {
-    el.style.transitionDelay = (i * 0.07) + 's';
-  });
+  (function () {
+    // Only override if no stagger class already set by template
+    document.querySelectorAll('.value-card.reveal').forEach(function (el, i) {
+      if (!el.classList.contains('stagger-1') &&
+          !el.classList.contains('stagger-2') &&
+          !el.classList.contains('stagger-3') &&
+          !el.classList.contains('stagger-4') &&
+          !el.classList.contains('stagger-5') &&
+          !el.classList.contains('stagger-6')) {
+        el.style.transitionDelay = (i * 0.07) + 's';
+      }
+    });
+  })();
 </script>
 {% endblock %}

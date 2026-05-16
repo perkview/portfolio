@@ -2,881 +2,940 @@
 {% load static %}
 
 {% block title %}Work With Me — Muhammad Ahmad{% endblock %}
-{% block meta_description %}Start a freelance project with Muhammad Ahmad — Django applications, AI integration, automation systems. Clear process, honest pricing, reliable delivery.{% endblock %}
+{% block meta_description %}Start a freelance project with Muhammad Ahmad — Django applications, AI integration,
+automation systems. Clear process, honest pricing, reliable delivery.{% endblock %}
 
 {% block extra_head %}
 <style>
-
-/* ============================================================
+  /* ============================================================
    PAGE HERO
    ============================================================ */
-.freelance-hero {
-  position: relative;
-  padding: 100px 0 88px;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
-}
+  .freelance-hero {
+    position: relative;
+    padding: clamp(64px, 10vw, 110px) 0 clamp(56px, 9vw, 96px);
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
 
-.fl-orb-1 {
-  position: absolute;
-  width: 640px; height: 640px;
-  background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%);
-  top: -220px; left: -120px;
-  pointer-events: none;
-  animation: flOrb1 13s ease-in-out infinite;
-}
-.fl-orb-2 {
-  position: absolute;
-  width: 520px; height: 520px;
-  background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
-  bottom: -140px; right: -80px;
-  pointer-events: none;
-  animation: flOrb2 16s ease-in-out infinite;
-}
-.fl-orb-3 {
-  position: absolute;
-  width: 360px; height: 360px;
-  background: radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%);
-  top: 50%; left: 55%;
-  transform: translate(-50%,-50%);
-  pointer-events: none;
-  animation: flOrb3 10s ease-in-out infinite;
-}
-@keyframes flOrb1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(22px,14px)} }
-@keyframes flOrb2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-14px,22px)} }
-@keyframes flOrb3 { 0%,100%{transform:translate(-50%,-50%)} 50%{transform:translate(-50%,-54%)} }
+  .fl-orb-1 {
+    position: absolute;
+    width: min(640px, 100vw);
+    height: min(640px, 100vw);
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.10) 0%, transparent 70%);
+    top: -220px;
+    left: -120px;
+    pointer-events: none;
+    animation: flOrb1 13s ease-in-out infinite;
+  }
 
-.fl-hero-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(59,130,246,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59,130,246,0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-}
+  .fl-orb-2 {
+    position: absolute;
+    width: min(520px, 85vw);
+    height: min(520px, 85vw);
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+    bottom: -140px;
+    right: -80px;
+    pointer-events: none;
+    animation: flOrb2 16s ease-in-out infinite;
+  }
 
-.fl-hero-inner {
-  position: relative; z-index: 2;
-  text-align: center;
-}
+  .fl-orb-3 {
+    position: absolute;
+    width: min(360px, 70vw);
+    height: min(360px, 70vw);
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.06) 0%, transparent 70%);
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: flOrb3 10s ease-in-out infinite;
+  }
 
-.fl-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 20px;
-}
-.fl-eyebrow::before, .fl-eyebrow::after {
-  content: ''; width: 24px; height: 1px; background: var(--accent);
-}
+  @keyframes flOrb1 { 0%, 100% { transform: translate(0, 0) } 50% { transform: translate(22px, 14px) } }
+  @keyframes flOrb2 { 0%, 100% { transform: translate(0, 0) } 50% { transform: translate(-14px, 22px) } }
+  @keyframes flOrb3 { 0%, 100% { transform: translate(-50%, -50%) } 50% { transform: translate(-50%, -54%) } }
 
-.fl-hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 6vw, 4.2rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  margin-bottom: 18px;
-}
-.fl-hero-title span {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+  .fl-hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59, 130, 246, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59, 130, 246, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
 
-.fl-hero-sub {
-  color: var(--text-muted);
-  font-size: 1.05rem;
-  max-width: 500px;
-  margin: 0 auto 40px;
-  line-height: 1.7;
-}
+  .fl-hero-inner {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
 
-.fl-hero-cta {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+  .fl-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(0.68rem, 1.5vw, 0.75rem);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
 
-/* ============================================================
+  .fl-eyebrow::before,
+  .fl-eyebrow::after {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .fl-hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 7vw, 4.2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin-bottom: 18px;
+    padding: 0 8px;
+  }
+
+  .fl-hero-title span {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .fl-hero-sub {
+    color: var(--text-muted);
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    max-width: 500px;
+    margin: 0 auto clamp(28px, 5vw, 40px);
+    line-height: 1.7;
+    padding: 0 16px;
+  }
+
+  .fl-hero-cta {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0 16px;
+  }
+
+  /* ============================================================
    STATUS BLOCK
    ============================================================ */
-.status-strip {
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
-  padding: 18px 0;
-}
+  .status-strip {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: clamp(14px, 2.5vw, 18px) 0;
+  }
 
-.status-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-}
+  .status-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 3vw, 40px);
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
 
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 20px;
-  border-radius: 50px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-.status-badge.available {
-  background: rgba(16,185,129,0.12);
-  border: 1px solid rgba(16,185,129,0.28);
-  color: var(--green);
-}
-.status-badge.limited {
-  background: rgba(245,158,11,0.12);
-  border: 1px solid rgba(245,158,11,0.28);
-  color: #FCD34D;
-}
-.status-badge.busy {
-  background: rgba(239,68,68,0.1);
-  border: 1px solid rgba(239,68,68,0.25);
-  color: #F87171;
-}
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: clamp(0.76rem, 1.6vw, 0.82rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
 
-.status-dot-anim {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  animation: sdot 2.4s infinite;
-}
-.available .status-dot-anim { background: var(--green); }
-.limited .status-dot-anim  { background: #FBBF24; }
-.busy .status-dot-anim     { background: #F87171; animation: none; }
+  .status-badge.available {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #059669;
+  }
+  body.dark-mode .status-badge.available { color: #10B981; }
 
-@keyframes sdot {
-  0%,100%{ box-shadow: 0 0 0 0 currentColor; opacity: 1; }
-  50%{ box-shadow: 0 0 0 5px transparent; opacity: 0.7; }
-}
+  .status-badge.limited {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #B45309;
+  }
+  body.dark-mode .status-badge.limited { color: #FCD34D; }
 
-.status-meta {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.status-meta i { color: var(--accent-2); }
+  .status-badge.busy {
+    background: rgba(239, 68, 68, 0.10);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #DC2626;
+  }
+  body.dark-mode .status-badge.busy { color: #F87171; }
 
-.status-note {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  font-style: italic;
-  max-width: 340px;
-  text-align: center;
-}
+  .status-dot-anim {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: sdot 2.4s infinite;
+  }
+  .available .status-dot-anim { background: #10B981; }
+  .limited .status-dot-anim { background: #FBBF24; }
+  .busy .status-dot-anim { background: #F87171; animation: none; }
 
-/* ============================================================
+  @keyframes sdot {
+    0%, 100% { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
+    50% { box-shadow: 0 0 0 5px transparent; opacity: 0.7; }
+  }
+
+  .status-meta {
+    font-size: clamp(0.72rem, 1.5vw, 0.80rem);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .status-meta i { color: var(--accent-2); }
+  .status-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-style: italic;
+    max-width: 340px;
+    text-align: center;
+  }
+  @media (max-width: 480px) { .status-meta.hide-xs { display: none; } }
+
+  /* ============================================================
    SECTION COMMONS
    ============================================================ */
-.fl-section { padding: 88px 0; position: relative; }
-.fl-section + .fl-section { border-top: 1px solid var(--border); }
+  .fl-section {
+    padding: clamp(56px, 8vw, 88px) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .fl-section + .fl-section { border-top: 1px solid var(--border); }
 
-.section-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 16px;
-}
-.section-eyebrow::before {
-  content: ''; width: 24px; height: 1px; background: var(--accent);
-}
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(0.68rem, 1.4vw, 0.75rem);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
 
-.section-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 14px;
-  line-height: 1.1;
-}
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4.5vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    line-height: 1.1;
+    color: var(--text);
+  }
 
-.section-subtitle {
-  color: var(--text-muted);
-  font-size: 1rem;
-  max-width: 500px;
-}
+  .section-subtitle {
+    color: var(--text-muted);
+    font-size: clamp(0.88rem, 2vw, 1rem);
+    max-width: 520px;
+    line-height: 1.65;
+  }
 
-/* ============================================================
-   PROCESS / WORKFLOW STEPS
+  /* ============================================================
+   PROCESS STEPS
    ============================================================ */
-.process-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-  margin-top: 48px;
-}
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: clamp(32px, 5vw, 48px);
+  }
 
-.process-step {
-  background: var(--bg-card);
-  padding: 40px 30px 36px;
-  position: relative;
-  overflow: hidden;
-  transition: var(--transition);
-}
-.process-step:hover { background: rgba(17,19,24,0.95); }
-.process-step::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: var(--transition);
-}
-.process-step:hover::after { transform: scaleX(1); }
+  .process-step {
+    background: var(--bg-card);
+    padding: clamp(24px, 4vw, 40px) clamp(18px, 3vw, 30px) clamp(22px, 4vw, 36px);
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+  .process-step:hover { background: var(--bg-glass, rgba(59, 130, 246, 0.04)); }
+  .process-step::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: var(--transition);
+  }
+  .process-step:hover::after { transform: scaleX(1); }
 
-.process-num {
-  font-family: var(--font-display);
-  font-size: 3.5rem;
-  font-weight: 800;
-  line-height: 1;
-  background: linear-gradient(135deg, rgba(59,130,246,0.18), rgba(6,182,212,0.1));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 18px;
-  letter-spacing: -0.04em;
-}
+  .process-num {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.22), rgba(6, 182, 212, 0.14));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+    letter-spacing: -0.04em;
+  }
 
-.process-icon {
-  width: 46px; height: 46px;
-  background: rgba(59,130,246,0.1);
-  border: 1px solid rgba(59,130,246,0.18);
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  font-size: 1.2rem;
-  margin-bottom: 18px;
-  transition: var(--transition);
-}
-.process-step:hover .process-icon {
-  background: rgba(59,130,246,0.18);
-  transform: scale(1.05);
-}
+  .process-icon {
+    width: 46px; height: 46px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.18);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    transition: var(--transition);
+  }
+  .process-step:hover .process-icon { background: rgba(59, 130, 246, 0.18); transform: scale(1.05); }
 
-.process-label {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 8px;
-}
+  .process-label {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 7px;
+  }
+  .process-title {
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
+    font-weight: 700;
+    margin-bottom: 9px;
+    color: var(--text);
+  }
+  .process-desc {
+    font-size: clamp(0.8rem, 1.7vw, 0.84rem);
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
 
-.process-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: var(--text);
-}
-
-.process-desc {
-  font-size: 0.84rem;
-  color: var(--text-muted);
-  line-height: 1.65;
-}
-
-/* ============================================================
-   PRICING / PACKAGES TABLE
+  /* ============================================================
+   PRICING PACKAGES
    ============================================================ */
-.packages-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-top: 52px;
-}
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(14px, 2.5vw, 20px);
+    margin-top: clamp(36px, 6vw, 52px);
+    align-items: start;
+  }
 
-.pkg-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 36px 28px 32px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  transition: var(--transition);
-}
-.pkg-card:hover {
-  border-color: rgba(59,130,246,0.25);
-  transform: translateY(-4px);
-  box-shadow: 0 24px 70px rgba(0,0,0,0.35);
-}
+  .pkg-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: clamp(24px, 4vw, 36px) clamp(18px, 3.5vw, 28px) clamp(22px, 3.5vw, 32px);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+  .pkg-card:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(59, 130, 246, 0.08);
+  }
+  body.dark-mode .pkg-card:hover {
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(59, 130, 246, 0.12);
+  }
 
-/* Popular card */
-.pkg-card.popular {
-  border-color: rgba(59,130,246,0.4);
-  background: linear-gradient(175deg, rgba(59,130,246,0.07), var(--bg-card) 60%);
-}
-.pkg-popular-badge {
-  position: absolute;
-  top: 18px; right: 18px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, var(--accent), #2563EB);
-  color: #fff;
-  padding: 4px 12px;
-  border-radius: 50px;
-}
+  .pkg-card.popular {
+    border-color: rgba(59, 130, 246, 0.4);
+    background: linear-gradient(175deg, rgba(59, 130, 246, 0.07), var(--bg-card) 60%);
+  }
+  .pkg-popular-badge {
+    position: absolute;
+    top: 18px; right: 18px;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--accent), #2563EB);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 50px;
+  }
 
-.pkg-tier {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 10px;
-}
+  .pkg-tier {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 9px;
+  }
+  .pkg-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .pkg-price {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 4px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .pkg-price .pkg-currency {
+    font-size: 1.1rem;
+    vertical-align: top;
+    margin-top: 6px;
+    display: inline-block;
+  }
+  .pkg-price .pkg-suffix {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    -webkit-text-fill-color: var(--text-muted);
+  }
+  .pkg-range {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .pkg-desc {
+    font-size: clamp(0.78rem, 1.6vw, 0.84rem);
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
 
-.pkg-name {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-weight: 800;
-  margin-bottom: 6px;
-}
+  .pkg-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    flex: 1;
+    margin-bottom: clamp(20px, 3vw, 28px);
+    padding: 0;
+  }
+  .pkg-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: clamp(0.78rem, 1.6vw, 0.84rem);
+    color: var(--text-dim);
+    line-height: 1.45;
+  }
+  .pkg-features li i { color: var(--green); font-size: 0.74rem; margin-top: 3px; flex-shrink: 0; }
+  .pkg-features li.muted i { color: var(--text-muted); }
+  .pkg-features li.muted { color: var(--text-muted); }
 
-.pkg-price {
-  font-family: var(--font-display);
-  font-size: 2.4rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  margin-bottom: 6px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.pkg-price .pkg-currency { font-size: 1.2rem; vertical-align: top; margin-top: 8px; display: inline-block; }
-.pkg-price .pkg-suffix { font-size: 0.9rem; color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); }
+  .pkg-flex-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 14px;
+    padding: 8px 12px;
+    background: rgba(59, 130, 246, 0.07);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: 8px;
+  }
+  .pkg-flex-note i { font-size: 0.72rem; flex-shrink: 0; }
 
-.pkg-desc {
-  font-size: 0.84rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  margin-bottom: 24px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--border);
-}
+  .pkg-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: clamp(10px, 2vw, 12px);
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    font-family: var(--font-body);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    min-height: 44px;
+  }
+  .pkg-cta:hover { border-color: var(--accent); color: var(--accent); background: rgba(59, 130, 246, 0.06); }
+  .pkg-card.popular .pkg-cta {
+    background: linear-gradient(135deg, var(--accent), #2563EB);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 6px 22px rgba(59, 130, 246, 0.3);
+  }
+  .pkg-card.popular .pkg-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 32px rgba(59, 130, 246, 0.45);
+    color: #fff;
+  }
 
-.pkg-features {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-  margin-bottom: 28px;
-}
-.pkg-features li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 0.84rem;
-  color: var(--text-dim);
-  line-height: 1.45;
-}
-.pkg-features li i {
-  color: var(--green);
-  font-size: 0.75rem;
-  margin-top: 3px;
-  flex-shrink: 0;
-}
-.pkg-features li.muted i { color: var(--text-muted); }
-.pkg-features li.muted { color: var(--text-muted); }
+  /* ============================================================
+   FLEXIBLE PRICING NOTE
+   ============================================================ */
+  .flexible-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(16, 185, 129, 0.06);
+    border: 1px solid rgba(16, 185, 129, 0.20);
+    border-radius: 10px;
+    padding: clamp(14px, 2.5vw, 20px) clamp(16px, 3vw, 22px);
+    margin-bottom: 0;
+    font-size: clamp(0.78rem, 1.4vw, 0.84rem);
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .flexible-note i { color: var(--green, #10B981); font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+  .flexible-note strong { color: var(--text); }
 
-.pkg-cta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 12px;
-  border-radius: var(--radius-sm);
-  font-weight: 700;
-  font-size: 0.88rem;
-  cursor: pointer;
-  transition: var(--transition);
-  text-decoration: none;
-  font-family: var(--font-body);
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-dim);
-}
-.pkg-cta:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(59,130,246,0.06);
-}
-.pkg-card.popular .pkg-cta {
-  background: linear-gradient(135deg, var(--accent), #2563EB);
-  color: #fff;
-  border-color: transparent;
-  box-shadow: 0 6px 22px rgba(59,130,246,0.3);
-}
-.pkg-card.popular .pkg-cta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 32px rgba(59,130,246,0.45);
-  color: #fff;
-}
-
-/* ============================================================
+  /* ============================================================
    PROJECT INQUIRY FORM
    ============================================================ */
-.inquiry-layout {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 36px;
-  align-items: start;
-}
+  .inquiry-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(20px, 4vw, 36px);
+    align-items: start;
+  }
 
-.inquiry-panel {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-}
+  .inquiry-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .inquiry-panel-bar {
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+  }
+  .inquiry-panel-body {
+    padding: clamp(22px, 5vw, 44px) clamp(18px, 5vw, 44px) clamp(26px, 5vw, 44px);
+  }
+  .inquiry-heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .inquiry-sub {
+    color: var(--text-muted);
+    font-size: clamp(0.8rem, 1.7vw, 0.86rem);
+    margin-bottom: clamp(22px, 4vw, 34px);
+    line-height: 1.55;
+  }
 
-.inquiry-panel-bar {
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
-}
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(12px, 2.5vw, 18px);
+  }
+  .field-group { margin-bottom: clamp(16px, 3vw, 20px); }
+  .field-label {
+    display: block;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .field-input,
+  .field-select,
+  .field-textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: clamp(11px, 2vw, 13px) 16px;
+    color: var(--text);
+    font-family: var(--font-body);
+    outline: none;
+    transition: var(--transition);
+    -webkit-appearance: none;
+    appearance: none;
+    font-size: max(16px, 0.9rem);
+  }
+  @media (min-width: 768px) {
+    .field-input, .field-select, .field-textarea { font-size: 0.9rem; }
+  }
+  .field-input::placeholder, .field-textarea::placeholder { color: var(--text-muted); opacity: 1; }
+  .field-input:focus, .field-select:focus, .field-textarea:focus {
+    border-color: rgba(59, 130, 246, 0.55);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    background: rgba(59, 130, 246, 0.03);
+  }
+  .field-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2394A3B8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px;
+    padding-right: 38px;
+    cursor: pointer;
+  }
+  .field-select option { background: var(--bg-card); color: var(--text); }
+  .field-textarea { resize: vertical; min-height: clamp(110px, 18vw, 120px); line-height: 1.65; }
+  .field-input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.45); cursor: pointer; opacity: 0.7; }
+  body.dark-mode .field-input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
 
-.inquiry-panel-body { padding: 44px; }
+  .budget-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(7px, 1.5vw, 9px);
+  }
+  .budget-option { position: relative; }
+  .budget-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .budget-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: clamp(9px, 2vw, 11px) 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    min-height: 52px;
+    justify-content: center;
+  }
+  .budget-label .b-val { font-size: clamp(0.7rem, 1.5vw, 0.78rem); font-weight: 700; color: var(--text-dim); transition: color 0.2s; line-height: 1.2; }
+  .budget-label .b-lbl { font-size: clamp(0.56rem, 1.1vw, 0.62rem); color: var(--text-muted); letter-spacing: 0.03em; line-height: 1.2; }
+  .budget-option input:checked + .budget-label { border-color: var(--accent); background: rgba(59, 130, 246, 0.09); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15); }
+  .budget-option input:checked + .budget-label .b-val { color: var(--accent); }
+  .budget-label:hover { border-color: rgba(59, 130, 246, 0.35); }
+  .budget-option input:focus-visible + .budget-label { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.inquiry-heading {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 6px;
-}
-.inquiry-sub {
-  color: var(--text-muted);
-  font-size: 0.86rem;
-  margin-bottom: 34px;
-}
+  .btn-submit-inquiry {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent), #2563EB);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: clamp(13px, 2.5vw, 15px);
+    font-weight: 700;
+    font-size: clamp(0.88rem, 2vw, 0.95rem);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    box-shadow: 0 6px 24px rgba(59, 130, 246, 0.3);
+    font-family: var(--font-body);
+    margin-top: 6px;
+    min-height: 48px;
+  }
+  .btn-submit-inquiry:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(59, 130, 246, 0.5); }
+  .btn-submit-inquiry:active { transform: translateY(0); }
+  .btn-submit-inquiry:disabled { opacity: 0.72; cursor: not-allowed; transform: none; }
 
-/* Form field reuse */
-.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.field-group { margin-bottom: 20px; }
+  .form-trust {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+  .form-trust-item { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; color: var(--text-muted); }
+  .form-trust-item i { color: var(--green); font-size: 0.72rem; }
 
-.field-label {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  margin-bottom: 9px;
-}
+  .form-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 0.86rem;
+    margin-top: 18px;
+    line-height: 1.5;
+  }
+  .form-alert i { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+  .form-alert.success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #059669; }
+  body.dark-mode .form-alert.success { color: #10B981; }
+  .form-alert.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #DC2626; }
+  body.dark-mode .form-alert.error { color: #F87171; }
 
-.field-input,
-.field-select,
-.field-textarea {
-  width: 100%;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 13px 16px;
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  outline: none;
-  transition: var(--transition);
-  -webkit-appearance: none;
-}
-.field-input::placeholder,
-.field-textarea::placeholder { color: var(--text-muted); }
-.field-input:focus,
-.field-select:focus,
-.field-textarea:focus {
-  border-color: rgba(59,130,246,0.5);
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
-  background: rgba(59,130,246,0.02);
-}
-
-.field-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2364748B' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  background-size: 12px;
-  padding-right: 38px;
-  cursor: pointer;
-}
-.field-select option { background: var(--bg-card); color: var(--text); }
-
-.field-textarea { resize: vertical; min-height: 120px; line-height: 1.65; }
-
-/* Budget radio grid */
-.budget-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 9px;
-}
-.budget-option { position: relative; }
-.budget-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
-.budget-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 11px 6px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: var(--transition);
-  text-align: center;
-}
-.budget-label .b-val { font-size: 0.78rem; font-weight: 700; color: var(--text-dim); transition: color 0.2s; }
-.budget-label .b-lbl { font-size: 0.62rem; color: var(--text-muted); letter-spacing: 0.03em; }
-.budget-option input:checked + .budget-label {
-  border-color: var(--accent);
-  background: rgba(59,130,246,0.08);
-  box-shadow: 0 0 0 2px rgba(59,130,246,0.15);
-}
-.budget-option input:checked + .budget-label .b-val { color: var(--accent); }
-.budget-label:hover { border-color: rgba(59,130,246,0.35); }
-
-/* Deadline row */
-.field-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.5);
-  cursor: pointer;
-}
-
-/* Submit */
-.btn-submit-inquiry {
-  width: 100%;
-  background: linear-gradient(135deg, var(--accent), #2563EB);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 15px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  box-shadow: 0 6px 24px rgba(59,130,246,0.3);
-  font-family: var(--font-body);
-  margin-top: 6px;
-}
-.btn-submit-inquiry:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 36px rgba(59,130,246,0.5);
-}
-.btn-submit-inquiry:active { transform: translateY(0); }
-
-/* Alert messages */
-.form-alert {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px 18px;
-  border-radius: var(--radius-sm);
-  font-size: 0.86rem;
-  margin-top: 18px;
-}
-.form-alert i { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
-.form-alert.success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); color: var(--green); }
-.form-alert.error   { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.25);  color: #F87171; }
-
-/* ============================================================
+  /* ============================================================
    INQUIRY SIDEBAR
    ============================================================ */
-.inquiry-sidebar { display: flex; flex-direction: column; gap: 20px; position: sticky; top: 90px; }
+  .inquiry-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(14px, 2.5vw, 20px);
+    position: sticky;
+    top: 90px;
+  }
 
-.side-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px;
-}
-.side-card-title {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  margin-bottom: 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.side-card-title i { color: var(--accent); }
+  .side-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: clamp(18px, 3.5vw, 28px);
+  }
+  .side-card-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .side-card-title i { color: var(--accent); }
 
-/* Services quick-select */
-.service-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.service-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 13px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 50px;
-  font-size: 0.76rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: var(--transition);
-  font-family: var(--font-body);
-}
-.service-chip:hover,
-.service-chip.selected {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(59,130,246,0.08);
-}
-.service-chip i { font-size: 0.72rem; }
+  .service-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .service-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: clamp(0.72rem, 1.5vw, 0.76rem);
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: var(--font-body);
+    min-height: 36px;
+  }
+  .service-chip:hover, .service-chip.selected { border-color: var(--accent); color: var(--accent); background: rgba(59, 130, 246, 0.08); }
+  .service-chip i { font-size: 0.72rem; }
 
-/* Freelance platform links */
-.platform-list { display: flex; flex-direction: column; gap: 10px; }
-.platform-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 16px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text-muted);
-  font-size: 0.84rem;
-  font-weight: 600;
-  transition: var(--transition);
-  text-decoration: none;
-}
-.platform-link i { font-size: 1.1rem; }
-.platform-link .pl-arrow { margin-left: auto; font-size: 0.75rem; opacity: 0; transition: opacity 0.2s, transform 0.2s; }
-.platform-link:hover { background: var(--bg-glass); transform: translateX(3px); }
-.platform-link:hover .pl-arrow { opacity: 1; transform: translateX(3px); }
-.platform-link.fiverr:hover  { border-color: #1DBF73; color: #1DBF73; }
-.platform-link.upwork:hover  { border-color: #14A800; color: #14A800; }
-.platform-link.wa:hover      { border-color: #25D366; color: #25D366; }
-.platform-link.linkedin:hover { border-color: #0A66C2; color: #0A66C2; }
+  .platform-list { display: flex; flex-direction: column; gap: 8px; }
+  .platform-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: clamp(10px, 2vw, 13px) 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: clamp(0.78rem, 1.7vw, 0.84rem);
+    font-weight: 600;
+    transition: var(--transition);
+    text-decoration: none;
+    min-height: 44px;
+  }
+  .platform-link i { font-size: 1.05rem; flex-shrink: 0; }
+  .platform-link .pl-arrow { margin-left: auto; font-size: 0.75rem; opacity: 0; transition: opacity 0.2s, transform 0.2s; }
+  .platform-link:hover { background: var(--bg-glass); transform: translateX(3px); }
+  .platform-link:hover .pl-arrow { opacity: 1; transform: translateX(3px); }
+  .platform-link.fiverr:hover { border-color: #1DBF73; color: #1DBF73; }
+  .platform-link.upwork:hover { border-color: #14A800; color: #14A800; }
+  .platform-link.wa:hover { border-color: #25D366; color: #25D366; }
+  .platform-link.linkedin:hover { border-color: #0A66C2; color: #0A66C2; }
 
-/* What you'll get card */
-.deliverables-card {
-  background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.05));
-  border: 1px solid rgba(59,130,246,0.18);
-}
-.deliverable-row {
-  display: flex;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-}
-.deliverable-row:last-child { border-bottom: none; padding-bottom: 0; }
-.deliverable-icon {
-  width: 34px; height: 34px;
-  background: rgba(59,130,246,0.1);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
-.deliverable-body { }
-.deliverable-title { font-size: 0.82rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-.deliverable-sub   { font-size: 0.73rem; color: var(--text-muted); line-height: 1.45; }
+  .deliverables-card {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.07), rgba(139, 92, 246, 0.04));
+    border: 1px solid rgba(59, 130, 246, 0.18);
+  }
+  .deliverable-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .deliverable-row:first-of-type { padding-top: 0; }
+  .deliverable-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .deliverable-icon { width: 34px; height: 34px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 0.9rem; flex-shrink: 0; }
+  .deliverable-title { font-size: clamp(0.78rem, 1.7vw, 0.82rem); font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .deliverable-sub { font-size: clamp(0.68rem, 1.4vw, 0.73rem); color: var(--text-muted); line-height: 1.45; }
 
-/* ============================================================
+  /* ============================================================
    FAQ
    ============================================================ */
-.faq-section { padding: 88px 0 100px; border-top: 1px solid var(--border); }
+  .faq-section {
+    padding: clamp(56px, 8vw, 88px) 0 clamp(72px, 10vw, 100px);
+    border-top: 1px solid var(--border);
+  }
+  .faq-accordion { margin-top: clamp(32px, 5vw, 48px); display: flex; flex-direction: column; gap: 10px; }
+  .faq-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.25s; }
+  .faq-item.open { border-color: rgba(59, 130, 246, 0.3); }
+  .faq-trigger {
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: clamp(0.88rem, 2vw, 0.95rem);
+    font-weight: 700;
+    padding: clamp(16px, 3vw, 22px) clamp(18px, 3.5vw, 26px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: var(--transition);
+    line-height: 1.4;
+  }
+  .faq-trigger:hover { color: var(--accent); }
+  .faq-trigger i.faq-icon { font-size: 0.8rem; color: var(--accent); flex-shrink: 0; transition: transform 0.3s ease; }
+  .faq-item.open .faq-trigger i.faq-icon { transform: rotate(45deg); }
+  .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .faq-item.open .faq-body { max-height: 600px; }
+  .faq-answer {
+    padding: 0 clamp(18px, 3.5vw, 26px) clamp(16px, 3vw, 22px);
+    font-size: clamp(0.82rem, 1.8vw, 0.88rem);
+    color: var(--text-muted);
+    line-height: 1.7;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
 
-.faq-accordion { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; }
-
-.faq-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: border-color 0.25s;
-}
-.faq-item.open { border-color: rgba(59,130,246,0.28); }
-
-.faq-trigger {
-  width: 100%;
-  background: none;
-  border: none;
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  font-weight: 700;
-  padding: 22px 26px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  cursor: pointer;
-  text-align: left;
-  transition: var(--transition);
-}
-.faq-trigger:hover { color: var(--accent); }
-.faq-trigger i.faq-icon {
-  font-size: 0.78rem;
-  color: var(--accent);
-  flex-shrink: 0;
-  transition: transform 0.3s ease;
-}
-.faq-item.open .faq-trigger i.faq-icon { transform: rotate(45deg); }
-
-.faq-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.35s ease, padding 0.3s ease;
-}
-.faq-item.open .faq-body { max-height: 240px; }
-
-.faq-answer {
-  padding: 0 26px 22px;
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-  border-top: 1px solid var(--border);
-  padding-top: 18px;
-}
-
-/* ============================================================
+  /* ============================================================
    BOTTOM CTA
    ============================================================ */
-.bottom-cta {
-  background: var(--bg-card);
-  border-top: 1px solid var(--border);
-  padding: 80px 0;
-  text-align: center;
-}
-.bottom-cta-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 14px;
-}
-.bottom-cta-title span {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.bottom-cta-sub {
-  color: var(--text-muted);
-  font-size: 1rem;
-  max-width: 440px;
-  margin: 0 auto 38px;
-  line-height: 1.7;
-}
-.bottom-cta-actions {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+  .bottom-cta {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    padding: clamp(56px, 8vw, 80px) 0;
+    text-align: center;
+    overflow: hidden;
+  }
+  .bottom-cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    padding: 0 16px;
+    line-height: 1.2;
+    color: var(--text);
+  }
+  .bottom-cta-title span {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .bottom-cta-sub {
+    color: var(--text-muted);
+    font-size: clamp(0.88rem, 2vw, 1rem);
+    max-width: 440px;
+    margin: 0 auto clamp(26px, 5vw, 38px);
+    line-height: 1.7;
+    padding: 0 16px;
+  }
+  .bottom-cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; padding: 0 16px; }
+  .bottom-cta-note { margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap; row-gap: 8px; }
+  .cta-note-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 0.72rem; color: var(--text-muted); font-weight: 500; }
+  .cta-note-pill i { color: var(--accent); font-size: 0.7rem; }
 
-/* ============================================================
+  /* ============================================================
    BUTTON GLOBALS
    ============================================================ */
-.btn-primary-cta {
-  background: linear-gradient(135deg, var(--accent), #2563EB);
-  color: #fff;
-  padding: 13px 30px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.92rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 6px 24px rgba(59,130,246,0.3);
-  transition: var(--transition);
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-body);
-}
-.btn-primary-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 36px rgba(59,130,246,0.5);
-  color: #fff;
-}
+  .btn-primary-cta {
+    background: linear-gradient(135deg, var(--accent), #2563EB);
+    color: #fff;
+    padding: 13px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: clamp(0.86rem, 2vw, 0.92rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 6px 24px rgba(59, 130, 246, 0.3);
+    transition: var(--transition);
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    min-height: 46px;
+    white-space: nowrap;
+  }
+  .btn-primary-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(59, 130, 246, 0.5); color: #fff; }
 
-.btn-ghost-cta {
-  background: transparent;
-  color: var(--text-dim);
-  padding: 13px 30px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.92rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid var(--border);
-  transition: var(--transition);
-  text-decoration: none;
-  cursor: pointer;
-  font-family: var(--font-body);
-}
-.btn-ghost-cta:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(59,130,246,0.06);
-}
+  .btn-ghost-cta {
+    background: transparent;
+    color: var(--text-dim);
+    padding: 13px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: clamp(0.86rem, 2vw, 0.92rem);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    text-decoration: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    min-height: 46px;
+    white-space: nowrap;
+  }
+  .btn-ghost-cta:hover { border-color: var(--accent); color: var(--accent); background: rgba(59, 130, 246, 0.06); }
 
-/* ============================================================
+  /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 1024px) {
-  .packages-grid { grid-template-columns: 1fr; gap: 16px; }
-  .inquiry-layout { grid-template-columns: 1fr; }
-  .inquiry-sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; }
-  .deliverables-card { grid-column: 1 / -1; }
-}
-@media (max-width: 768px) {
-  .packages-grid { grid-template-columns: 1fr; }
-  .form-row-2 { grid-template-columns: 1fr; }
-  .budget-grid { grid-template-columns: repeat(3, 1fr); }
-  .inquiry-panel-body { padding: 30px 22px; }
-  .inquiry-sidebar { grid-template-columns: 1fr; }
-  .process-grid { grid-template-columns: 1fr 1fr; }
-  .status-inner { gap: 20px; }
-}
-@media (max-width: 480px) {
-  .process-grid { grid-template-columns: 1fr; }
-  .budget-grid { grid-template-columns: 1fr 1fr; }
-}
+  @media (max-width: 1024px) {
+    .packages-grid { grid-template-columns: 1fr; max-width: 520px; margin-left: auto; margin-right: auto; }
+    .inquiry-layout { grid-template-columns: 1fr; }
+    .inquiry-sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
+    .deliverables-card { grid-column: 1 / -1; }
+  }
+  @media (max-width: 768px) {
+    .packages-grid { max-width: 100%; }
+    .form-row-2 { grid-template-columns: 1fr; }
+    .budget-grid { grid-template-columns: repeat(3, 1fr); }
+    .inquiry-sidebar { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .status-inner { gap: 12px; }
+  }
+  @media (max-width: 480px) {
+    .process-grid { grid-template-columns: 1fr; }
+    .budget-grid { grid-template-columns: 1fr 1fr; }
+    .bottom-cta-actions { flex-direction: column; align-items: stretch; }
+    .btn-primary-cta, .btn-ghost-cta { justify-content: center; }
+    .form-trust { flex-direction: column; align-items: center; gap: 8px; }
+  }
+  @media (min-width: 1440px) {
+    .packages-grid { grid-template-columns: repeat(3, 1fr); max-width: 100%; }
+  }
 
+  .freelance-hero, .status-strip, .fl-section, .faq-section, .bottom-cta { overflow-x: hidden; }
 </style>
 {% endblock %}
 
@@ -924,23 +983,23 @@
     <div class="status-inner">
 
       {% if status %}
-        <div class="status-badge {{ status.status }}">
-          <span class="status-dot-anim"></span>
-          {{ status.get_status_display }}
-        </div>
-        {% if status.note %}
-        <span class="status-note">{{ status.note }}</span>
-        {% endif %}
+      <div class="status-badge {{ status.status }}">
+        <span class="status-dot-anim"></span>
+        {{ status.get_status_display }}
+      </div>
+      {% if status.note %}
+      <span class="status-note">{{ status.note }}</span>
+      {% endif %}
       {% else %}
-        <div class="status-badge available">
-          <span class="status-dot-anim"></span>
-          Currently Available
-        </div>
+      <div class="status-badge available">
+        <span class="status-dot-anim"></span>
+        Currently Available
+      </div>
       {% endif %}
 
       <span class="status-meta"><i class="bi bi-clock"></i> Replies within 24 hrs</span>
-      <span class="status-meta"><i class="bi bi-globe2"></i> Working globally</span>
-      <span class="status-meta"><i class="bi bi-calendar-check"></i> Limited spots open</span>
+      <span class="status-meta hide-xs"><i class="bi bi-globe2"></i> Working globally</span>
+      <span class="status-meta hide-xs"><i class="bi bi-calendar-check"></i> Limited spots open</span>
 
     </div>
   </div>
@@ -1004,22 +1063,35 @@
 <!-- ========================================================
      PRICING PACKAGES
      ======================================================== -->
-<section class="fl-section" style="background:transparent;">
+<section class="fl-section">
   <div class="container">
     <div class="reveal">
       <p class="section-eyebrow">Pricing</p>
       <h2 class="section-title">Packages</h2>
-      <p class="section-subtitle">Starting points — every project is scoped individually. These give you a rough range.</p>
+      <p class="section-subtitle">Rough starting points — every project is scoped individually. These give you a ballpark, not a boundary.</p>
+    </div>
+
+    <!-- Flexible note -->
+    <div class="flexible-note reveal" style="margin-top: 28px; margin-bottom: 0;">
+      <i class="bi bi-stars"></i>
+      <div>
+        <strong>These tiers are a guide, not a gate.</strong> I regularly work on projects that fall well below or well above any number listed here. A $50 script and a $10,000 platform are both welcome conversations. Student projects, MVPs, installment payments, and equity arrangements are all open — just reach out and we'll find something that works.
+      </div>
     </div>
 
     <div class="packages-grid">
 
-      <!-- Basic -->
+      <!-- STARTER -->
       <div class="pkg-card reveal">
-        <p class="pkg-tier">Starter</p>
-        <h3 class="pkg-name">Basic</h3>
-        <div class="pkg-price"><span class="pkg-currency">$</span>200<span class="pkg-suffix">+</span></div>
-        <p class="pkg-desc">Small scripts, single-feature builds, landing pages, or quick automation tasks. Fast turnaround for well-defined work.</p>
+        <p class="pkg-tier">Tier 01</p>
+        <h3 class="pkg-name">Starter</h3>
+        <div class="pkg-price"><span class="pkg-currency">$</span>150<span class="pkg-suffix">+</span></div>
+        <p class="pkg-range">Typical range: $150–$500</p>
+        <p class="pkg-desc">Scripts, landing pages, single-feature builds, quick automation tasks, or student projects. Fast turnaround for well-defined, scoped work.</p>
+        <div class="pkg-flex-note">
+          <i class="bi bi-mortarboard-fill"></i>
+          Great for student projects &amp; quick tasks
+        </div>
         <ul class="pkg-features">
           <li><i class="bi bi-check-circle-fill"></i> Single feature or script</li>
           <li><i class="bi bi-check-circle-fill"></i> Up to 3 revisions</li>
@@ -1034,20 +1106,25 @@
         </a>
       </div>
 
-      <!-- Standard (popular) -->
+      <!-- PRO BUILD (popular) -->
       <div class="pkg-card popular reveal" style="transition-delay:0.08s">
         <span class="pkg-popular-badge">Most Popular</span>
-        <p class="pkg-tier">Standard</p>
+        <p class="pkg-tier">Tier 02</p>
         <h3 class="pkg-name">Pro Build</h3>
-        <div class="pkg-price"><span class="pkg-currency">$</span>800<span class="pkg-suffix">+</span></div>
-        <p class="pkg-desc">Full Django application, AI integration, or multi-feature automation system. The most common project type I work on.</p>
+        <div class="pkg-price"><span class="pkg-currency">$</span>500<span class="pkg-suffix">+</span></div>
+        <p class="pkg-range">Typical range: $500–$2,000</p>
+        <p class="pkg-desc">Full Django application, AI integration, e-commerce store, or multi-feature automation system. The most common project type I work on.</p>
+        <div class="pkg-flex-note">
+          <i class="bi bi-rocket-takeoff-fill"></i>
+          Ideal for MVPs &amp; startup launches
+        </div>
         <ul class="pkg-features">
-          <li><i class="bi bi-check-circle-fill"></i> Full stack Django app</li>
-          <li><i class="bi bi-check-circle-fill"></i> Database design & APIs</li>
-          <li><i class="bi bi-check-circle-fill"></i> Admin panel & CMS</li>
+          <li><i class="bi bi-check-circle-fill"></i> Full-stack Django application</li>
+          <li><i class="bi bi-check-circle-fill"></i> Database design &amp; APIs</li>
+          <li><i class="bi bi-check-circle-fill"></i> Admin panel &amp; CMS</li>
           <li><i class="bi bi-check-circle-fill"></i> Unlimited revisions (in scope)</li>
           <li><i class="bi bi-check-circle-fill"></i> Deployment to your server</li>
-          <li><i class="bi bi-check-circle-fill"></i> 1-week post-launch support</li>
+          <li><i class="bi bi-check-circle-fill"></i> 14-day post-launch support</li>
           <li><i class="bi bi-check-circle-fill"></i> Full documentation</li>
         </ul>
         <a href="#inquiry-form" class="pkg-cta">
@@ -1055,20 +1132,25 @@
         </a>
       </div>
 
-      <!-- Premium -->
+      <!-- ENTERPRISE -->
       <div class="pkg-card reveal" style="transition-delay:0.16s">
-        <p class="pkg-tier">Enterprise</p>
-        <h3 class="pkg-name">Full System</h3>
-        <div class="pkg-price"><span class="pkg-currency">$</span>3k<span class="pkg-suffix">+</span></div>
-        <p class="pkg-desc">SaaS platforms, complex AI systems, e-commerce with payments, or multi-phase product builds. Fully scoped and quoted.</p>
+        <p class="pkg-tier">Tier 03</p>
+        <h3 class="pkg-name">Enterprise</h3>
+        <div class="pkg-price"><span class="pkg-currency">$</span>2k<span class="pkg-suffix">+</span></div>
+        <p class="pkg-range">Typical range: $2,000–$10,000+</p>
+        <p class="pkg-desc">SaaS platforms, complex AI systems, e-commerce with payments, or multi-phase product builds. Fully scoped and milestone-quoted.</p>
+        <div class="pkg-flex-note">
+          <i class="bi bi-people-fill"></i>
+          Milestone payments &amp; NDA available
+        </div>
         <ul class="pkg-features">
-          <li><i class="bi bi-check-circle-fill"></i> Full SaaS / product build</li>
-          <li><i class="bi bi-check-circle-fill"></i> AI / LLM integration</li>
-          <li><i class="bi bi-check-circle-fill"></i> Payments & subscriptions</li>
-          <li><i class="bi bi-check-circle-fill"></i> Multi-role user system</li>
-          <li><i class="bi bi-check-circle-fill"></i> Analytics dashboard</li>
+          <li><i class="bi bi-check-circle-fill"></i> Everything in Pro Build</li>
+          <li><i class="bi bi-check-circle-fill"></i> Architecture planning session</li>
+          <li><i class="bi bi-check-circle-fill"></i> Payments &amp; subscriptions</li>
+          <li><i class="bi bi-check-circle-fill"></i> Advanced AI / LLM integration</li>
+          <li><i class="bi bi-check-circle-fill"></i> Full DevOps &amp; deployment</li>
+          <li><i class="bi bi-check-circle-fill"></i> 30-day post-launch support</li>
           <li><i class="bi bi-check-circle-fill"></i> NDA on request</li>
-          <li><i class="bi bi-check-circle-fill"></i> 1-month post-launch support</li>
         </ul>
         <a href="#inquiry-form" class="pkg-cta">
           <i class="bi bi-arrow-right-circle"></i> Discuss This Project
@@ -1077,8 +1159,8 @@
 
     </div>
 
-    <p class="reveal" style="text-align:center;color:var(--text-muted);font-size:0.82rem;margin-top:24px;transition-delay:0.2s">
-      All prices are starting points. Final cost depends on scope — fill in the form below for a personalised quote.
+    <p class="reveal" style="text-align:center;color:var(--text-muted);font-size:0.82rem;margin-top:22px;transition-delay:0.2s">
+      All prices are starting points. Final cost depends on scope — fill in the form below for a personalised quote. Installment arrangements are open to discussion.
     </p>
   </div>
 </section>
@@ -1094,7 +1176,7 @@
       <p class="section-subtitle">The more detail you share, the faster I can respond with a clear proposal.</p>
     </div>
 
-    <div class="inquiry-layout" style="margin-top:48px;">
+    <div class="inquiry-layout" style="margin-top:clamp(28px,5vw,48px);">
 
       <!-- FORM -->
       <div class="inquiry-panel reveal">
@@ -1131,12 +1213,26 @@
                   <option value="dashboard">Dashboard / CMS</option>
                   <option value="api">Backend / REST API</option>
                   <option value="saas">SaaS Platform</option>
+                  <option value="mvp">MVP / Prototype</option>
+                  <option value="student">Student Project</option>
                   <option value="other">Other / Not Sure</option>
                 </select>
               </div>
-              <div class="field-group">
-                <label for="deadline" class="field-label">Ideal Start / Deadline</label>
-                <input type="date" id="deadline" name="deadline" class="field-input">
+              <div class="form-row-2">
+                <div class="field-group">
+                  <label class="field-label">Preferred Start</label>
+                  <select name="timeline" class="field-select">
+                    <option value="" disabled selected>Select timeline…</option>
+                    <option value="asap">ASAP</option>
+                    <option value="1-week">Within 1 Week</option>
+                    <option value="1-month">Within 1 Month</option>
+                    <option value="flexible">Flexible</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Final Deadline</label>
+                  <input type="date" name="deadline" class="field-input">
+                </div>
               </div>
             </div>
 
@@ -1194,10 +1290,39 @@
               Send Project Inquiry
             </button>
 
+            <div class="form-trust">
+              <span class="form-trust-item"><i class="bi bi-shield-check-fill"></i> No spam, ever</span>
+              <span class="form-trust-item"><i class="bi bi-clock-fill"></i> Reply within 24 hrs</span>
+              <span class="form-trust-item"><i class="bi bi-cash-stack"></i> No commitment yet</span>
+            </div>
+
             {% if success %}
             <div class="form-alert success">
               <i class="bi bi-check-circle-fill"></i>
               <div><strong>Inquiry received!</strong><br>{{ success }}</div>
+            </div>
+            {% endif %}
+
+            <input type="hidden" name="selected_service" value="{{ selected_service.slug }}">
+            <input type="hidden" name="selected_package" value="{{ selected_package.slug }}">
+
+            {% if success_message %}
+            <div class="form-alert success">
+              <i class="bi bi-check-circle-fill"></i>
+              <div>
+                <strong>Request received successfully!</strong><br>
+                Your project inquiry has been submitted. You will receive a response within 24 hours with the next steps.
+              </div>
+            </div>
+            {% endif %}
+
+            {% if error_message %}
+            <div class="form-alert error">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              <div>
+                <strong>Submission failed</strong><br>
+                Please complete all required fields before submitting your project inquiry.
+              </div>
             </div>
             {% endif %}
 
@@ -1208,7 +1333,6 @@
       <!-- SIDEBAR -->
       <aside class="inquiry-sidebar">
 
-        <!-- Service quick-select chips -->
         <div class="side-card reveal">
           <p class="side-card-title"><i class="bi bi-grid-3x3-gap-fill"></i> Services Available</p>
           <div class="service-chips">
@@ -1220,10 +1344,10 @@
             <span class="service-chip"><i class="bi bi-cloud"></i> REST APIs</span>
             <span class="service-chip"><i class="bi bi-database"></i> PostgreSQL</span>
             <span class="service-chip"><i class="bi bi-cpu"></i> SaaS</span>
+            <span class="service-chip"><i class="bi bi-mortarboard"></i> Student MVP</span>
           </div>
         </div>
 
-        <!-- Platform links -->
         <div class="side-card reveal">
           <p class="side-card-title"><i class="bi bi-share-fill"></i> Also Available On</p>
           <div class="platform-list">
@@ -1246,37 +1370,34 @@
           </div>
         </div>
 
-        <!-- What you get -->
         <div class="side-card deliverables-card reveal">
           <p class="side-card-title"><i class="bi bi-check2-all"></i> What You Get</p>
-          <div>
-            <div class="deliverable-row">
-              <div class="deliverable-icon"><i class="bi bi-file-earmark-code"></i></div>
-              <div class="deliverable-body">
-                <p class="deliverable-title">Full Source Code</p>
-                <p class="deliverable-sub">Clean, documented code — yours to own and modify forever.</p>
-              </div>
+          <div class="deliverable-row">
+            <div class="deliverable-icon"><i class="bi bi-file-earmark-code"></i></div>
+            <div>
+              <p class="deliverable-title">Full Source Code</p>
+              <p class="deliverable-sub">Clean, documented code — yours to own and modify forever.</p>
             </div>
-            <div class="deliverable-row">
-              <div class="deliverable-icon" style="background:rgba(16,185,129,0.1);color:var(--green)"><i class="bi bi-rocket-takeoff"></i></div>
-              <div class="deliverable-body">
-                <p class="deliverable-title">Deployment Support</p>
-                <p class="deliverable-sub">Deployed to your server or cloud — I handle the setup.</p>
-              </div>
+          </div>
+          <div class="deliverable-row">
+            <div class="deliverable-icon" style="background:rgba(16,185,129,0.1);color:var(--green)"><i class="bi bi-rocket-takeoff"></i></div>
+            <div>
+              <p class="deliverable-title">Deployment Support</p>
+              <p class="deliverable-sub">Deployed to your server or cloud — I handle the setup.</p>
             </div>
-            <div class="deliverable-row">
-              <div class="deliverable-icon" style="background:rgba(139,92,246,0.1);color:var(--accent-3)"><i class="bi bi-book"></i></div>
-              <div class="deliverable-body">
-                <p class="deliverable-title">Documentation</p>
-                <p class="deliverable-sub">Written guides so you or your team can manage the system.</p>
-              </div>
+          </div>
+          <div class="deliverable-row">
+            <div class="deliverable-icon" style="background:rgba(139,92,246,0.1);color:var(--accent-3)"><i class="bi bi-book"></i></div>
+            <div>
+              <p class="deliverable-title">Documentation</p>
+              <p class="deliverable-sub">Written guides so you or your team can manage the system.</p>
             </div>
-            <div class="deliverable-row">
-              <div class="deliverable-icon" style="background:rgba(245,158,11,0.1);color:#FCD34D"><i class="bi bi-headset"></i></div>
-              <div class="deliverable-body">
-                <p class="deliverable-title">Post-Launch Support</p>
-                <p class="deliverable-sub">Questions, bug fixes, and minor tweaks after handover.</p>
-              </div>
+          </div>
+          <div class="deliverable-row">
+            <div class="deliverable-icon" style="background:rgba(245,158,11,0.1);color:#D97706"><i class="bi bi-headset"></i></div>
+            <div>
+              <p class="deliverable-title">Post-Launch Support</p>
+              <p class="deliverable-sub">Questions, bug fixes, and minor tweaks after handover.</p>
             </div>
           </div>
         </div>
@@ -1311,34 +1432,47 @@
         </div>
       </div>
       {% empty %}
-      <!-- Fallback FAQ items -->
       <div class="faq-item">
         <button class="faq-trigger">How do I know the project will be delivered on time?<i class="bi bi-plus faq-icon"></i></button>
-        <div class="faq-body"><p class="faq-answer">Every project proposal includes a clear milestone schedule. I use staging environments and share progress updates so you're never in the dark. If timelines shift due to scope changes, I'll always notify you in advance with a revised plan.</p></div>
+        <div class="faq-body">
+          <p class="faq-answer">Every project proposal includes a clear milestone schedule. I use staging environments and share progress updates so you're never in the dark. If timelines shift due to scope changes, I'll always notify you in advance with a revised plan.</p>
+        </div>
       </div>
       <div class="faq-item">
         <button class="faq-trigger">What happens if I'm not satisfied with the work?<i class="bi bi-plus faq-icon"></i></button>
-        <div class="faq-body"><p class="faq-answer">Revisions are part of every project. If the delivered work doesn't match the agreed scope, I'll fix it — no extra charge. Scope changes (new features, major redesigns) are discussed and quoted separately before any work begins.</p></div>
+        <div class="faq-body">
+          <p class="faq-answer">Revisions are part of every project. If the delivered work doesn't match the agreed scope, I'll fix it — no extra charge. Scope changes (new features, major redesigns) are discussed and quoted separately before any work begins.</p>
+        </div>
       </div>
       <div class="faq-item">
         <button class="faq-trigger">Do you sign NDAs?<i class="bi bi-plus faq-icon"></i></button>
-        <div class="faq-body"><p class="faq-answer">Yes, absolutely. If your project involves sensitive business logic, proprietary data, or confidential processes, I'm happy to sign an NDA before any technical discussion takes place.</p></div>
+        <div class="faq-body">
+          <p class="faq-answer">Yes, absolutely. If your project involves sensitive business logic, proprietary data, or confidential processes, I'm happy to sign an NDA before any technical discussion takes place.</p>
+        </div>
       </div>
       <div class="faq-item">
         <button class="faq-trigger">How does payment work?<i class="bi bi-plus faq-icon"></i></button>
-        <div class="faq-body"><p class="faq-answer">I typically work on a 50% upfront / 50% on delivery model for fixed-price projects. For larger builds, a milestone-based payment schedule is agreed upfront. I accept Wise, PayPal, Payoneer, bank transfer, Fiverr, and Upwork.</p></div>
+        <div class="faq-body">
+          <p class="faq-answer">I typically work on a 50% upfront / 50% on delivery model for fixed-price projects. For larger builds, a milestone-based payment schedule is agreed upfront. I accept Wise, PayPal, Payoneer, bank transfer, Fiverr, and Upwork. Installment arrangements are also open to discussion for the right projects.</p>
+        </div>
       </div>
       <div class="faq-item">
         <button class="faq-trigger">Can you work with my existing codebase?<i class="bi bi-plus faq-icon"></i></button>
-        <div class="faq-body"><p class="faq-answer">Yes. I regularly onboard into existing Django projects — whether that's fixing bugs, adding features, refactoring legacy code, or integrating third-party APIs. I'll always do a code review before quoting so I understand what I'm working with.</p></div>
+        <div class="faq-body">
+          <p class="faq-answer">Yes. I regularly onboard into existing Django projects — whether that's fixing bugs, adding features, refactoring legacy code, or integrating third-party APIs. I'll always do a code review before quoting so I understand what I'm working with.</p>
+        </div>
       </div>
       <div class="faq-item">
         <button class="faq-trigger">What tech stack do you use?<i class="bi bi-plus faq-icon"></i></button>
-        <div class="faq-body"><p class="faq-answer">My core stack is Python / Django, PostgreSQL, Bootstrap, and REST APIs (Django REST Framework). For AI projects I work with OpenRouter, LangChain, and custom LLM pipelines. Automation projects use Python, Selenium, Celery, and custom schedulers depending on the use case.</p></div>
+        <div class="faq-body">
+          <p class="faq-answer">My core stack is Python / Django, PostgreSQL, Bootstrap, and REST APIs (Django REST Framework). For AI projects I work with OpenRouter, LangChain, and custom LLM pipelines. Automation projects use Python, Selenium, Celery, and custom schedulers depending on the use case.</p>
+        </div>
       </div>
       <div class="faq-item">
         <button class="faq-trigger">What if my project is too small (or too big)?<i class="bi bi-plus faq-icon"></i></button>
-        <div class="faq-body"><p class="faq-answer">No project is too small — I take on short automation scripts and single-feature tasks. For very large, long-running projects, I'll be honest about capacity. If I can't take it on, I'll say so upfront rather than overpromise.</p></div>
+        <div class="faq-body">
+          <p class="faq-answer">No project is too small — I take on short automation scripts and single-feature tasks. Student projects are always welcome. For very large, long-running projects, I'll be honest about capacity. If I can't take it on, I'll say so upfront rather than overpromise.</p>
+        </div>
       </div>
       {% endfor %}
 
@@ -1358,8 +1492,7 @@
         <span>Let's scope it together.</span>
       </h2>
       <p class="bottom-cta-sub">
-        Every project starts with a conversation. Fill in the form above or
-        reach out directly on WhatsApp — no hard sell, just honest talk.
+        Every project starts with a conversation. Fill in the form above or reach out directly on WhatsApp — no hard sell, just honest talk.
       </p>
       <div class="bottom-cta-actions">
         <a href="#inquiry-form" class="btn-primary-cta">
@@ -1371,6 +1504,13 @@
           Chat on WhatsApp
         </a>
       </div>
+      <div class="bottom-cta-note">
+        <span class="cta-note-pill"><i class="bi bi-check-circle-fill"></i> Student projects welcome</span>
+        <span class="cta-note-pill"><i class="bi bi-check-circle-fill"></i> Installment-friendly</span>
+        <span class="cta-note-pill"><i class="bi bi-check-circle-fill"></i> MVPs &amp; startups</span>
+        <span class="cta-note-pill"><i class="bi bi-check-circle-fill"></i> Equity / rev-share open</span>
+        <span class="cta-note-pill"><i class="bi bi-check-circle-fill"></i> Long-term partnerships</span>
+      </div>
     </div>
   </div>
 </div>
@@ -1379,94 +1519,106 @@
 
 {% block extra_js %}
 <script>
-/* ============================================================
-   FAQ ACCORDION
-   ============================================================ */
-document.querySelectorAll('.faq-trigger').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item = btn.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-
-    // Close all
-    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
-
-    // Toggle clicked
-    if (!isOpen) item.classList.add('open');
+  /* ============================================================
+     FAQ ACCORDION
+     ============================================================ */
+  document.querySelectorAll('.faq-trigger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
   });
-});
 
-/* ============================================================
-   INQUIRY FORM — LOADING STATE
-   ============================================================ */
-const inquiryForm = document.getElementById('inquiryForm');
-const inquiryBtn  = document.getElementById('inquirySubmit');
+  /* ============================================================
+     INQUIRY FORM — LOADING STATE
+     ============================================================ */
+  const inquiryForm = document.getElementById('inquiryForm');
+  const inquiryBtn = document.getElementById('inquirySubmit');
 
-inquiryForm?.addEventListener('submit', () => {
-  inquiryBtn.disabled = true;
-  inquiryBtn.innerHTML = `
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-         style="animation:spin 0.7s linear infinite">
-      <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
-    </svg>
-    Sending Inquiry…
-  `;
-});
-
-/* ============================================================
-   PACKAGE CTA — SCROLL TO FORM + PRE-SELECT TYPE
-   ============================================================ */
-document.querySelectorAll('.pkg-cta').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  inquiryForm?.addEventListener('submit', () => {
+    inquiryBtn.disabled = true;
+    inquiryBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+           style="animation:spin 0.7s linear infinite">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+      </svg>
+      Sending Inquiry…
+    `;
   });
-});
 
-/* ============================================================
-   SERVICE CHIPS — MIRROR TO FORM SELECT
-   ============================================================ */
-const chipMap = {
-  'Web Dev':    'website',
-  'AI / LLMs':  'ai',
-  'Automation': 'automation',
-  'E-Commerce': 'ecommerce',
-  'Dashboards': 'dashboard',
-  'REST APIs':  'api',
-  'PostgreSQL': 'django',
-  'SaaS':       'saas',
-};
-
-document.querySelectorAll('.service-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    document.querySelectorAll('.service-chip').forEach(c => c.classList.remove('selected'));
-    chip.classList.add('selected');
-
-    const label = chip.textContent.trim();
-    const val   = chipMap[label];
-    const sel   = document.getElementById('project_type');
-    if (sel && val) sel.value = val;
-
-    document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  /* ============================================================
+     SMOOTH SCROLL for anchor links
+     ============================================================ */
+  document.querySelectorAll('a[href="#inquiry-form"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.getElementById('inquiry-form');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => {
+          const first = target.querySelector('input, select, textarea');
+          first?.focus();
+        }, 600);
+      }
+    });
   });
-});
 
-/* ============================================================
-   SCROLL REVEAL
-   ============================================================ */
-const ro = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      ro.unobserve(e.target);
-    }
+  /* ============================================================
+     PACKAGE CTA — SCROLL TO FORM
+     ============================================================ */
+  document.querySelectorAll('.pkg-cta').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   });
-}, { threshold: 0.08 });
 
-document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+  /* ============================================================
+     SERVICE CHIPS — MIRROR TO FORM SELECT
+     ============================================================ */
+  const chipMap = {
+    'Web Dev': 'website',
+    'AI / LLMs': 'ai',
+    'Automation': 'automation',
+    'E-Commerce': 'ecommerce',
+    'Dashboards': 'dashboard',
+    'REST APIs': 'api',
+    'PostgreSQL': 'django',
+    'SaaS': 'saas',
+    'Student MVP': 'student',
+  };
+
+  document.querySelectorAll('.service-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.service-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      const label = chip.textContent.trim();
+      const val = chipMap[label];
+      const sel = document.getElementById('project_type');
+      if (sel && val) sel.value = val;
+      document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  /* ============================================================
+     SCROLL REVEAL
+     ============================================================ */
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        ro.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.07 });
+
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 </script>
 
 <style>
-@keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 {% endblock %}

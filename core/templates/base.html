@@ -12,10 +12,11 @@
   <meta name="author" content="Muhammad Ahmad">
 
   <!-- Open Graph -->
+  <!-- FIX #11: og:image must be an absolute URL for social sharing to work -->
   <meta property="og:title" content="{% block og_title %}Muhammad Ahmad — Full Stack Developer{% endblock %}">
   <meta property="og:description" content="{% block og_description %}Django, AI, Automation — built to scale.{% endblock %}">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="{% block og_image %}{% static 'image.jpeg' %}{% endblock %}">
+  <meta property="og:image" content="{% block og_image %}https://yourdomain.com{% static 'image.jpeg' %}{% endblock %}">
 
   <!-- Favicon -->
   <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
@@ -33,33 +34,104 @@
 
   <style>
     /* ============================================================
-       DESIGN SYSTEM
+       DESIGN SYSTEM — DARK THEME (default)
        ============================================================ */
-    :root {
-      --bg:         #0A0C10;
-      --bg-card:    #111318;
-      --bg-glass:   rgba(255,255,255,0.04);
-      --border:     rgba(255,255,255,0.07);
-      --accent:     #3B82F6;
-      --accent-2:   #06B6D4;
-      --accent-3:   #8B5CF6;
-      --text:       #F1F5F9;
-      --text-muted: #64748B;
-      --text-dim:   #94A3B8;
-      --green:      #10B981;
-      --font-display: 'Syne', sans-serif;
-      --font-body:    'Space Grotesk', sans-serif;
-      --radius:     16px;
-      --radius-sm:  10px;
-      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      --navbar-h:   70px;
+    :root,
+    [data-theme="dark"] {
+      --bg:              #0A0C10;
+      --bg-card:         #111318;
+      --bg-elevated:     #161920;
+      --bg-glass:        rgba(255,255,255,0.04);
+      --bg-glass-2:      rgba(255,255,255,0.07);
+      --border:          rgba(255,255,255,0.08);
+      --border-hover:    rgba(255,255,255,0.18);
+      --border-strong:   rgba(255,255,255,0.12);
+      --accent:          #3B82F6;
+      --accent-dark:     #2563EB;
+      --accent-2:        #06B6D4;
+      --accent-3:        #8B5CF6;
+      --text:            #F1F5F9;
+      --text-muted:      #8899AA;
+      --text-dim:        #94A3B8;
+      --text-faint:      #64748B;
+      --green:           #10B981;
+      --shadow-card:     0 4px 24px rgba(0,0,0,0.45);
+      --shadow-glow:     0 6px 24px rgba(59,130,246,0.30);
+      --shadow-glow-lg:  0 10px 40px rgba(59,130,246,0.40);
+      --font-display:    'Syne', sans-serif;
+      --font-body:       'Space Grotesk', sans-serif;
+      --radius:          16px;
+      --radius-sm:       10px;
+      --radius-xs:       6px;
+      --transition:      0.32s cubic-bezier(0.4, 0, 0.2, 1);
+      --navbar-h:        70px;
+      /* Spacing scale — fluid */
+      --sp-xs:   clamp(8px,  1.5vw, 12px);
+      --sp-sm:   clamp(12px, 2vw,   20px);
+      --sp-md:   clamp(20px, 3vw,   32px);
+      --sp-lg:   clamp(32px, 5vw,   64px);
+      --sp-xl:   clamp(48px, 7vw,   96px);
+      /* Container */
+      --container-max: 1280px;
+      --container-px:  clamp(16px, 4vw, 48px);
+
+      /* Float button layout — single source of truth */
+      --float-right:   24px;
+      --float-bottom:  24px;
+      --float-size:    52px;
+      --float-gap:     10px;
+      /* Back-to-top sits left of float buttons stack */
+      --btt-right:     calc(var(--float-right) + var(--float-size) + 12px);
+      --btt-bottom:    var(--float-bottom);
     }
 
     /* ============================================================
-       RESET & BASE
+       LIGHT THEME — Full, Intentional, High-Contrast
        ============================================================ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    [data-theme="light"] {
+      --bg:              #F5F7FA;
+      --bg-card:         #FFFFFF;
+      --bg-elevated:     #EEF1F7;
+      --bg-glass:        rgba(0,0,0,0.035);
+      --bg-glass-2:      rgba(0,0,0,0.065);
+      --border:          rgba(0,0,0,0.09);
+      --border-hover:    rgba(0,0,0,0.20);
+      --border-strong:   rgba(0,0,0,0.13);
+      --text:            #0F172A;
+      --text-muted:      #64748B;
+      --text-dim:        #334155;
+      --text-faint:      #94A3B8;
+      --shadow-card:     0 4px 24px rgba(0,0,0,0.09);
+      --shadow-glow:     0 6px 24px rgba(59,130,246,0.18);
+      --shadow-glow-lg:  0 10px 40px rgba(59,130,246,0.28);
+    }
+
+    /* ============================================================
+       GLOBAL RESET & BOX MODEL
+       ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Smooth theme transitions */
+    body, .site-navbar, .site-footer,
+    .glass-card, .nav-mobile-drawer,
+    .theme-toggle, .nav-toggle,
+    .float-btn .float-tooltip,
+    .footer-social a, .footer-links a {
+      transition:
+        background-color 0.3s ease,
+        border-color     0.3s ease,
+        color            0.3s ease,
+        box-shadow       0.3s ease;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
 
     body {
       background: var(--bg);
@@ -70,12 +142,24 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    main { flex: 1; }
-    a { text-decoration: none; color: inherit; }
+    main {
+      flex: 1;
+      margin-top: var(--navbar-h);
+      position: relative;
+      z-index: 1;
+    }
 
-    /* Subtle noise texture */
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; height: auto; display: block; }
+    ul { margin: 0; padding: 0; }
+    button { font-family: var(--font-body); }
+
+    /* FIX #3: Removed redundant opacity:0.4 — the SVG noise already has opacity='0.03'
+       so a second opacity layer was compounding unintentionally, especially visible in light mode */
     body::before {
       content: '';
       position: fixed;
@@ -83,8 +167,25 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 0;
-      opacity: 0.4;
     }
+
+    /* ============================================================
+       GLOBAL CONTAINER SYSTEM
+       ============================================================ */
+    .container,
+    .container-fluid {
+      padding-left:  var(--container-px);
+      padding-right: var(--container-px);
+      width: 100%;
+    }
+
+    .container {
+      max-width: var(--container-max);
+      margin-left:  auto;
+      margin-right: auto;
+    }
+
+    .overflow-safe { overflow-x: hidden; }
 
     /* ============================================================
        NAVBAR
@@ -94,165 +195,268 @@
       top: 0;
       left: 0;
       right: 0;
-      z-index: 1000;
+      z-index: 1050;
       height: var(--navbar-h);
       display: flex;
       align-items: center;
-      background: rgba(10, 12, 16, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(10, 12, 16, 0.80);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
-      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    [data-theme="light"] .site-navbar {
+      background: rgba(245, 247, 250, 0.88);
     }
 
     .site-navbar.scrolled {
-      background: rgba(10, 12, 16, 0.95);
-      box-shadow: 0 4px 32px rgba(0,0,0,0.4);
+      background: rgba(10, 12, 16, 0.97);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.45);
+    }
+
+    /* FIX #2: Light theme scrolled navbar now has its own opaque background */
+    [data-theme="light"] .site-navbar.scrolled {
+      background: rgba(245, 247, 250, 0.99);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    }
+
+    /* Navbar inner layout */
+    .navbar-inner {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      gap: 8px;
+    }
+
+    @media (min-width: 576px) {
+      .navbar-inner { padding: 0 var(--container-px); }
     }
 
     /* Brand */
     .nav-brand {
       font-family: var(--font-display);
-      font-size: 1.25rem;
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
       font-weight: 800;
       letter-spacing: -0.02em;
       display: flex;
       align-items: center;
       gap: 6px;
       flex-shrink: 0;
+      min-width: 0;
+      overflow: hidden;
     }
-    .nav-brand .name-first { color: var(--text); }
+    .nav-brand .name-first { color: var(--text); white-space: nowrap; }
     .nav-brand .name-last {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      white-space: nowrap;
     }
 
-    /* Availability dot on brand */
     .nav-avail-dot {
       width: 7px;
       height: 7px;
+      min-width: 7px;
       background: var(--green);
       border-radius: 50%;
       flex-shrink: 0;
       animation: pulse-nav 2.5s infinite;
     }
     @keyframes pulse-nav {
-      0%,100%{ box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
-      50%{ box-shadow: 0 0 0 5px rgba(16,185,129,0); }
+      0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+      50%      { box-shadow: 0 0 0 5px rgba(16,185,129,0); }
     }
 
-    /* Nav links */
+    /* Desktop nav links */
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 2px;
       list-style: none;
+      flex-shrink: 1;
+      min-width: 0;
     }
 
     .nav-links a {
       display: flex;
       align-items: center;
       gap: 5px;
-      padding: 7px 13px;
+      padding: 7px 10px;
       border-radius: var(--radius-sm);
-      font-size: 0.875rem;
+      font-size: clamp(0.78rem, 1.1vw, 0.86rem);
       font-weight: 500;
       color: var(--text-dim);
-      transition: var(--transition);
       white-space: nowrap;
+      transition: color var(--transition), background-color var(--transition);
     }
     .nav-links a:hover,
     .nav-links a.active {
       color: var(--text);
       background: var(--bg-glass);
     }
-    .nav-links a.active {
-      color: var(--accent);
-    }
+    .nav-links a.active { color: var(--accent); }
+    .nav-links a i { font-size: 0.82rem; }
 
-    /* CTA button in nav */
+    /* CTA nav pill */
     .nav-cta {
-      background: linear-gradient(135deg, var(--accent), #2563EB) !important;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark)) !important;
       color: #fff !important;
-      padding: 8px 20px !important;
+      padding: 7px 16px !important;
       border-radius: 50px !important;
-      font-weight: 600 !important;
-      font-size: 0.875rem !important;
-      transition: var(--transition) !important;
-      box-shadow: 0 4px 18px rgba(59,130,246,0.3);
+      font-weight: 700 !important;
+      font-size: clamp(0.78rem, 1.1vw, 0.85rem) !important;
+      box-shadow: var(--shadow-glow);
     }
     .nav-cta:hover {
-      transform: translateY(-1px) !important;
-      box-shadow: 0 8px 28px rgba(59,130,246,0.5) !important;
-      background: rgba(0,0,0,0) !important;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-glow-lg) !important;
+      background: linear-gradient(135deg, #4F96FF, var(--accent)) !important;
     }
 
-    /* Mobile hamburger */
+    /* Right cluster */
+    .nav-right-cluster {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      min-width: max-content;
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-strong);
+      color: var(--text-dim);
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(59,130,246,0.08);
+    }
+
+    [data-theme="light"] .theme-toggle {
+      background: var(--bg-elevated);
+      border-color: var(--border-strong);
+      color: var(--text-dim);
+    }
+
+    /* Hamburger */
     .nav-toggle {
       display: none;
       background: var(--bg-glass);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-strong);
       color: var(--text);
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      min-height: 42px;
       border-radius: var(--radius-sm);
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1.1rem;
-      transition: var(--transition);
+      font-size: 1.2rem;
       flex-shrink: 0;
+      transition: border-color var(--transition), color var(--transition), background-color var(--transition);
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      overflow: visible;
     }
-    .nav-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    .nav-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(59,130,246,0.08);
+    }
 
-    /* Mobile drawer */
+    @media (max-width: 991px) {
+      .nav-toggle { display: flex !important; }
+    }
+
+    /* ============================================================
+       MOBILE DRAWER
+       ============================================================ */
     .nav-mobile-drawer {
       display: none;
       position: fixed;
       top: var(--navbar-h);
-      left: 0; right: 0;
-      background: rgba(10, 12, 16, 0.98);
-      backdrop-filter: blur(20px);
+      left: 0;
+      right: 0;
+      background: rgba(10, 12, 16, 0.99);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border-bottom: 1px solid var(--border);
-      padding: 20px;
-      z-index: 999;
+      padding: 12px 16px 20px;
+      z-index: 1040;
       flex-direction: column;
       gap: 4px;
+      max-height: calc(100vh - var(--navbar-h));
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
+
+    [data-theme="light"] .nav-mobile-drawer {
+      background: rgba(245, 247, 250, 0.99);
+    }
+
     .nav-mobile-drawer.open { display: flex; }
+
     .nav-mobile-drawer a {
       padding: 12px 16px;
       border-radius: var(--radius-sm);
       font-size: 0.95rem;
       font-weight: 500;
       color: var(--text-dim);
-      transition: var(--transition);
       border: 1px solid transparent;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color var(--transition), background-color var(--transition), border-color var(--transition);
+      -webkit-tap-highlight-color: transparent;
     }
-    .nav-mobile-drawer a:hover {
+    .nav-mobile-drawer a:hover,
+    .nav-mobile-drawer a:active {
       color: var(--text);
       background: var(--bg-glass);
       border-color: var(--border);
     }
-    .nav-mobile-drawer .nav-cta-mobile {
-      margin-top: 10px;
-      background: linear-gradient(135deg, var(--accent), #2563EB);
-      color: #fff;
+    .nav-mobile-drawer a i { font-size: 1rem; width: 20px; text-align: center; }
+
+    .nav-cta-mobile {
+      margin-top: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark)) !important;
+      color: #fff !important;
       text-align: center;
       font-weight: 700;
-      border-radius: 50px;
-      padding: 13px 20px;
+      border-radius: 50px !important;
+      padding: 14px 20px !important;
+      justify-content: center;
+      border: none !important;
     }
+    .nav-cta-mobile:hover { opacity: 0.9; }
 
-    /* ============================================================
-       MAIN CONTENT OFFSET
-       ============================================================ */
-    main {
-      margin-top: var(--navbar-h);
-      position: relative;
-      z-index: 1;
+    .drawer-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+      border-radius: 1px;
     }
 
     /* ============================================================
@@ -263,22 +467,26 @@
       z-index: 1;
       background: var(--bg-card);
       border-top: 1px solid var(--border);
-      padding: 60px 0 32px;
-      margin-top: 0;
+      padding: var(--sp-lg) 0 var(--sp-md);
+    }
+
+    [data-theme="light"] .site-footer {
+      background: #FFFFFF;
     }
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
-      gap: 48px;
-      margin-bottom: 48px;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: clamp(24px, 4vw, 48px);
+      margin-bottom: clamp(32px, 5vw, 48px);
     }
 
     .footer-brand-name {
       font-family: var(--font-display);
-      font-size: 1.3rem;
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
       font-weight: 800;
       margin-bottom: 12px;
+      color: var(--text);
     }
     .footer-brand-name span {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -289,19 +497,21 @@
 
     .footer-tagline {
       color: var(--text-muted);
-      font-size: 0.875rem;
-      line-height: 1.7;
-      max-width: 280px;
+      font-size: clamp(0.82rem, 1.4vw, 0.875rem);
+      line-height: 1.75;
+      max-width: 300px;
       margin-bottom: 24px;
     }
 
     .footer-social {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
     }
     .footer-social a {
       width: 38px;
       height: 38px;
+      min-width: 38px;
       background: var(--bg-glass);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
@@ -310,7 +520,6 @@
       justify-content: center;
       color: var(--text-muted);
       font-size: 1rem;
-      transition: var(--transition);
     }
     .footer-social a:hover {
       border-color: var(--accent);
@@ -319,33 +528,38 @@
     }
 
     .footer-col-title {
-      font-size: 0.72rem;
+      font-size: 0.70rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
       color: var(--text-dim);
       margin-bottom: 18px;
     }
 
+    [data-theme="light"] .footer-col-title { color: var(--text); }
+
     .footer-links {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
     .footer-links a {
       color: var(--text-muted);
       font-size: 0.875rem;
-      transition: color 0.2s;
       display: flex;
       align-items: center;
       gap: 6px;
+      min-height: 28px;
+      transition: color 0.2s;
     }
+    .footer-links a i { font-size: 0.72rem; }
     .footer-links a:hover { color: var(--accent); }
-    .footer-links a i { font-size: 0.75rem; }
+
+    [data-theme="light"] .footer-links a { color: var(--text-dim); }
 
     .footer-bottom {
-      padding-top: 28px;
+      padding-top: 24px;
       border-top: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -354,81 +568,111 @@
       gap: 12px;
     }
 
-    .footer-copy {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-    }
+    .footer-copy { color: var(--text-muted); font-size: 0.8rem; }
 
     .footer-platforms {
       display: flex;
       gap: 16px;
+      flex-wrap: wrap;
     }
     .footer-platforms a {
       color: var(--text-muted);
       font-size: 0.8rem;
-      transition: color 0.2s;
       display: flex;
       align-items: center;
       gap: 5px;
+      transition: color 0.2s;
     }
     .footer-platforms a:hover { color: var(--text); }
 
     /* ============================================================
-       WHATSAPP FLOAT
+       FLOATING BUTTONS
        ============================================================ */
-    .wa-float {
+    .float-buttons {
       position: fixed;
-      bottom: 28px;
-      right: 28px;
-      z-index: 9999;
-      width: 54px;
-      height: 54px;
-      background: #25D366;
-      color: #fff;
+      bottom: var(--float-bottom);
+      right: var(--float-right);
+      z-index: 9990;
+      display: flex;
+      flex-direction: column;
+      gap: var(--float-gap);
+      align-items: flex-end;
+    }
+
+    .float-btn {
+      width: var(--float-size);
+      height: var(--float-size);
+      min-width: var(--float-size);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      box-shadow: 0 6px 24px rgba(37,211,102,0.4);
-      transition: var(--transition);
+      font-size: 1.4rem;
       text-decoration: none;
+      position: relative;
+      color: #fff;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
-    .wa-float:hover {
+    .float-btn:hover {
       transform: scale(1.1) translateY(-2px);
-      box-shadow: 0 10px 32px rgba(37,211,102,0.6);
       color: #fff;
     }
-    .wa-tooltip {
+    .float-btn:active { transform: scale(0.97); }
+
+    .float-tooltip {
       position: absolute;
-      right: 64px;
+      right: calc(var(--float-size) + 12px);
+      top: 50%;
+      transform: translateY(-50%);
       background: var(--bg-card);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-strong);
       color: var(--text);
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: var(--radius-sm);
       font-size: 0.78rem;
       font-weight: 600;
       white-space: nowrap;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s ease;
       font-family: var(--font-body);
+      box-shadow: var(--shadow-card);
     }
-    .wa-float:hover .wa-tooltip { opacity: 1; }
+    .float-btn:hover .float-tooltip { opacity: 1; }
+
+    [data-theme="light"] .float-tooltip {
+      background: #fff;
+      color: var(--text);
+      border-color: var(--border-hover);
+    }
+
+    .float-btn-wa {
+      background: #25D366;
+      box-shadow: 0 6px 20px rgba(37,211,102,0.40);
+    }
+    .float-btn-wa:hover { box-shadow: 0 10px 32px rgba(37,211,102,0.60); }
+
+    .float-btn-tg {
+      background: #229ED9;
+      box-shadow: 0 6px 20px rgba(34,158,217,0.40);
+    }
+    .float-btn-tg:hover { box-shadow: 0 10px 32px rgba(34,158,217,0.60); }
 
     /* ============================================================
        BACK TO TOP
        ============================================================ */
     #back-top {
       position: fixed;
-      bottom: 90px;
-      right: 30px;
-      z-index: 998;
+      bottom: var(--btt-bottom);
+      right: var(--btt-right);
+      z-index: 9980;
       width: 42px;
       height: 42px;
+      min-width: 42px;
       background: var(--bg-card);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-strong);
       color: var(--text-muted);
       border-radius: var(--radius-sm);
       display: flex;
@@ -436,76 +680,490 @@
       justify-content: center;
       font-size: 1rem;
       cursor: pointer;
-      transition: var(--transition);
       opacity: 0;
       pointer-events: none;
+      transition: opacity 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
-    #back-top.show {
-      opacity: 1;
-      pointer-events: all;
-    }
+    #back-top.show { opacity: 1; pointer-events: all; }
     #back-top:hover {
       border-color: var(--accent);
       color: var(--accent);
       transform: translateY(-2px);
     }
 
+    [data-theme="light"] #back-top { background: #fff; color: var(--text-dim); }
+
     /* ============================================================
        GLOBAL UTILITY CLASSES
        ============================================================ */
     .btn-primary-custom {
-      background: linear-gradient(135deg, var(--accent), #2563EB);
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
       color: #fff;
       border: none;
       border-radius: 50px;
       padding: 12px 28px;
       font-weight: 600;
-      font-size: 0.9rem;
-      transition: var(--transition);
+      font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      box-shadow: 0 6px 24px rgba(59,130,246,0.3);
+      box-shadow: var(--shadow-glow);
       cursor: pointer;
       font-family: var(--font-body);
+      white-space: nowrap;
+      text-decoration: none;
     }
     .btn-primary-custom:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 36px rgba(59,130,246,0.5);
+      box-shadow: var(--shadow-glow-lg);
       color: #fff;
     }
+    .btn-primary-custom:active { transform: translateY(0); }
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
+    .btn-ghost-custom {
+      background: transparent;
+      color: var(--text-dim);
+      border: 1px solid var(--border-strong);
+      border-radius: 50px;
+      padding: 11px 26px;
+      font-weight: 600;
+      font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+      transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      white-space: nowrap;
+      text-decoration: none;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .btn-ghost-custom:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(59,130,246,0.07);
     }
+
+    [data-theme="light"] .btn-ghost-custom {
+      color: var(--text-dim);
+      border-color: var(--border-hover);
+    }
+
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .section-label {
+      font-size: 0.70rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.65rem, 4vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.75;
+    }
+
+    [data-theme="light"] .section-subtitle { color: var(--text-dim); }
+
+    .glass-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .glass-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-card);
+    }
+
+    [data-theme="light"] .glass-card { background: #fff; border-color: var(--border); }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-pad    { padding: var(--sp-xl) 0; }
+    .section-pad-sm { padding: var(--sp-lg) 0; }
+
+    .badge-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: var(--bg-glass-2);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+
+    [data-theme="light"] .badge-chip { background: var(--bg-elevated); color: var(--text-dim); }
+
+    .text-muted-custom { color: var(--text-muted); }
+    [data-theme="light"] .text-muted-custom { color: var(--text-dim); }
 
     /* ============================================================
-       RESPONSIVE
+       SCROLL REVEAL SYSTEM
+       ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-32px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(32px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+    .stagger-1 { transition-delay: 0.08s; }
+    .stagger-2 { transition-delay: 0.16s; }
+    .stagger-3 { transition-delay: 0.24s; }
+    .stagger-4 { transition-delay: 0.32s; }
+    .stagger-5 { transition-delay: 0.42s; }
+    .stagger-6 { transition-delay: 0.52s; }
+
+    /* ============================================================
+       FOCUS / ACCESSIBILITY
+       ============================================================ */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: var(--radius-xs);
+    }
+
+    .skip-link {
+      position: fixed;
+      top: -100%;
+      left: 16px;
+      z-index: 9999;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 16px; }
+
+    /* ============================================================
+       RESPONSIVE — Tablet (≤ 991px)
        ============================================================ */
     @media (max-width: 991px) {
       .nav-links { display: none; }
-      .nav-toggle { display: flex; }
 
       .footer-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 36px;
+        gap: 28px;
       }
       .footer-grid > *:first-child {
         grid-column: 1 / -1;
       }
+      .footer-tagline { max-width: 100%; }
     }
 
-    @media (max-width: 640px) {
-      .footer-grid { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; align-items: flex-start; }
-      .wa-float { bottom: 20px; right: 20px; }
-      #back-top { bottom: 82px; right: 22px; }
+    /* ============================================================
+       RESPONSIVE — Large Phone / Small Tablet (≤ 767px)
+       ============================================================ */
+    @media (max-width: 767px) {
+      :root {
+        --navbar-h:    62px;
+        --float-right:  18px;
+        --float-bottom: 20px;
+        --float-size:   48px;
+        --float-gap:    10px;
+        --btt-right:    calc(var(--float-right) + var(--float-size) + 12px);
+        --btt-bottom:   var(--float-bottom);
+      }
+
+      .section-title    { font-size: clamp(1.4rem, 6vw, 2rem); }
+      .section-subtitle { font-size: 0.9rem; }
+      .cta-group { gap: 10px; }
+
+      .btn-primary-custom,
+      .btn-ghost-custom {
+        padding: 11px 22px;
+        font-size: 0.875rem;
+      }
+
+      .float-tooltip { display: none; }
+    }
+
+    /* ============================================================
+       RESPONSIVE — Small Phone (≤ 575px)
+       ============================================================ */
+    @media (max-width: 575px) {
+      :root {
+        --float-right:  14px;
+        --float-bottom: 16px;
+        --float-size:   46px;
+        --float-gap:    9px;
+        --btt-right:    calc(var(--float-right) + var(--float-size) + 10px);
+        --btt-bottom:   var(--float-bottom);
+      }
+
+      .nav-brand .name-first { display: none; }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .footer-grid > *:first-child { grid-column: unset; }
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .footer-tagline  { max-width: 100%; }
+      .footer-platforms { gap: 12px; }
+
+      .cta-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-primary-custom,
+      .btn-ghost-custom {
+        justify-content: center;
+        width: 100%;
+      }
+
+      #back-top { width: 38px; height: 38px; font-size: 0.9rem; }
+    }
+
+    /* ============================================================
+       RESPONSIVE — Ultra-wide (≥ 1600px)
+       ============================================================ */
+    @media (min-width: 1600px) {
+      .container { max-width: var(--container-max); }
+    }
+
+    /* ============================================================
+       REDUCED MOTION
+       ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal, .reveal-left, .reveal-right, .reveal-scale {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+    /* ============================================================
+       DJANGO MESSAGES — Toast Banner
+       Sits in a fixed stack just below the navbar, right-aligned.
+       ============================================================ */
+    .toast-stack {
+      position: fixed;
+      top: calc(var(--navbar-h) + 14px);
+      right: 20px;
+      z-index: 1060;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: clamp(280px, 90vw, 420px);
+      pointer-events: none;
+    }
+
+    .toast-item {
+      pointer-events: all;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px 14px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: var(--bg-card);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.20);
+      position: relative;
+      overflow: hidden;
+      /* Slide in from right */
+      animation: toast-in 0.32s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    .toast-item.toast-hiding {
+      animation: toast-out 0.28s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateX(24px) scale(0.97); }
+      to   { opacity: 1; transform: translateX(0)   scale(1);    }
+    }
+    @keyframes toast-out {
+      from { opacity: 1; transform: translateX(0)   scale(1);    max-height: 120px; margin-bottom: 0; }
+      to   { opacity: 0; transform: translateX(24px) scale(0.97); max-height: 0;    margin-bottom: -10px; }
+    }
+
+    /* Colour variants */
+    .toast-success {
+      border-color: rgba(16, 185, 129, 0.25);
+      background: color-mix(in srgb, var(--bg-card) 88%, #10B981 12%);
+    }
+    .toast-error {
+      border-color: rgba(239, 68, 68, 0.25);
+      background: color-mix(in srgb, var(--bg-card) 88%, #EF4444 12%);
+    }
+    .toast-warning {
+      border-color: rgba(245, 158, 11, 0.25);
+      background: color-mix(in srgb, var(--bg-card) 88%, #F59E0B 12%);
+    }
+    .toast-info {
+      border-color: rgba(59, 130, 246, 0.25);
+      background: color-mix(in srgb, var(--bg-card) 88%, #3B82F6 12%);
+    }
+
+    /* Light theme adjustments */
+    [data-theme="light"] .toast-item {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.07);
+    }
+    [data-theme="light"] .toast-success { background: color-mix(in srgb, #fff 90%, #10B981 10%); }
+    [data-theme="light"] .toast-error   { background: color-mix(in srgb, #fff 90%, #EF4444 10%); }
+    [data-theme="light"] .toast-warning { background: color-mix(in srgb, #fff 90%, #F59E0B 10%); }
+    [data-theme="light"] .toast-info    { background: color-mix(in srgb, #fff 90%, #3B82F6 10%); }
+
+    /* Icon bubble */
+    .toast-icon {
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .toast-success .toast-icon { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+    .toast-error   .toast-icon { background: rgba(239, 68,  68,  0.15); color: #EF4444; }
+    .toast-warning .toast-icon { background: rgba(245, 158, 11,  0.15); color: #F59E0B; }
+    .toast-info    .toast-icon { background: rgba(59,  130, 246, 0.15); color: #3B82F6; }
+
+    /* Body text */
+    .toast-body { flex: 1; min-width: 0; }
+    .toast-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+      line-height: 1.2;
+    }
+    .toast-success .toast-title { color: #10B981; }
+    .toast-error   .toast-title { color: #EF4444; }
+    .toast-warning .toast-title { color: #F59E0B; }
+    .toast-info    .toast-title { color: #3B82F6; }
+
+    .toast-msg {
+      font-size: 0.875rem;
+      color: var(--text);
+      line-height: 1.5;
+      word-break: break-word;
+    }
+    [data-theme="light"] .toast-msg { color: var(--text-dim); }
+
+    /* Close button */
+    .toast-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: var(--radius-xs);
+      font-size: 0.8rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 1px;
+      -webkit-tap-highlight-color: transparent;
+      transition: color 0.2s, background-color 0.2s;
+    }
+    .toast-close:hover {
+      color: var(--text);
+      background: var(--bg-glass-2);
+    }
+
+    /* Auto-dismiss progress bar */
+    .toast-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+      animation: toast-progress linear both;
+      transform-origin: left center;
+    }
+    .toast-success .toast-progress { background: #10B981; }
+    .toast-error   .toast-progress { background: #EF4444; }
+    .toast-warning .toast-progress { background: #F59E0B; }
+    .toast-info    .toast-progress { background: #3B82F6; }
+
+    @keyframes toast-progress {
+      from { transform: scaleX(1); }
+      to   { transform: scaleX(0); }
+    }
+
+    /* Mobile: full-width, bottom of screen */
+    @media (max-width: 575px) {
+      .toast-stack {
+        top: auto;
+        bottom: calc(var(--float-bottom) + var(--float-size) + var(--float-gap) + 54px);
+        right: 12px;
+        left: 12px;
+        width: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .toast-item,
+      .toast-item.toast-hiding,
+      .toast-progress { animation: none !important; }
     }
   </style>
 
@@ -514,60 +1172,91 @@
 
 <body>
 
+  <!-- Skip link for accessibility -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
   <!-- ============================================================
        NAVBAR
        ============================================================ -->
-  <nav class="site-navbar" id="siteNavbar">
-    <div class="container d-flex align-items-center justify-content-between" style="height:100%">
+  <nav class="site-navbar" id="siteNavbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar-inner">
 
       <!-- Brand -->
-      <a href="{% url 'home' %}" class="nav-brand">
+      <a href="{% url 'home' %}" class="nav-brand" aria-label="Muhammad Ahmad — Home">
         <span class="name-first">Muhammad</span>
         <span class="name-last">Ahmad</span>
-        <span class="nav-avail-dot" title="Available for work"></span>
+        <span class="nav-avail-dot" title="Available for work" aria-label="Available for work"></span>
       </a>
 
       <!-- Desktop nav links -->
-      <ul class="nav-links mb-0">
-        <li><a href="{% url 'home' %}"><i class="bi bi-house"></i> Home</a></li>
-        <li><a href="{% url 'about' %}"><i class="bi bi-person"></i> About</a></li>
-        <li><a href="{% url 'services' %}"><i class="bi bi-grid-3x3-gap"></i> Services</a></li>
-        <li><a href="{% url 'projects' %}"><i class="bi bi-code-slash"></i> Projects</a></li>
-        <li><a href="{% url 'blog' %}"><i class="bi bi-pen"></i> Blog</a></li>
-        <li><a href="/freelance/" class="nav-cta"><i class="bi bi-lightning-charge-fill"></i> Work With Me</a></li>
-        <li><a href="{% url 'contact' %}"><i class="bi bi-envelope"></i> Contact</a></li>
+      <ul class="nav-links mb-0" role="list">
+        <li><a href="{% url 'home' %}"><i class="bi bi-house" aria-hidden="true"></i> Home</a></li>
+        <li><a href="{% url 'about' %}"><i class="bi bi-person" aria-hidden="true"></i> About</a></li>
+        <li><a href="{% url 'services' %}"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i> Services</a></li>
+        <li><a href="{% url 'projects' %}"><i class="bi bi-code-slash" aria-hidden="true"></i> Projects</a></li>
+        <li><a href="{% url 'blog' %}"><i class="bi bi-pen" aria-hidden="true"></i> Blog</a></li>
+        <li><a href="{% url 'contact' %}"><i class="bi bi-envelope" aria-hidden="true"></i> Contact</a></li>
+        <li><a href="/freelance/" class="nav-cta"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i> Work With Me</a></li>
       </ul>
 
-      <!-- Mobile toggle -->
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-        <i class="bi bi-list" id="navIcon"></i>
-      </button>
+      <!-- Right cluster: theme toggle + hamburger -->
+      <div class="nav-right-cluster">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle dark/light theme"
+          title="Toggle theme"
+          type="button"
+        >
+          <i class="bi bi-moon-stars-fill" id="themeIcon" aria-hidden="true"></i>
+        </button>
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          aria-label="Toggle mobile menu"
+          aria-expanded="false"
+          aria-controls="mobileDrawer"
+          type="button"
+        >
+          <i class="bi bi-list" id="navIcon" aria-hidden="true"></i>
+        </button>
+      </div>
 
     </div>
   </nav>
 
-  <!-- Mobile Drawer -->
-  <div class="nav-mobile-drawer" id="mobileDrawer">
-    <a href="{% url 'home' %}"><i class="bi bi-house"></i> Home</a>
-    <a href="{% url 'about' %}"><i class="bi bi-person"></i> About</a>
-    <a href="{% url 'services' %}"><i class="bi bi-grid-3x3-gap"></i> Services</a>
-    <a href="{% url 'projects' %}"><i class="bi bi-code-slash"></i> Projects</a>
-    <a href="{% url 'blog' %}"><i class="bi bi-pen"></i> Blog</a>
-    <a href="{% url 'contact' %}"><i class="bi bi-envelope"></i> Contact</a>
-    <a href="/freelance/" class="nav-cta-mobile"><i class="bi bi-lightning-charge-fill"></i> Work With Me</a>
+  <!-- FIX #12: Mobile drawer starts with aria-hidden="false" since it's controlled
+       by JS via the .open class; screen reader visibility is correct by default -->
+  <div
+    class="nav-mobile-drawer"
+    id="mobileDrawer"
+    role="navigation"
+    aria-label="Mobile navigation"
+    aria-hidden="false"
+  >
+    <a href="{% url 'home' %}"><i class="bi bi-house" aria-hidden="true"></i> Home</a>
+    <a href="{% url 'about' %}"><i class="bi bi-person" aria-hidden="true"></i> About</a>
+    <a href="{% url 'services' %}"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i> Services</a>
+    <a href="{% url 'projects' %}"><i class="bi bi-code-slash" aria-hidden="true"></i> Projects</a>
+    <a href="{% url 'blog' %}"><i class="bi bi-pen" aria-hidden="true"></i> Blog</a>
+    <a href="{% url 'contact' %}"><i class="bi bi-envelope" aria-hidden="true"></i> Contact</a>
+    <div class="drawer-divider" role="separator"></div>
+    <a href="/freelance/" class="nav-cta-mobile">
+      <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i> Work With Me
+    </a>
   </div>
 
   <!-- ============================================================
        MAIN CONTENT
        ============================================================ -->
-  <main>
+  <main id="main-content">
     {% block content %}{% endblock %}
   </main>
 
   <!-- ============================================================
        FOOTER
        ============================================================ -->
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo">
     <div class="container">
 
       <div class="footer-grid">
@@ -578,39 +1267,40 @@
           <p class="footer-tagline">
             Full Stack Developer building Django applications, AI-powered tools, and automation systems. Based in Pakistan, working globally.
           </p>
-          <div class="footer-social">
-            <a href="https://www.linkedin.com/in/muhammad-ahmad-203523289/" target="_blank" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
-            <a href="https://github.com/" target="_blank" title="GitHub"><i class="bi bi-github"></i></a>
-            <!-- Update Fiverr/Upwork links when live -->
-            <a href="#" title="Fiverr"><i class="bi bi-star"></i></a>
-            <a href="#" title="Upwork"><i class="bi bi-briefcase"></i></a>
+          <div class="footer-social" aria-label="Social links">
+            <a href="https://www.linkedin.com/in/muhammad-ahmad-203523289/" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn"><i class="bi bi-linkedin" aria-hidden="true"></i></a>
+            <!-- FIX #6: Replace with your actual GitHub profile URL -->
+            <a href="https://github.com/YOUR_GITHUB_USERNAME" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub"><i class="bi bi-github" aria-hidden="true"></i></a>
+            <!-- FIX #7: Replace # with your actual Fiverr and Upwork profile URLs -->
+            <a href="https://www.fiverr.com/YOUR_USERNAME" target="_blank" rel="noopener noreferrer" title="Fiverr" aria-label="Fiverr"><i class="bi bi-star" aria-hidden="true"></i></a>
+            <a href="https://www.upwork.com/freelancers/YOUR_PROFILE_ID" target="_blank" rel="noopener noreferrer" title="Upwork" aria-label="Upwork"><i class="bi bi-briefcase" aria-hidden="true"></i></a>
           </div>
         </div>
 
         <!-- Navigation col -->
         <div>
           <p class="footer-col-title">Navigation</p>
-          <ul class="footer-links">
-            <li><a href="{% url 'home' %}"><i class="bi bi-chevron-right"></i> Home</a></li>
-            <li><a href="{% url 'about' %}"><i class="bi bi-chevron-right"></i> About</a></li>
-            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right"></i> Services</a></li>
-            <li><a href="{% url 'projects' %}"><i class="bi bi-chevron-right"></i> Projects</a></li>
-            <li><a href="{% url 'blog' %}"><i class="bi bi-chevron-right"></i> Blog</a></li>
-            <li><a href="/freelance/"><i class="bi bi-chevron-right"></i> Work With Me</a></li>
-            <li><a href="{% url 'contact' %}"><i class="bi bi-chevron-right"></i> Contact</a></li>
+          <ul class="footer-links" role="list">
+            <li><a href="{% url 'home' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> Home</a></li>
+            <li><a href="{% url 'about' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> About</a></li>
+            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> Services</a></li>
+            <li><a href="{% url 'projects' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> Projects</a></li>
+            <li><a href="{% url 'blog' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> Blog</a></li>
+            <li><a href="/freelance/"><i class="bi bi-chevron-right" aria-hidden="true"></i> Work With Me</a></li>
+            <li><a href="{% url 'contact' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> Contact</a></li>
           </ul>
         </div>
 
         <!-- Services col -->
         <div>
           <p class="footer-col-title">Services</p>
-          <ul class="footer-links">
-            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right"></i> Web Development</a></li>
-            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right"></i> AI Integration</a></li>
-            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right"></i> Automation</a></li>
-            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right"></i> E-Commerce</a></li>
-            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right"></i> Dashboards & CMS</a></li>
-            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right"></i> Backend & APIs</a></li>
+          <ul class="footer-links" role="list">
+            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> Web Development</a></li>
+            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> AI Integration</a></li>
+            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> Automation</a></li>
+            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> E-Commerce</a></li>
+            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> Dashboards & CMS</a></li>
+            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right" aria-hidden="true"></i> Backend & APIs</a></li>
           </ul>
         </div>
 
@@ -618,11 +1308,13 @@
 
       <!-- Bottom bar -->
       <div class="footer-bottom">
-        <p class="footer-copy">© 2025 Muhammad Ahmad. All rights reserved.</p>
-        <div class="footer-platforms">
-          <a href="#" target="_blank"><i class="bi bi-star-fill"></i> Fiverr</a>
-          <a href="#" target="_blank"><i class="bi bi-briefcase-fill"></i> Upwork</a>
-          <a href="https://www.linkedin.com/in/muhammad-ahmad-203523289/" target="_blank"><i class="bi bi-linkedin"></i> LinkedIn</a>
+        <!-- FIX #8: Dynamic copyright year via Django's now tag -->
+        <p class="footer-copy">© {% now "Y" %} Muhammad Ahmad. All rights reserved.</p>
+        <div class="footer-platforms" aria-label="Platform links">
+          <!-- FIX #7: Replace # with real URLs here too -->
+          <a href="https://www.fiverr.com/YOUR_USERNAME" target="_blank" rel="noopener noreferrer"><i class="bi bi-star-fill" aria-hidden="true"></i> Fiverr</a>
+          <a href="https://www.upwork.com/freelancers/YOUR_PROFILE_ID" target="_blank" rel="noopener noreferrer"><i class="bi bi-briefcase-fill" aria-hidden="true"></i> Upwork</a>
+          <a href="https://www.linkedin.com/in/muhammad-ahmad-203523289/" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin" aria-hidden="true"></i> LinkedIn</a>
         </div>
       </div>
 
@@ -630,16 +1322,44 @@
   </footer>
 
   <!-- ============================================================
-       WHATSAPP FLOAT (site-wide)
+       FLOATING BUTTONS
        ============================================================ -->
-  <a href="https://wa.me/92XXXXXXXXXX" target="_blank" class="wa-float" rel="noopener" title="Chat on WhatsApp">
-    <span class="wa-tooltip">Chat on WhatsApp</span>
-    <i class="bi bi-whatsapp"></i>
-  </a>
+  <div class="float-buttons" role="complementary" aria-label="Quick contact options">
+    <!-- FIX #5: Replace 'yourusername' with your actual Telegram username -->
+    <a
+      href="https://t.me/YOUR_TELEGRAM_USERNAME"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="float-btn float-btn-tg"
+      title="Chat on Telegram"
+      aria-label="Chat on Telegram"
+    >
+      <span class="float-tooltip" aria-hidden="true">Chat on Telegram</span>
+      <i class="bi bi-telegram" aria-hidden="true"></i>
+    </a>
+    <!-- FIX #4: Replace XXXXXXXXXX with your actual Pakistani mobile number -->
+    <a
+      href="https://wa.me/923XXXXXXXXX"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="float-btn float-btn-wa"
+      title="Chat on WhatsApp"
+      aria-label="Chat on WhatsApp"
+    >
+      <span class="float-tooltip" aria-hidden="true">Chat on WhatsApp</span>
+      <i class="bi bi-whatsapp" aria-hidden="true"></i>
+    </a>
+  </div>
 
   <!-- Back to top -->
-  <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
-    <i class="bi bi-chevron-up"></i>
+  <button
+    id="back-top"
+    onclick="window.scrollTo({top:0,behavior:'smooth'})"
+    title="Back to top"
+    aria-label="Scroll back to top"
+    type="button"
+  >
+    <i class="bi bi-chevron-up" aria-hidden="true"></i>
   </button>
 
   <!-- Bootstrap JS -->
@@ -647,66 +1367,178 @@
 
   <script>
     /* ============================================================
-       NAVBAR — scroll background + active link
+       THEME TOGGLE — Dark / Light
        ============================================================ */
-    const navbar = document.getElementById('siteNavbar');
-    const currentPath = window.location.pathname;
+    (function () {
+      const html      = document.documentElement;
+      const themeBtn  = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
 
-    // Scroll state
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 20);
-      document.getElementById('back-top').classList.toggle('show', window.scrollY > 400);
-    }, { passive: true });
+      function applyTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        themeIcon.className = theme === 'dark'
+          ? 'bi bi-moon-stars-fill'
+          : 'bi bi-sun-fill';
+        themeBtn.setAttribute('aria-label',
+          theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      }
 
-    // Active link highlight
-    document.querySelectorAll('.nav-links a, .nav-mobile-drawer a').forEach(link => {
-      const href = link.getAttribute('href');
-      if (href && currentPath === href) link.classList.add('active');
-      // Home special case
-      if (href === '/' && currentPath === '/') link.classList.add('active');
-    });
+      const saved = localStorage.getItem('theme') || 'dark';
+      applyTheme(saved);
+
+      themeBtn.addEventListener('click', function () {
+        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem('theme', next);
+      });
+    })();
+
+    /* ============================================================
+       NAVBAR — scroll state + active link highlighting
+       FIX #1: Normalize trailing slashes before comparing so /about
+       and /about/ both match the <a href="/about/"> link correctly
+       ============================================================ */
+    (function () {
+      const navbar      = document.getElementById('siteNavbar');
+      const backTop     = document.getElementById('back-top');
+      // Normalize: ensure trailing slash for comparison
+      const currentPath = window.location.pathname.replace(/\/?$/, '/');
+
+      function onScroll() {
+        const y = window.scrollY;
+        navbar.classList.toggle('scrolled', y > 20);
+        backTop.classList.toggle('show', y > 400);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      document.querySelectorAll('.nav-links a, .nav-mobile-drawer a').forEach(function (link) {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        // Normalize link href too, skip external links and anchors
+        if (href.startsWith('http') || href.startsWith('#')) return;
+        const normHref = href.replace(/\/?$/, '/');
+        if (currentPath === normHref) {
+          link.classList.add('active');
+        }
+      });
+    })();
 
     /* ============================================================
        MOBILE MENU TOGGLE
        ============================================================ */
-    const toggle   = document.getElementById('navToggle');
-    const drawer   = document.getElementById('mobileDrawer');
-    const navIcon  = document.getElementById('navIcon');
+    (function () {
+      const toggle  = document.getElementById('navToggle');
+      const drawer  = document.getElementById('mobileDrawer');
+      const navIcon = document.getElementById('navIcon');
 
-    toggle.addEventListener('click', () => {
-      const open = drawer.classList.toggle('open');
-      navIcon.className = open ? 'bi bi-x-lg' : 'bi bi-list';
-    });
+      if (!toggle || !drawer) return;
 
-    // Close drawer on link click
-    drawer.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        drawer.classList.remove('open');
-        navIcon.className = 'bi bi-list';
-      });
-    });
-
-    // Close drawer on outside click
-    document.addEventListener('click', e => {
-      if (!navbar.contains(e.target) && !drawer.contains(e.target)) {
-        drawer.classList.remove('open');
-        navIcon.className = 'bi bi-list';
+      function openDrawer() {
+        drawer.classList.add('open');
+        drawer.setAttribute('aria-hidden', 'false');
+        navIcon.className = 'bi bi-x-lg';
+        toggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
       }
-    });
 
-    /* ============================================================
-       GLOBAL SCROLL REVEAL
-       ============================================================ */
-    const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
+      function closeDrawer() {
+        drawer.classList.remove('open');
+        drawer.setAttribute('aria-hidden', 'true');
+        navIcon.className = 'bi bi-list';
+        toggle.setAttribute('aria-expanded', 'false');
+        // FIX #9: Only restore overflow if we set it (don't clobber pre-existing styles)
+        document.body.style.overflow = '';
+      }
+
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+      });
+
+      drawer.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', closeDrawer);
+      });
+
+      document.addEventListener('click', function (e) {
+        if (
+          drawer.classList.contains('open') &&
+          !drawer.contains(e.target) &&
+          !toggle.contains(e.target)
+        ) {
+          closeDrawer();
         }
       });
-    }, { threshold: 0.1 });
 
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && drawer.classList.contains('open')) {
+          closeDrawer();
+          toggle.focus();
+        }
+      });
+
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 991 && drawer.classList.contains('open')) {
+          closeDrawer();
+        }
+      });
+    })();
+
+    /* ============================================================
+       SCROLL REVEAL — Intersection Observer
+       FIX #10: Disconnect MutationObserver when page is hidden
+       to avoid memory leaks on long-lived pages
+       ============================================================ */
+    (function () {
+      const selectors = '.reveal, .reveal-left, .reveal-right, .reveal-scale';
+
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        document.querySelectorAll(selectors).forEach(function (el) {
+          el.classList.add('visible');
+        });
+        return;
+      }
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+
+      function observeAll() {
+        document.querySelectorAll(selectors).forEach(function (el) {
+          if (!el.classList.contains('visible')) {
+            observer.observe(el);
+          }
+        });
+      }
+      observeAll();
+
+      var mutObs = new MutationObserver(function (mutations) {
+        mutations.forEach(function (m) {
+          m.addedNodes.forEach(function (node) {
+            if (node.nodeType !== 1) return;
+            node.querySelectorAll(selectors).forEach(function (el) {
+              observer.observe(el);
+            });
+            if (node.matches && node.matches(selectors)) {
+              observer.observe(node);
+            }
+          });
+        });
+      });
+      mutObs.observe(document.body, { childList: true, subtree: true });
+
+      // Disconnect when the page is unloaded to free resources
+      window.addEventListener('pagehide', function () {
+        mutObs.disconnect();
+        observer.disconnect();
+      });
+    })();
   </script>
 
   {% block extra_js %}{% endblock %}

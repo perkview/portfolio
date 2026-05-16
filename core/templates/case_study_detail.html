@@ -11,19 +11,43 @@
 {% block extra_head %}
 <style>
 /* ============================================================
-   CASE STUDY DETAIL — DESIGN SYSTEM EXTENSION
+   CASE STUDY DETAIL — DESIGN TOKENS
    ============================================================ */
+:root {
+  --csd-hero-pt:   clamp(64px, 9vw, 96px);
+  --csd-hero-pb:   clamp(52px, 7vw, 76px);
+  --csd-section-r: 16px;
+  --csd-body-fs:   clamp(0.9rem, 2vw, 0.97rem);
+  --csd-cover-h:   clamp(220px, 35vw, 440px);
+}
 
-/* READING PROGRESS */
-#read-progress { position:fixed; top:70px; left:0; right:0; height:3px; background:var(--border); z-index:999; }
-#read-progress-fill { height:100%; width:0%; background:linear-gradient(90deg, var(--accent-3), var(--accent), var(--accent-2)); transition:width 0.1s linear; }
+/* ============================================================
+   READING PROGRESS BAR
+   ============================================================ */
+#read-progress {
+  position: fixed;
+  top: 60px;         /* sits just below the fixed navbar */
+  left: 0; right: 0;
+  height: 3px;
+  background: var(--border);
+  z-index: 1100;
+}
+#read-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-3), var(--accent), var(--accent-2));
+  transition: width 0.1s linear;
+}
 
-/* PAGE HERO */
+/* ============================================================
+   PAGE HERO
+   ============================================================ */
 .cs-hero {
   position: relative;
-  padding: 88px 0 70px;
+  padding: var(--csd-hero-pt) 0 var(--csd-hero-pb);
   overflow: hidden;
   text-align: center;
+  border-bottom: 1px solid var(--border);
 }
 .cs-hero .grid-bg {
   position: absolute; inset: 0;
@@ -34,297 +58,721 @@
   pointer-events: none;
 }
 .cs-hero-orb-1 {
-  position: absolute; width:550px; height:550px;
+  position: absolute;
+  width: clamp(280px, 50vw, 550px);
+  height: clamp(280px, 50vw, 550px);
   background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%);
-  top: -200px; left: 50%; transform: translateX(-50%);
+  top: -30%; left: 50%; transform: translateX(-50%);
   pointer-events: none;
 }
 .cs-hero-orb-2 {
-  position: absolute; width:350px; height:350px;
+  position: absolute;
+  width: clamp(200px, 30vw, 350px);
+  height: clamp(200px, 30vw, 350px);
   background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
-  bottom: -100px; right: -80px;
+  bottom: -20%; right: -6%;
   pointer-events: none;
 }
 .cs-hero-inner {
   position: relative; z-index: 2;
-  max-width: 820px; margin: 0 auto; padding: 0 20px;
-}
-
-/* BREADCRUMB */
-.breadcrumb-row {
-  display: flex; align-items: center; justify-content: center;
-  gap: 8px; margin-bottom: 20px;
-  font-size: 0.78rem; color: var(--text-muted);
-}
-.breadcrumb-row a { color: var(--text-muted); transition: color 0.2s; }
-.breadcrumb-row a:hover { color: var(--accent); }
-.breadcrumb-row i { font-size: 0.65rem; }
-
-/* HERO META ROW */
-.hero-meta-row {
-  display: flex; align-items: center; justify-content: center;
-  flex-wrap: wrap; gap: 12px; margin-top: 28px;
-}
-.hero-chip {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--bg-card); border: 1px solid var(--border);
-  color: var(--text-dim); padding: 5px 14px;
-  border-radius: 50px; font-size: 0.78rem; font-weight: 500;
-}
-.hero-chip.project {
-  background: rgba(139,92,246,0.1); border-color: rgba(139,92,246,0.22);
-  color: #A78BFA;
-}
-
-/* HERO TAGS */
-.hero-tag-row {
-  display: flex; gap: 8px; flex-wrap: wrap;
-  justify-content: center; margin-top: 20px;
-}
-.hero-tag {
-  background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.18);
-  color: #93C5FD; padding: 4px 12px; border-radius: 50px;
-  font-size: 0.72rem; font-weight: 600;
-}
-
-/* COVER */
-.cover-wrap {
-  max-width: 900px; margin: 0 auto 64px; padding: 0 20px;
-  position: relative; z-index: 2;
-}
-.cover-img {
-  width: 100%; height: 440px; object-fit: cover;
-  border-radius: var(--radius); border: 1px solid var(--border); display: block;
-}
-
-/* OUTCOME METRICS STRIP */
-.metrics-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1px; background: var(--border);
-  border: 1px solid var(--border); border-radius: var(--radius);
-  overflow: hidden; margin-bottom: 60px;
-}
-.metric-item {
-  background: var(--bg-card); padding: 32px 24px; text-align: center;
-  transition: var(--transition); position: relative; overflow: hidden;
-}
-.metric-item:hover { background: rgba(59,130,246,0.04); }
-.metric-num {
-  font-family: var(--font-display); font-size: 2rem; font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; line-height: 1; margin-bottom: 6px;
-}
-.metric-label { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; }
-
-/* MAIN LAYOUT */
-.cs-layout {
-  display: grid; grid-template-columns: 1fr 300px;
-  gap: 44px; align-items: start;
-  padding-bottom: 100px;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 5vw, 24px);
 }
 
 /* ============================================================
-   SECTION BLOCKS
+   BREADCRUMB
+   ============================================================ */
+.breadcrumb-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: clamp(14px, 3vw, 20px);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.breadcrumb-row a {
+  color: var(--text-muted);
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.breadcrumb-row a:hover { color: var(--accent); }
+.breadcrumb-row i { font-size: 0.65rem; }
+.breadcrumb-current { color: var(--text-dim); }
+
+/* Hero title */
+.cs-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 5vw, 3.2rem);
+  line-height: 1.12;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* ============================================================
+   HERO META ROW
+   ============================================================ */
+.hero-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: clamp(20px, 3.5vw, 28px);
+}
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 5px 14px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+.hero-chip.project {
+  background: rgba(139,92,246,0.1);
+  border-color: rgba(139,92,246,0.22);
+  color: #A78BFA;
+}
+
+/* ============================================================
+   HERO TAGS
+   ============================================================ */
+.hero-tag-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: clamp(14px, 2.5vw, 20px);
+}
+.hero-tag {
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  color: var(--accent);
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* ============================================================
+   COVER IMAGE
+   ============================================================ */
+.cover-wrap {
+  max-width: 920px;
+  margin: 0 auto clamp(40px, 7vw, 64px);
+  padding: 0 clamp(16px, 4vw, 24px);
+  position: relative;
+  z-index: 2;
+}
+.cover-img {
+  width: 100%;
+  height: var(--csd-cover-h);
+  object-fit: cover;
+  border-radius: var(--csd-section-r);
+  border: 1px solid var(--border);
+  display: block;
+}
+
+/* ============================================================
+   OUTCOME METRICS STRIP
+   ============================================================ */
+.metrics-section {
+  margin-bottom: clamp(40px, 7vw, 60px);
+}
+.metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--csd-section-r);
+  overflow: hidden;
+}
+.metric-item {
+  background: var(--bg-card);
+  padding: clamp(20px, 4vw, 32px) clamp(14px, 3vw, 24px);
+  text-align: center;
+  transition: var(--transition);
+}
+.metric-item:hover { background: rgba(59,130,246,0.04); }
+.metric-num {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3.5vw, 2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 6px;
+  word-break: break-word;
+}
+.metric-label {
+  font-size: clamp(0.65rem, 1.5vw, 0.78rem);
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+.cs-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: clamp(24px, 4vw, 44px);
+  align-items: start;
+  padding-bottom: clamp(60px, 10vw, 100px);
+}
+
+/* ============================================================
+   CONTENT SECTION BLOCKS
    ============================================================ */
 .cs-section {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius); overflow: hidden;
-  margin-bottom: 24px; transition: var(--transition);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--csd-section-r);
+  overflow: hidden;
+  margin-bottom: clamp(16px, 2.5vw, 24px);
+  transition: var(--transition);
 }
 .cs-section:hover { border-color: rgba(59,130,246,0.2); }
 
 .cs-section-header {
-  padding: 24px 32px 0;
-  display: flex; align-items: center; gap: 14px;
+  padding: clamp(18px, 3.5vw, 24px) clamp(20px, 4vw, 32px) 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 .cs-section-icon {
-  width: 40px; height: 40px; border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; flex-shrink: 0;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }
 .cs-section-label {
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--text-dim);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
 }
 .cs-section-title {
-  font-family: var(--font-display); font-size: 1.1rem; font-weight: 800;
-  color: var(--text); letter-spacing: -0.01em; margin-top: 2px;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-top: 2px;
 }
 
 .cs-section-body {
-  padding: 20px 32px 32px;
-  font-size: 0.97rem; line-height: 1.82; color: var(--text-muted);
+  padding: clamp(14px, 2.5vw, 20px) clamp(20px, 4vw, 32px) clamp(22px, 4vw, 32px);
+  font-size: var(--csd-body-fs);
+  line-height: 1.82;
+  color: var(--text-muted);
 }
 .cs-section-body p { margin-bottom: 1.2em; }
 .cs-section-body p:last-child { margin-bottom: 0; }
 .cs-section-body strong { color: var(--text); font-weight: 600; }
-.cs-section-body ul { padding-left: 1.4em; }
+.cs-section-body ul { padding-left: 1.4em; margin-bottom: 1.2em; }
 .cs-section-body li { margin-bottom: 0.5em; }
-.cs-section-body a { color: var(--accent-2); text-decoration: underline; text-underline-offset: 3px; }
+.cs-section-body a {
+  color: var(--accent-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-/* Section colour accents */
-.icon-problem  { background: rgba(239,68,68,0.1);   border: 1px solid rgba(239,68,68,0.2);   color: #F87171; }
-.icon-approach { background: rgba(59,130,246,0.1);  border: 1px solid rgba(59,130,246,0.2);  color: var(--accent); }
-.icon-tech     { background: rgba(139,92,246,0.1);  border: 1px solid rgba(139,92,246,0.2);  color: #A78BFA; }
-.icon-outcome  { background: rgba(16,185,129,0.1);  border: 1px solid rgba(16,185,129,0.2);  color: var(--green); }
-.icon-lessons  { background: rgba(251,191,36,0.1);  border: 1px solid rgba(251,191,36,0.2);  color: #FCD34D; }
+/* Section colour accents — left border + icon */
+.icon-problem  { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.2);  color: #F87171; }
+.icon-approach { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); color: var(--accent); }
+.icon-tech     { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); color: #A78BFA; }
+.icon-outcome  { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: var(--green); }
+.icon-lessons  { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2); color: #FCD34D; }
 
-/* Left border accent per section */
 .cs-section.s-problem  { border-left: 3px solid rgba(239,68,68,0.5); }
 .cs-section.s-approach { border-left: 3px solid rgba(59,130,246,0.5); }
 .cs-section.s-tech     { border-left: 3px solid rgba(139,92,246,0.5); }
 .cs-section.s-outcome  { border-left: 3px solid rgba(16,185,129,0.5); }
 .cs-section.s-lessons  { border-left: 3px solid rgba(251,191,36,0.5); }
 
-/* TECH STACK PILLS inside tech section */
-.tech-pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+/* Tech stack pills */
+.tech-pill-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
 .tech-pill {
-  background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.22);
-  color: #A78BFA; padding: 5px 14px; border-radius: 50px;
-  font-size: 0.75rem; font-weight: 600;
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.22);
+  color: #A78BFA;
+  padding: 5px 14px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
-/* PROJECT LINKS row */
+/* Project links */
 .project-links-row {
-  display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 22px;
 }
 .proj-link {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: var(--bg-glass); border: 1px solid var(--border);
-  color: var(--text-dim); padding: 9px 18px; border-radius: 50px;
-  font-size: 0.82rem; font-weight: 600; transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 9px 18px;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: var(--transition);
   text-decoration: none;
+  min-height: 38px;
 }
-.proj-link:hover { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.06); }
-.proj-link.github:hover { border-color: #6e7681; color: #f0f6fc; }
-.proj-link.live:hover   { border-color: var(--green); color: var(--green); }
+.proj-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(59,130,246,0.06);
+}
+.proj-link.github:hover {
+  border-color: rgba(99,110,123,0.6);
+  color: var(--text);
+  background: rgba(110,118,129,0.1);
+}
+.proj-link.live:hover {
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(16,185,129,0.06);
+}
 
 /* ============================================================
    SIDEBAR
    ============================================================ */
-.sidebar {
-  position: sticky; top: 90px;
-  display: flex; flex-direction: column; gap: 22px;
+.cs-sidebar {
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .sidebar-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--csd-section-r);
+  overflow: hidden;
 }
 .sidebar-card-header {
   padding: 18px 22px 0;
 }
 .sidebar-card-title {
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--text-dim);
-  margin-bottom: 14px; display: flex; align-items: center; gap: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .sidebar-card-title::before {
-  content: ''; width: 16px; height: 1px; background: var(--accent); flex-shrink: 0;
+  content: '';
+  width: 16px; height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
 }
 
 /* Quick facts */
 .quick-facts {
   padding: 4px 22px 20px;
-  display: flex; flex-direction: column; gap: 0;
+  display: flex;
+  flex-direction: column;
 }
 .qf-row {
-  display: flex; align-items: flex-start;
-  justify-content: space-between; gap: 12px;
-  padding: 11px 0; border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
   font-size: 0.82rem;
 }
 .qf-row:last-child { border-bottom: none; }
-.qf-label { color: var(--text-muted); flex-shrink: 0; }
-.qf-value { color: var(--text); font-weight: 600; text-align: right; }
+.qf-label { color: var(--text-muted); flex-shrink: 0; white-space: nowrap; }
+.qf-value {
+  color: var(--text);
+  font-weight: 600;
+  text-align: right;
+  word-break: break-word;
+  min-width: 0;
+}
 
 /* TOC */
-.toc-list { list-style: none; padding: 0 22px 18px; }
+.toc-list {
+  list-style: none;
+  padding: 0 22px 18px;
+  margin: 0;
+}
 .toc-list li { margin: 0; }
 .toc-list a {
-  display: block; padding: 7px 0 7px 12px;
-  font-size: 0.8rem; color: var(--text-muted);
-  border-left: 2px solid var(--border); transition: var(--transition);
-  line-height: 1.4; text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 0 7px 12px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border-left: 2px solid var(--border);
+  transition: var(--transition);
+  line-height: 1.4;
+  text-decoration: none;
 }
-.toc-list a:hover, .toc-list a.active {
-  color: var(--accent); border-left-color: var(--accent); padding-left: 16px;
+.toc-list a:hover,
+.toc-list a.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  padding-left: 16px;
 }
 
-/* Hire CTA card */
-.sidebar-cta {
-  background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.08));
-  border: 1px solid rgba(59,130,246,0.2); border-radius: var(--radius);
-  padding: 28px 22px; text-align: center; position: relative; overflow: hidden;
+/* Sidebar CTA card */
+.sidebar-cta-card {
+  background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.07));
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: var(--csd-section-r);
+  padding: clamp(22px, 4vw, 28px) clamp(18px, 3.5vw, 22px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
-.sidebar-cta::before {
-  content: ''; position: absolute;
+.sidebar-cta-card::before {
+  content: '';
+  position: absolute;
   top: -60px; left: 50%; transform: translateX(-50%);
   width: 180px; height: 180px;
   background: radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 70%);
   pointer-events: none;
 }
 .sidebar-cta-title {
-  font-family: var(--font-display); font-size: 1.05rem; font-weight: 800;
-  color: var(--text); margin-bottom: 8px; letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+  position: relative;
 }
 .sidebar-cta-sub {
-  font-size: 0.79rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.55;
+  font-size: 0.79rem;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+  line-height: 1.55;
+  position: relative;
+}
+.btn-sidebar-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), #2563EB);
+  color: #fff !important;
+  padding: 11px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: var(--transition);
+  min-height: 44px;
+  position: relative;
+}
+.btn-sidebar-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(59,130,246,0.4);
+}
+.btn-sidebar-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 10px;
+  background: transparent;
+  color: var(--text-dim) !important;
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: var(--transition);
+  min-height: 40px;
+  position: relative;
+}
+.btn-sidebar-ghost:hover {
+  border-color: rgba(59,130,246,0.4);
+  color: var(--accent) !important;
+  background: rgba(59,130,246,0.06);
+}
+
+/* Share card */
+.share-links {
+  padding: 4px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.share-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 9px 18px;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: var(--transition);
+  text-decoration: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  min-height: 40px;
+}
+.share-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(59,130,246,0.06);
+}
+.share-link.copied {
+  border-color: var(--green);
+  color: var(--green) !important;
+  background: rgba(16,185,129,0.06);
 }
 
 /* ============================================================
-   BOTTOM SECTION DIVIDER & NEXT CTA
+   SECTION DIVIDER
+   ============================================================ */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ============================================================
+   BOTTOM CTA
    ============================================================ */
 .cs-bottom-cta {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 22px; padding: 64px 56px;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 36px; flex-wrap: wrap; position: relative; overflow: hidden;
-  margin-bottom: 100px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: clamp(36px, 6vw, 64px) clamp(28px, 6vw, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(24px, 4vw, 36px);
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+  margin-top: clamp(48px, 8vw, 80px);
+  margin-bottom: clamp(60px, 10vw, 100px);
 }
 .cs-bottom-cta::before {
-  content: ''; position: absolute;
-  top: -100px; left: -100px; width: 400px; height: 400px;
+  content: '';
+  position: absolute;
+  top: -100px; left: -100px;
+  width: 400px; height: 400px;
   background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 .cs-bottom-cta::after {
-  content: ''; position: absolute;
-  bottom: -80px; right: -80px; width: 350px; height: 350px;
+  content: '';
+  position: absolute;
+  bottom: -80px; right: -80px;
+  width: 350px; height: 350px;
   background: radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
+
+.cs-cta-text {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 220px;
+}
 .cs-cta-text h2 {
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.8vw, 1.9rem);
-  font-weight: 800; letter-spacing: -0.02em;
-  margin-bottom: 10px; line-height: 1.15;
+  font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  line-height: 1.15;
+  color: var(--text);
 }
 .cs-cta-text h2 span {
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.cs-cta-text p { color: var(--text-muted); font-size: 0.92rem; max-width: 420px; }
-.cs-cta-actions { display: flex; gap: 12px; flex-wrap: wrap; flex-shrink: 0; position: relative; z-index: 1; }
-
-/* SECTION DIVIDER */
-.section-divider { width: 100%; height: 1px; background: var(--border); }
-
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .cs-layout { grid-template-columns: 1fr; }
-  .sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .sidebar .sidebar-cta { grid-column: 1 / -1; }
+.cs-cta-text p {
+  color: var(--text-muted);
+  font-size: clamp(0.88rem, 1.8vw, 0.92rem);
+  max-width: 420px;
+  line-height: 1.65;
 }
+
+.cs-cta-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--accent), #2563EB);
+  color: #fff !important;
+  padding: 13px 26px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: clamp(0.84rem, 2vw, 0.9rem);
+  box-shadow: 0 6px 24px rgba(59,130,246,0.3);
+  transition: var(--transition);
+  text-decoration: none;
+  min-height: 46px;
+}
+.btn-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(59,130,246,0.45);
+}
+
+.btn-cta-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-dim) !important;
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: clamp(0.84rem, 2vw, 0.9rem);
+  transition: var(--transition);
+  text-decoration: none;
+  min-height: 46px;
+}
+.btn-cta-ghost:hover {
+  border-color: rgba(59,130,246,0.4);
+  color: var(--accent) !important;
+  background: rgba(59,130,246,0.06);
+}
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* Tablet: collapse sidebar below content */
+@media (max-width: 1024px) {
+  .cs-layout {
+    grid-template-columns: 1fr;
+  }
+  .cs-sidebar {
+    position: static;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .cs-sidebar .sidebar-cta-card {
+    grid-column: 1 / -1;
+  }
+  /* Metrics strip: 2×2 grid */
+  .metrics-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
-  .cs-section-header { padding: 20px 22px 0; }
-  .cs-section-body { padding: 16px 22px 26px; }
-  .cs-bottom-cta { flex-direction: column; padding: 40px 28px; }
-  .cover-img { height: 240px; }
-  .sidebar { grid-template-columns: 1fr; }
+  .cs-section-header {
+    padding: clamp(16px, 4vw, 20px) clamp(16px, 4vw, 22px) 0;
+  }
+  .cs-section-body {
+    padding: 14px clamp(16px, 4vw, 22px) clamp(18px, 4vw, 26px);
+  }
+  .cs-sidebar {
+    grid-template-columns: 1fr;
+  }
+  .cs-bottom-cta {
+    flex-direction: column;
+    text-align: center;
+  }
+  .cs-cta-text p { max-width: 100%; }
+  .cs-cta-actions {
+    justify-content: center;
+    width: 100%;
+  }
+  .btn-cta-primary,
+  .btn-cta-ghost {
+    flex: 1;
+    justify-content: center;
+    min-width: 140px;
+  }
+  .cover-img {
+    border-radius: 12px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 500px) {
+  .metrics-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .btn-cta-primary,
+  .btn-cta-ghost {
+    width: 100%;
+    flex: none;
+  }
+  .cs-cta-actions {
+    flex-direction: column;
+  }
+  .project-links-row {
+    flex-direction: column;
+  }
+  .proj-link {
+    justify-content: center;
+  }
+}
+
+/* Ultra-wide */
+@media (min-width: 1400px) {
+  .cs-layout {
+    grid-template-columns: 1fr 320px;
+    gap: 52px;
+  }
 }
 </style>
 {% endblock %}
@@ -334,9 +782,9 @@
 <!-- READING PROGRESS -->
 <div id="read-progress"><div id="read-progress-fill"></div></div>
 
-<!-- =========================================================
+<!-- ============================================================
      HERO
-     ========================================================= -->
+     ============================================================ -->
 <section class="cs-hero">
   <div class="grid-bg"></div>
   <div class="cs-hero-orb-1"></div>
@@ -349,17 +797,15 @@
       <i class="bi bi-chevron-right"></i>
       <a href="{% url 'case_studies' %}">Case Studies</a>
       <i class="bi bi-chevron-right"></i>
-      <span style="color:var(--text-dim);">{{ case.title|truncatewords:6 }}</span>
+      <span class="breadcrumb-current">{{ case.title|truncatewords:6 }}</span>
     </div>
 
-    <div class="hero-status" style="margin-bottom:22px;">
+    <div class="hero-status" style="margin-bottom: clamp(16px, 3vw, 22px);">
       <span class="status-dot"></span>
       Engineering Breakdown
     </div>
 
-    <h1 class="hero-name" style="font-size:clamp(1.8rem,4.5vw,3.2rem);line-height:1.12;">
-      {{ case.title }}
-    </h1>
+    <h1 class="cs-hero-title">{{ case.title }}</h1>
 
     <div class="hero-meta-row">
       {% if case.project %}
@@ -398,28 +844,23 @@
 <!-- COVER IMAGE -->
 {% if case.cover_image %}
 <div class="cover-wrap reveal">
-  <img src="{{ case.cover_image.url }}" alt="{{ case.title }}" class="cover-img">
+  <img src="{{ case.cover_image.url }}" alt="{{ case.title }}" class="cover-img" loading="eager">
 </div>
 {% endif %}
 
-<!-- =========================================================
-     OUTCOME METRICS (if available)
-     ========================================================= -->
-{% if case.metrics %}
-<div class="container reveal" style="margin-bottom:60px;">
+<!-- ============================================================
+     OUTCOME METRICS
+     ============================================================ -->
+<div class="container reveal metrics-section">
   <div class="metrics-strip">
-    {% for m in case.metrics %}
-    <div class="metric-item">
-      <div class="metric-num">{{ m.value }}</div>
-      <div class="metric-label">{{ m.label }}</div>
-    </div>
-    {% endfor %}
-  </div>
-</div>
-{% else %}
-<!-- Fallback static metrics if no dynamic model field -->
-<div class="container reveal" style="margin-bottom:60px;">
-  <div class="metrics-strip">
+    {% if case.metrics %}
+      {% for m in case.metrics %}
+      <div class="metric-item">
+        <div class="metric-num">{{ m.value }}</div>
+        <div class="metric-label">{{ m.label }}</div>
+      </div>
+      {% endfor %}
+    {% else %}
     <div class="metric-item">
       <div class="metric-num">&lt; 800ms</div>
       <div class="metric-label">Response Time</div>
@@ -436,21 +877,23 @@
       <div class="metric-num">{{ case.tags_list|length }}+</div>
       <div class="metric-label">Technologies Used</div>
     </div>
+    {% endif %}
   </div>
 </div>
-{% endif %}
 
-<!-- =========================================================
+<!-- ============================================================
      MAIN CONTENT LAYOUT
-     ========================================================= -->
+     ============================================================ -->
 <div class="container">
   <div class="cs-layout" id="csBody">
 
-    <!-- ===== LEFT: SECTIONS ===== -->
+    <!-- ====================================================
+         CONTENT SECTIONS (left column)
+         ==================================================== -->
     <div>
 
       <!-- PROBLEM -->
-      <div class="cs-section s-problem reveal">
+      <div class="cs-section s-problem reveal" id="section-problem">
         <div class="cs-section-header">
           <div class="cs-section-icon icon-problem">
             <i class="bi bi-exclamation-triangle"></i>
@@ -466,7 +909,7 @@
       </div>
 
       <!-- APPROACH -->
-      <div class="cs-section s-approach reveal">
+      <div class="cs-section s-approach reveal" id="section-approach">
         <div class="cs-section-header">
           <div class="cs-section-icon icon-approach">
             <i class="bi bi-lightbulb"></i>
@@ -482,7 +925,7 @@
       </div>
 
       <!-- TECH DECISIONS -->
-      <div class="cs-section s-tech reveal">
+      <div class="cs-section s-tech reveal" id="section-tech">
         <div class="cs-section-header">
           <div class="cs-section-icon icon-tech">
             <i class="bi bi-cpu"></i>
@@ -494,7 +937,6 @@
         </div>
         <div class="cs-section-body">
           {{ case.tech_decisions|linebreaks }}
-
           {% if case.tags_list %}
           <div class="tech-pill-row">
             {% for tag in case.tags_list %}
@@ -506,7 +948,7 @@
       </div>
 
       <!-- OUTCOME -->
-      <div class="cs-section s-outcome reveal">
+      <div class="cs-section s-outcome reveal" id="section-outcome">
         <div class="cs-section-header">
           <div class="cs-section-icon icon-outcome">
             <i class="bi bi-graph-up-arrow"></i>
@@ -518,8 +960,6 @@
         </div>
         <div class="cs-section-body">
           {{ case.outcome|linebreaks }}
-
-          <!-- Project links -->
           <div class="project-links-row">
             {% if case.github_url %}
             <a href="{{ case.github_url }}" target="_blank" rel="noopener" class="proj-link github">
@@ -537,12 +977,11 @@
             </span>
             {% endif %}
           </div>
-
         </div>
       </div>
 
       <!-- LESSONS LEARNED -->
-      <div class="cs-section s-lessons reveal">
+      <div class="cs-section s-lessons reveal" id="section-lessons">
         <div class="cs-section-header">
           <div class="cs-section-icon icon-lessons">
             <i class="bi bi-journal-bookmark"></i>
@@ -557,10 +996,12 @@
         </div>
       </div>
 
-    </div>
+    </div><!-- /content sections -->
 
-    <!-- ===== SIDEBAR ===== -->
-    <aside class="sidebar">
+    <!-- ====================================================
+         SIDEBAR (right column)
+         ==================================================== -->
+    <aside class="cs-sidebar">
 
       <!-- Quick Facts -->
       <div class="sidebar-card reveal">
@@ -605,31 +1046,30 @@
         </div>
       </div>
 
-      <!-- TOC -->
+      <!-- Table of Contents -->
       <div class="sidebar-card reveal">
         <div class="sidebar-card-header">
           <p class="sidebar-card-title">Sections</p>
         </div>
         <ul class="toc-list">
-          <li><a href="#section-problem" class="toc-link"><i class="bi bi-dot"></i> Problem</a></li>
+          <li><a href="#section-problem"  class="toc-link"><i class="bi bi-dot"></i> Problem</a></li>
           <li><a href="#section-approach" class="toc-link"><i class="bi bi-dot"></i> Approach</a></li>
-          <li><a href="#section-tech" class="toc-link"><i class="bi bi-dot"></i> Tech Decisions</a></li>
-          <li><a href="#section-outcome" class="toc-link"><i class="bi bi-dot"></i> Outcome</a></li>
-          <li><a href="#section-lessons" class="toc-link"><i class="bi bi-dot"></i> Lessons Learned</a></li>
+          <li><a href="#section-tech"     class="toc-link"><i class="bi bi-dot"></i> Tech Decisions</a></li>
+          <li><a href="#section-outcome"  class="toc-link"><i class="bi bi-dot"></i> Outcome</a></li>
+          <li><a href="#section-lessons"  class="toc-link"><i class="bi bi-dot"></i> Lessons Learned</a></li>
         </ul>
       </div>
 
       <!-- Freelance CTA -->
-      <div class="sidebar-cta reveal">
+      <div class="sidebar-cta-card reveal">
         <div class="sidebar-cta-title">Build something similar?</div>
         <p class="sidebar-cta-sub">
           I've solved this problem before. If your project fits a pattern I know, we ship faster and cleaner.
         </p>
-        <a href="/freelance/?service={{ case.project|urlencode }}" class="btn-primary-custom" style="width:100%;justify-content:center;">
+        <a href="/freelance/?service={{ case.project|urlencode }}" class="btn-sidebar-primary">
           <i class="bi bi-lightning-charge-fill"></i> Start a Project
         </a>
-        <a href="{% url 'case_studies' %}" class="btn-ghost"
-           style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;width:100%;justify-content:center;background:transparent;color:var(--text-dim);padding:9px 20px;border-radius:50px;border:1px solid var(--border);font-weight:600;font-size:0.82rem;transition:var(--transition);text-decoration:none;">
+        <a href="{% url 'case_studies' %}" class="btn-sidebar-ghost">
           <i class="bi bi-arrow-left"></i> All Case Studies
         </a>
       </div>
@@ -639,34 +1079,36 @@
         <div class="sidebar-card-header">
           <p class="sidebar-card-title">Share This</p>
         </div>
-        <div style="padding: 4px 22px 20px; display:flex; flex-direction:column; gap:8px;">
-          <a class="proj-link"
+        <div class="share-links">
+          <a class="share-link"
              href="https://twitter.com/intent/tweet?text={{ case.title|urlencode }}&url={{ request.build_absolute_uri }}"
-             target="_blank" rel="noopener" style="border-radius:50px;justify-content:center;">
+             target="_blank" rel="noopener">
             <i class="bi bi-twitter-x"></i> Share on Twitter
           </a>
-          <a class="proj-link"
+          <a class="share-link"
              href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ case.title|urlencode }}"
-             target="_blank" rel="noopener" style="border-radius:50px;justify-content:center;">
+             target="_blank" rel="noopener">
             <i class="bi bi-linkedin"></i> Share on LinkedIn
           </a>
-          <button class="proj-link copy-cs-btn" onclick="copyCaseLink(this)"
-                  style="border:none;cursor:pointer;font-family:var(--font-body);border-radius:50px;justify-content:center;background:var(--bg-glass);">
+          <button class="share-link copy-cs-btn" onclick="copyCaseLink(this)" aria-label="Copy link to clipboard">
             <i class="bi bi-link-45deg"></i> <span>Copy Link</span>
           </button>
         </div>
       </div>
 
     </aside>
-  </div>
+
+  </div><!-- /cs-layout -->
+</div><!-- /container -->
+
+<div class="container">
+  <div class="section-divider"></div>
 </div>
 
-<div class="section-divider"></div>
-
-<!-- =========================================================
+<!-- ============================================================
      BOTTOM CONVERSION CTA
-     ========================================================= -->
-<div class="container" style="padding-top:80px;">
+     ============================================================ -->
+<div class="container">
   <div class="cs-bottom-cta reveal">
     <div class="cs-cta-text">
       <h2>Ready to build<br><span>something like this?</span></h2>
@@ -676,11 +1118,10 @@
       </p>
     </div>
     <div class="cs-cta-actions">
-      <a href="/freelance/?service={{ case.project|urlencode }}" class="btn-primary-custom">
+      <a href="/freelance/?service={{ case.project|urlencode }}" class="btn-cta-primary">
         <i class="bi bi-lightning-charge-fill"></i> Discuss This Project
       </a>
-      <a href="{% url 'case_studies' %}" class="btn-ghost"
-         style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text-dim);padding:12px 24px;border-radius:50px;border:1px solid var(--border);font-weight:600;font-size:0.9rem;transition:var(--transition);text-decoration:none;">
+      <a href="{% url 'case_studies' %}" class="btn-cta-ghost">
         <i class="bi bi-arrow-left"></i> More Case Studies
       </a>
     </div>
@@ -692,35 +1133,32 @@
 {% block extra_js %}
 <script>
 /* ============================================================
-   READING PROGRESS
+   READING PROGRESS BAR
    ============================================================ */
 (function () {
+  'use strict';
   const fill = document.getElementById('read-progress-fill');
   const body = document.getElementById('csBody');
   if (!fill || !body) return;
-  window.addEventListener('scroll', () => {
-    const total    = body.offsetHeight - window.innerHeight;
-    const scrolled = Math.max(0, -(body.getBoundingClientRect().top));
+
+  function updateProgress() {
+    const rect    = body.getBoundingClientRect();
+    const total   = body.offsetHeight - window.innerHeight;
+    const scrolled = Math.max(0, -rect.top);
     fill.style.width = Math.min(100, (scrolled / total) * 100) + '%';
-  }, { passive: true });
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
 })();
 
 /* ============================================================
    TOC SMOOTH SCROLL + ACTIVE HIGHLIGHT
    ============================================================ */
 (function () {
-  const sections = [
-    { id: 'section-problem',  el: document.querySelector('.cs-section.s-problem')  },
-    { id: 'section-approach', el: document.querySelector('.cs-section.s-approach') },
-    { id: 'section-tech',     el: document.querySelector('.cs-section.s-tech')     },
-    { id: 'section-outcome',  el: document.querySelector('.cs-section.s-outcome')  },
-    { id: 'section-lessons',  el: document.querySelector('.cs-section.s-lessons')  },
-  ];
+  'use strict';
 
-  sections.forEach(s => {
-    if (s.el) s.el.id = s.id;
-  });
-
+  /* Section IDs are already in the HTML — no need to assign them */
   document.querySelectorAll('.toc-link').forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
@@ -729,7 +1167,8 @@
     });
   });
 
-  const observer = new IntersectionObserver(entries => {
+  const sectionIds = ['section-problem','section-approach','section-tech','section-outcome','section-lessons'];
+  const obs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
@@ -739,7 +1178,10 @@
     });
   }, { rootMargin: '-20% 0px -65% 0px' });
 
-  sections.forEach(s => { if (s.el) observer.observe(s.el); });
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
 })();
 
 /* ============================================================
@@ -747,24 +1189,38 @@
    ============================================================ */
 function copyCaseLink(btn) {
   navigator.clipboard.writeText(window.location.href).then(() => {
+    btn.classList.add('copied');
     const span = btn.querySelector('span');
-    span.textContent = 'Copied!';
-    btn.style.color  = 'var(--green)';
+    if (span) span.textContent = 'Copied!';
     setTimeout(() => {
-      span.textContent = 'Copy Link';
-      btn.style.color  = '';
+      btn.classList.remove('copied');
+      if (span) span.textContent = 'Copy Link';
     }, 2000);
+  }).catch(() => {
+    /* Fallback for older browsers */
+    const el = document.createElement('textarea');
+    el.value = window.location.href;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
   });
 }
 
 /* ============================================================
    SCROLL REVEAL
    ============================================================ */
-const ro = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
-  });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+(function () {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
 </script>
 {% endblock %}

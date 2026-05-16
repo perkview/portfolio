@@ -2,43 +2,46 @@
 {% load static %}
 
 {% block title %}{{ post.title }} — Muhammad Ahmad{% endblock %}
-
 {% block meta_description %}{{ post.content|truncatewords:25 }}{% endblock %}
-
 {% block og_title %}{{ post.title }}{% endblock %}
 {% block og_description %}{{ post.content|truncatewords:25 }}{% endblock %}
 
 {% block extra_head %}
 <style>
 /* ============================================================
-   BLOG DETAIL — DESIGN SYSTEM EXTENSION
+   BLOG DETAIL — PAGE STYLES
    ============================================================ */
 
-/* READING PROGRESS BAR */
+/* ---- Reading Progress Bar ---- */
 #read-progress {
   position: fixed;
-  top: 70px;
+  top: var(--navbar-h);
   left: 0;
   right: 0;
   height: 3px;
   background: var(--border);
-  z-index: 999;
+  z-index: 1049;
+  pointer-events: none;
 }
 #read-progress-fill {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
   transition: width 0.1s linear;
+  will-change: width;
 }
 
-/* PAGE HERO */
+/* ============================================================
+   PAGE HERO
+   ============================================================ */
 .bd-hero {
   position: relative;
-  padding: 90px 0 70px;
+  padding: clamp(56px, 8vw, 100px) 0 clamp(44px, 6vw, 72px);
   overflow: hidden;
   text-align: center;
 }
-.bd-hero .grid-bg {
+
+.bd-grid-bg {
   position: absolute;
   inset: 0;
   background-image:
@@ -47,31 +50,65 @@
   background-size: 48px 48px;
   pointer-events: none;
 }
+
 .bd-hero-orb {
   position: absolute;
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 70%);
-  top: -220px; left: 50%;
+  width: clamp(300px, 55vw, 700px);
+  height: clamp(300px, 55vw, 700px);
+  background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+  top: -200px;
+  left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
+  border-radius: 50%;
 }
+
 .bd-hero-inner {
   position: relative;
   z-index: 2;
-  max-width: 780px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--container-px, 20px);
 }
 
-/* META ROW */
+/* Category chip */
+.bd-category-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(59,130,246,0.10);
+  border: 1px solid rgba(59,130,246,0.22);
+  color: var(--accent);
+  padding: 5px 14px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+/* Post title */
+.bd-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4.5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.13;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 28px;
+}
+
+/* Meta chips */
 .bd-meta {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 28px;
+  gap: 10px;
+  margin-bottom: 22px;
 }
+
 .bd-meta-chip {
   display: inline-flex;
   align-items: center;
@@ -79,89 +116,112 @@
   background: var(--bg-card);
   border: 1px solid var(--border);
   color: var(--text-dim);
-  padding: 5px 14px;
+  padding: 5px 13px;
   border-radius: 50px;
   font-size: 0.78rem;
   font-weight: 500;
 }
+
 .bd-meta-chip.read-time {
-  background: rgba(251,191,36,0.1);
-  border-color: rgba(251,191,36,0.2);
-  color: #FCD34D;
+  background: rgba(251,191,36,0.09);
+  border-color: rgba(251,191,36,0.22);
+  color: #D97706;
 }
 
-/* TAGS UNDER HERO */
+[data-theme="light"] .bd-meta-chip.read-time { color: #B45309; }
+
+/* Tags */
 .bd-tags {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 22px;
+  margin-top: 4px;
 }
+
 .bd-tag {
   background: rgba(59,130,246,0.08);
   border: 1px solid rgba(59,130,246,0.18);
-  color: #93C5FD;
-  padding: 4px 12px;
+  color: var(--accent);
+  padding: 3px 11px;
   border-radius: 50px;
-  font-size: 0.72rem;
+  font-size: 0.70rem;
   font-weight: 600;
   letter-spacing: 0.04em;
+  transition: background 0.2s, border-color 0.2s;
+}
+.bd-tag:hover {
+  background: rgba(59,130,246,0.14);
+  border-color: rgba(59,130,246,0.30);
 }
 
-/* COVER IMAGE */
+/* ============================================================
+   COVER IMAGE
+   ============================================================ */
 .bd-cover-wrap {
-  position: relative;
-  z-index: 2;
-  margin: 0 auto;
-  max-width: 860px;
-  padding: 0 20px;
-  margin-top: -20px;
-  margin-bottom: 60px;
+  max-width: 900px;
+  margin: 0 auto clamp(40px, 6vw, 70px);
+  padding: 0 var(--container-px, 20px);
 }
+
 .bd-cover {
   width: 100%;
-  height: 420px;
+  height: clamp(200px, 32vw, 440px);
   object-fit: cover;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 12px);
   border: 1px solid var(--border);
   display: block;
 }
 
-/* LAYOUT */
+/* ============================================================
+   TWO-COLUMN LAYOUT
+   ============================================================ */
 .bd-layout {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 48px;
+  grid-template-columns: 1fr 300px;
+  gap: clamp(24px, 4vw, 52px);
   align-items: start;
-  padding-bottom: 100px;
+  padding-bottom: clamp(60px, 9vw, 110px);
+}
+
+@media (max-width: 1024px) {
+  .bd-layout { grid-template-columns: 1fr; }
+  .sidebar {
+    position: static !important;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 18px;
+  }
+  .sidebar .sidebar-cta-card { grid-column: 1 / -1; }
 }
 
 /* ============================================================
-   ARTICLE BODY
+   ARTICLE CARD
    ============================================================ */
 .article-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius, 12px);
   overflow: hidden;
 }
 
+[data-theme="light"] .article-card {
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+/* Prose */
 .article-body {
-  padding: 52px 56px;
-  font-size: 1.02rem;
-  line-height: 1.85;
+  padding: clamp(28px, 5vw, 56px) clamp(22px, 5vw, 58px);
+  font-size: clamp(0.95rem, 1.5vw, 1.03rem);
+  line-height: 1.88;
   color: var(--text-dim);
 }
 
-/* Prose styles for Django's |linebreaks */
-.article-body p {
-  margin-bottom: 1.5em;
-  color: var(--text-dim);
-}
+.article-body p         { margin-bottom: 1.55em; color: var(--text-dim); }
 .article-body h2 {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
   font-weight: 800;
   color: var(--text);
   margin: 2.4em 0 0.8em;
@@ -171,92 +231,78 @@
 }
 .article-body h3 {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
   font-weight: 700;
   color: var(--text);
   margin: 2em 0 0.6em;
 }
 .article-body h4 {
-  font-size: 1rem;
+  font-size: clamp(0.95rem, 1.5vw, 1rem);
   font-weight: 700;
   color: var(--text);
   margin: 1.6em 0 0.5em;
 }
-.article-body strong { color: var(--text); font-weight: 600; }
-.article-body a {
-  color: var(--accent-2);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.article-body a:hover { color: var(--accent); }
-.article-body ul, .article-body ol {
-  padding-left: 1.5em;
-  margin-bottom: 1.5em;
-}
-.article-body li { margin-bottom: 0.5em; color: var(--text-dim); }
+.article-body strong     { color: var(--text); font-weight: 600; }
+.article-body a          { color: var(--accent-2); text-decoration: underline; text-underline-offset: 3px; transition: color 0.2s; }
+.article-body a:hover    { color: var(--accent); }
+.article-body ul,
+.article-body ol         { padding-left: 1.6em; margin-bottom: 1.55em; }
+.article-body li         { margin-bottom: 0.5em; color: var(--text-dim); }
 .article-body blockquote {
   border-left: 3px solid var(--accent);
-  padding: 16px 24px;
+  padding: 16px 22px;
   margin: 2em 0;
   background: rgba(59,130,246,0.05);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-radius: 0 8px 8px 0;
   color: var(--text-dim);
   font-style: italic;
 }
 .article-body pre {
-  background: rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.32);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 24px;
+  border-radius: 8px;
+  padding: clamp(16px, 3vw, 24px);
   overflow-x: auto;
-  font-size: 0.875rem;
-  margin-bottom: 1.5em;
-  font-family: 'Courier New', monospace;
-  line-height: 1.6;
+  font-size: clamp(0.8rem, 1.3vw, 0.875rem);
+  margin-bottom: 1.55em;
+  font-family: 'Courier New', 'Cascadia Code', monospace;
+  line-height: 1.65;
+  -webkit-overflow-scrolling: touch;
 }
+[data-theme="light"] .article-body pre { background: #1E2330; }
 .article-body code {
-  background: rgba(59,130,246,0.1);
+  background: rgba(59,130,246,0.10);
   color: var(--accent-2);
   padding: 2px 7px;
   border-radius: 4px;
-  font-size: 0.875rem;
-  font-family: 'Courier New', monospace;
+  font-size: 0.875em;
+  font-family: 'Courier New', 'Cascadia Code', monospace;
 }
-.article-body pre code {
-  background: transparent;
-  color: #93C5FD;
-  padding: 0;
-}
-.article-body img {
-  width: 100%;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  margin: 1.5em 0;
-}
-.article-body hr {
-  border: none;
-  border-top: 1px solid var(--border);
-  margin: 2.5em 0;
-}
+.article-body pre code { background: transparent; color: #93C5FD; padding: 0; font-size: inherit; }
+.article-body img       { width: 100%; border-radius: 8px; border: 1px solid var(--border); margin: 1.6em 0; display: block; }
+.article-body hr        { border: none; border-top: 1px solid var(--border); margin: 2.6em 0; }
 
-/* ARTICLE FOOTER */
+/* Article footer */
 .article-footer {
-  padding: 28px 56px 36px;
+  padding: clamp(18px, 3vw, 28px) clamp(22px, 5vw, 58px) clamp(24px, 4vw, 38px);
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 14px;
 }
+
+.share-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
 .share-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-right: 4px;
 }
+
 .share-btn {
   display: inline-flex;
   align-items: center;
@@ -264,150 +310,147 @@
   background: var(--bg-glass);
   border: 1px solid var(--border);
   color: var(--text-dim);
-  padding: 7px 14px;
+  padding: 7px 13px;
   border-radius: 50px;
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
   text-decoration: none;
   font-family: var(--font-body);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  min-height: 36px;
+  white-space: nowrap;
 }
-.share-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(59,130,246,0.06);
+.share-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.07); }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  color: var(--text-dim);
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  min-height: 38px;
+  white-space: nowrap;
 }
-.copy-btn { cursor: pointer; border: none; }
+.back-link:hover { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.06); }
 
 /* ============================================================
    SIDEBAR
    ============================================================ */
 .sidebar {
   position: sticky;
-  top: 90px;
+  top: calc(var(--navbar-h, 64px) + 20px);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
-/* Sidebar card base */
 .sidebar-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius, 12px);
   overflow: hidden;
 }
 
-.sidebar-card-header {
-  padding: 18px 22px 0;
+[data-theme="light"] .sidebar-card {
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
 }
+
+.sidebar-card-header { padding: 18px 20px 0; }
+
 .sidebar-card-title {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--text-dim);
   margin-bottom: 14px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 .sidebar-card-title::before {
   content: '';
-  width: 16px; height: 1px;
+  width: 14px;
+  height: 1px;
   background: var(--accent);
   flex-shrink: 0;
 }
 
-/* Author card */
-.author-card-body {
-  padding: 20px 22px 24px;
-}
+/* Author */
+.author-card-body { padding: 16px 20px 22px; }
+
 .author-avatar {
-  width: 52px; height: 52px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--accent), var(--accent-3));
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-display);
-  font-weight: 800; font-size: 1.1rem;
+  font-weight: 800;
+  font-size: 1rem;
   color: #fff;
   flex-shrink: 0;
 }
-.author-info-name {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text);
-}
-.author-info-role {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-.author-bio {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.65;
-  margin: 14px 0 0;
-}
 
-/* TOC */
-.toc-list {
-  list-style: none;
-  padding: 0 22px 20px;
-}
+.author-info-name { font-size: 0.92rem; font-weight: 700; color: var(--text); }
+.author-info-role { font-size: 0.76rem; color: var(--text-muted); margin-top: 2px; }
+.author-bio       { font-size: 0.81rem; color: var(--text-muted); line-height: 1.68; margin-top: 12px; }
+
+/* Table of Contents */
+.toc-list { list-style: none; padding: 0 20px 18px; }
 .toc-list li { margin: 0; }
 .toc-list a {
   display: block;
-  padding: 7px 0 7px 12px;
-  font-size: 0.8rem;
+  padding: 7px 0 7px 14px;
+  font-size: 0.80rem;
   color: var(--text-muted);
   border-left: 2px solid var(--border);
-  transition: var(--transition);
-  line-height: 1.4;
+  transition: color 0.2s, border-color 0.2s, padding-left 0.2s;
+  line-height: 1.45;
+  text-decoration: none;
 }
 .toc-list a:hover,
 .toc-list a.active {
   color: var(--accent);
   border-left-color: var(--accent);
-  padding-left: 16px;
+  padding-left: 18px;
 }
 
-/* Related posts */
-.related-list {
-  padding: 0 22px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
+/* Related (sidebar) */
+.related-list { padding: 0 20px 16px; display: flex; flex-direction: column; }
+
 .related-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 14px 0;
+  gap: 3px;
+  padding: 13px 0;
   border-bottom: 1px solid var(--border);
-  transition: var(--transition);
+  text-decoration: none;
 }
 .related-item:last-child { border-bottom: none; }
-.related-title {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text);
-  line-height: 1.35;
-  transition: color 0.2s;
-}
+
+.related-title { font-size: 0.84rem; font-weight: 600; color: var(--text); line-height: 1.38; transition: color 0.2s; }
 .related-item:hover .related-title { color: var(--accent-2); }
-.related-meta {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  display: flex;
-  gap: 10px;
-}
+
+.related-meta  { font-size: 0.71rem; color: var(--text-muted); display: flex; gap: 10px; }
+
 .related-arrow {
-  font-size: 0.72rem;
+  font-size: 0.71rem;
   color: var(--accent);
   font-weight: 600;
-  margin-top: 4px;
+  margin-top: 3px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -415,12 +458,12 @@
 }
 .related-item:hover .related-arrow { gap: 7px; }
 
-/* Freelance CTA sidebar card */
+/* Sidebar CTA */
 .sidebar-cta-card {
-  background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.08));
-  border: 1px solid rgba(59,130,246,0.2);
-  border-radius: var(--radius);
-  padding: 28px 22px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.11) 0%, rgba(139,92,246,0.07) 100%);
+  border: 1px solid rgba(59,130,246,0.20);
+  border-radius: var(--radius, 12px);
+  padding: clamp(22px, 3vw, 30px) clamp(18px, 3vw, 24px);
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -428,74 +471,102 @@
 .sidebar-cta-card::before {
   content: '';
   position: absolute;
-  top: -60px; left: 50%; transform: translateX(-50%);
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 70%);
   pointer-events: none;
+  border-radius: 50%;
 }
+
 .sidebar-cta-title {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
   font-weight: 800;
   color: var(--text);
   margin-bottom: 8px;
   letter-spacing: -0.02em;
+  position: relative;
 }
+
 .sidebar-cta-sub {
-  font-size: 0.8rem;
+  font-size: clamp(0.78rem, 1.2vw, 0.82rem);
   color: var(--text-muted);
-  margin-bottom: 20px;
-  line-height: 1.55;
+  margin-bottom: 18px;
+  line-height: 1.6;
+  position: relative;
+}
+
+.sidebar-cta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  position: relative;
+}
+
+.sidebar-cta-chip {
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 50px;
 }
 
 /* ============================================================
-   BOTTOM RELATED GRID (below layout)
+   RELATED POSTS — BOTTOM GRID
    ============================================================ */
 .related-section {
-  padding: 80px 0 100px;
+  padding: clamp(56px, 8vw, 90px) 0 clamp(60px, 9vw, 110px);
   border-top: 1px solid var(--border);
 }
 
 .related-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  margin-top: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: clamp(14px, 2.5vw, 22px);
+  margin-top: clamp(28px, 4vw, 44px);
 }
 
 .related-full-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius, 12px);
   overflow: hidden;
-  transition: var(--transition);
   display: flex;
   flex-direction: column;
+  text-decoration: none;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
 }
 .related-full-card:hover {
-  border-color: rgba(59,130,246,0.25);
+  border-color: rgba(59,130,246,0.28);
   transform: translateY(-4px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.28);
+  box-shadow: 0 18px 48px rgba(0,0,0,0.22);
 }
-.related-full-card .card-accent {
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-}
+
+[data-theme="light"] .related-full-card { background: #fff; }
+
+.related-full-card .card-accent-bar { height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); flex-shrink: 0; }
+.related-full-card .card-accent-bar.alt-1 { background: linear-gradient(90deg, var(--accent-3), var(--accent)); }
+.related-full-card .card-accent-bar.alt-2 { background: linear-gradient(90deg, var(--accent-2), var(--green)); }
+
 .related-full-card .card-body-inner {
-  padding: 26px;
+  padding: clamp(18px, 3vw, 28px);
   flex: 1;
   display: flex;
   flex-direction: column;
 }
-.related-full-card .card-meta {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-  display: flex;
-  gap: 12px;
-}
-.related-full-card .card-title-text {
-  font-size: 1rem;
+
+.card-meta-row { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+.card-title-text {
+  font-family: var(--font-display);
+  font-size: clamp(0.92rem, 1.5vw, 1.02rem);
   font-weight: 700;
   line-height: 1.35;
   color: var(--text);
@@ -503,14 +574,16 @@
   transition: color 0.2s;
 }
 .related-full-card:hover .card-title-text { color: var(--accent-2); }
-.related-full-card .card-excerpt {
-  font-size: 0.83rem;
+
+.card-excerpt {
+  font-size: clamp(0.80rem, 1.2vw, 0.84rem);
   color: var(--text-muted);
-  line-height: 1.65;
+  line-height: 1.68;
   flex: 1;
   margin-bottom: 18px;
 }
-.related-full-card .card-link-arrow {
+
+.card-link-arrow {
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--accent);
@@ -518,75 +591,69 @@
   align-items: center;
   gap: 5px;
   transition: gap 0.2s;
+  margin-top: auto;
 }
 .related-full-card:hover .card-link-arrow { gap: 9px; }
 
 /* ============================================================
-   RESPONSIVE
+   MOBILE OVERRIDES
    ============================================================ */
-@media (max-width: 1024px) {
-  .bd-layout {
-    grid-template-columns: 1fr;
-  }
-  .sidebar {
-    position: static;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .sidebar .sidebar-cta-card { grid-column: 1 / -1; }
+@media (max-width: 767px) {
+  .bd-layout { padding-bottom: clamp(40px, 7vw, 72px); }
+  .article-footer { flex-direction: column; align-items: flex-start; }
+  .share-group { width: 100%; }
+  .back-link   { width: 100%; justify-content: center; }
 }
 
-@media (max-width: 768px) {
-  .article-body { padding: 32px 24px; }
-  .article-footer { padding: 20px 24px 28px; }
-  .sidebar { grid-template-columns: 1fr; }
-  .bd-cover { height: 240px; }
+@media (max-width: 480px) {
+  .bd-meta { gap: 8px; }
+  .share-group { gap: 6px; }
+  .share-btn   { padding: 6px 10px; font-size: 0.74rem; }
 }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- READING PROGRESS -->
-<div id="read-progress"><div id="read-progress-fill"></div></div>
+<!-- Reading progress bar -->
+<div id="read-progress" aria-hidden="true">
+  <div id="read-progress-fill"></div>
+</div>
 
-<!-- =========================================================
+<!-- ============================================================
      HERO
-     ========================================================= -->
+     ============================================================ -->
 <section class="bd-hero">
-  <div class="grid-bg"></div>
-  <div class="bd-hero-orb"></div>
+  <div class="bd-grid-bg" aria-hidden="true"></div>
+  <div class="bd-hero-orb"  aria-hidden="true"></div>
 
-  <div class="bd-hero-inner">
+  <div class="bd-hero-inner reveal">
 
-    <div class="hero-status" style="margin-bottom:22px;">
-      <span class="status-dot"></span>
-      {{ post.category|default:"Engineering" }}
+    <div class="bd-category-chip" aria-label="Category">
+      <i class="bi bi-tag-fill" aria-hidden="true"></i>
+      {% if post.get_tags %}{{ post.get_tags.0 }}{% else %}Engineering{% endif %}
     </div>
 
-    <h1 class="hero-name" style="font-size:clamp(1.8rem,4.5vw,3rem);line-height:1.15;">
-      {{ post.title }}
-    </h1>
+    <h1 class="bd-title">{{ post.title }}</h1>
 
-    <div class="bd-meta">
-      <span class="bd-meta-chip">
-        <i class="bi bi-calendar3"></i>
-        {{ post.published_at|date:"M j, Y"|default:"Coming Soon" }}
+    <div class="bd-meta" role="list" aria-label="Article metadata">
+      <span class="bd-meta-chip" role="listitem">
+        <i class="bi bi-calendar3" aria-hidden="true"></i>
+        {{ post.published_at|date:"M j, Y" }}
       </span>
-      <span class="bd-meta-chip read-time">
-        <i class="bi bi-clock"></i>
-        {{ reading_time|default:"5" }} min read
+      <span class="bd-meta-chip read-time" role="listitem">
+        <i class="bi bi-clock" aria-hidden="true"></i>
+        {{ reading_time }} min read
       </span>
-      <span class="bd-meta-chip">
-        <i class="bi bi-person"></i>
+      <span class="bd-meta-chip" role="listitem">
+        <i class="bi bi-person" aria-hidden="true"></i>
         Muhammad Ahmad
       </span>
     </div>
 
-    {% if post.tags %}
-    <div class="bd-tags">
-      {% for tag in post.tags.split %}
+    {% if post.get_tags %}
+    <div class="bd-tags" aria-label="Article tags">
+      {% for tag in post.get_tags %}
         <span class="bd-tag">{{ tag }}</span>
       {% endfor %}
     </div>
@@ -595,58 +662,74 @@
   </div>
 </section>
 
-<!-- COVER IMAGE -->
+<!-- Cover image -->
 {% if post.cover_image %}
 <div class="bd-cover-wrap reveal">
-  <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="bd-cover">
+  <img
+    src="{{ post.cover_image.url }}"
+    alt="{{ post.title }} — cover image"
+    class="bd-cover"
+    loading="lazy"
+  >
 </div>
 {% endif %}
 
-<!-- =========================================================
-     MAIN LAYOUT
-     ========================================================= -->
+<!-- ============================================================
+     MAIN LAYOUT: ARTICLE + SIDEBAR
+     ============================================================ -->
 <div class="container">
   <div class="bd-layout">
 
     <!-- ===== ARTICLE ===== -->
     <div>
-      <article class="article-card reveal">
+      <article class="article-card reveal" aria-label="{{ post.title }}">
 
         <div class="article-body" id="articleBody">
           {{ post.content|linebreaks }}
         </div>
 
-        <div class="article-footer">
-
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <footer class="article-footer">
+          <div class="share-group">
             <span class="share-label">Share</span>
-            <a class="share-btn"
-               href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ request.build_absolute_uri }}"
-               target="_blank" rel="noopener">
-              <i class="bi bi-twitter-x"></i> Twitter
+            <a
+              class="share-btn"
+              href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}&url={{ request.build_absolute_uri }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share on Twitter / X"
+            >
+              <i class="bi bi-twitter-x" aria-hidden="true"></i> Twitter
             </a>
-            <a class="share-btn"
-               href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title|urlencode }}"
-               target="_blank" rel="noopener">
-              <i class="bi bi-linkedin"></i> LinkedIn
+            <a
+              class="share-btn"
+              href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title|urlencode }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share on LinkedIn"
+            >
+              <i class="bi bi-linkedin" aria-hidden="true"></i> LinkedIn
             </a>
-            <button class="share-btn copy-btn" onclick="copyLink(this)">
-              <i class="bi bi-link-45deg"></i>
+            <button
+              class="share-btn"
+              onclick="bdCopyLink(this)"
+              type="button"
+              aria-label="Copy article link to clipboard"
+            >
+              <i class="bi bi-link-45deg" aria-hidden="true"></i>
               <span>Copy Link</span>
             </button>
           </div>
 
-          <a href="{% url 'blog' %}" class="btn-ghost"
-             style="display:inline-flex;align-items:center;gap:7px;background:transparent;color:var(--text-dim);padding:9px 20px;border-radius:50px;border:1px solid var(--border);font-weight:600;font-size:0.82rem;transition:var(--transition);text-decoration:none;">
-            <i class="bi bi-arrow-left"></i> All Articles
+          <a href="{% url 'blog' %}" class="back-link" aria-label="Back to all articles">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> All Articles
           </a>
+        </footer>
 
-        </div>
       </article>
     </div>
 
     <!-- ===== SIDEBAR ===== -->
-    <aside class="sidebar">
+    <aside class="sidebar" aria-label="Article sidebar">
 
       <!-- Author -->
       <div class="sidebar-card reveal">
@@ -654,57 +737,60 @@
           <p class="sidebar-card-title">Author</p>
         </div>
         <div class="author-card-body">
-          <div style="display:flex;align-items:center;gap:14px;">
-            <div class="author-avatar">MA</div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div class="author-avatar" aria-hidden="true">MA</div>
             <div>
               <div class="author-info-name">Muhammad Ahmad</div>
               <div class="author-info-role">Full Stack Developer</div>
             </div>
           </div>
           <p class="author-bio">
-            Django developer building AI-powered apps, automation systems, and scalable web platforms.
-            Based in Pakistan, working globally.
+            Django developer building AI-powered apps, automation systems, and scalable web platforms. Based in Pakistan, working globally.
           </p>
         </div>
       </div>
 
-      <!-- Table of Contents (auto-built from h2/h3 in content) -->
+      <!-- Table of Contents (JS-populated) -->
       <div class="sidebar-card reveal" id="tocCard">
         <div class="sidebar-card-header">
           <p class="sidebar-card-title">In This Article</p>
         </div>
-        <ul class="toc-list" id="tocList">
-          <!-- JS populates this -->
-        </ul>
+        <ul class="toc-list" id="tocList" aria-label="Table of contents"></ul>
       </div>
 
-      <!-- Freelance CTA -->
+      <!-- Conversion CTA -->
       <div class="sidebar-cta-card reveal">
         <div class="sidebar-cta-title">Need something like this built?</div>
         <p class="sidebar-cta-sub">
-          I take on a limited number of freelance projects. If this article gave you an idea — let's talk.
+          I take on a limited number of projects at a time. If this gave you an idea — let's make it real.
         </p>
-        <a href="/freelance/" class="btn-primary-custom" style="width:100%;justify-content:center;">
-          <i class="bi bi-lightning-charge-fill"></i>
-          Work With Me
+        <a href="/freelance/" class="btn-primary-custom" style="width:100%; justify-content:center; display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+          <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+          Discuss Your Idea
         </a>
+        <div class="sidebar-cta-chips">
+          <span class="sidebar-cta-chip">MVPs</span>
+          <span class="sidebar-cta-chip">Student Projects</span>
+          <span class="sidebar-cta-chip">Startups</span>
+          <span class="sidebar-cta-chip">Flexible Pricing</span>
+        </div>
       </div>
 
-      <!-- Related Posts (sidebar) -->
+      <!-- Related (sidebar) -->
       {% if related_posts %}
       <div class="sidebar-card reveal">
         <div class="sidebar-card-header">
           <p class="sidebar-card-title">Related Articles</p>
         </div>
-        <div class="related-list">
-          {% for r in related_posts|slice:":4" %}
-          <a href="{% url 'blog_detail' r.slug %}" class="related-item" style="text-decoration:none;">
+        <div class="related-list" role="list">
+          {% for r in related_posts %}
+          <a href="{% url 'blog_detail' r.slug %}" class="related-item" role="listitem" aria-label="{{ r.title }}">
             <span class="related-title">{{ r.title }}</span>
             <div class="related-meta">
-              <span>{{ r.published_at|date:"M j, Y"|default:"" }}</span>
-              <span>{{ r.read_time|default:"" }}{% if r.read_time %} min{% endif %}</span>
+              <span>{{ r.published_at|date:"M j, Y" }}</span>
+              <span>{{ r.reading_time }} min read</span>
             </div>
-            <span class="related-arrow">Read <i class="bi bi-arrow-right"></i></span>
+            <span class="related-arrow" aria-hidden="true">Read <i class="bi bi-arrow-right"></i></span>
           </a>
           {% endfor %}
         </div>
@@ -715,11 +801,11 @@
   </div>
 </div>
 
-<!-- =========================================================
+<!-- ============================================================
      RELATED POSTS — BOTTOM GRID
-     ========================================================= -->
+     ============================================================ -->
 {% if related_posts %}
-<section class="related-section">
+<section class="related-section" aria-label="More articles">
   <div class="container">
 
     <div class="reveal">
@@ -729,16 +815,20 @@
 
     <div class="related-grid">
       {% for r in related_posts|slice:":3" %}
-      <a href="{% url 'blog_detail' r.slug %}" class="related-full-card reveal" style="text-decoration:none;transition-delay:{{ forloop.counter0 }}00ms;">
-        <div class="card-accent" style="{% if forloop.counter == 2 %}background:linear-gradient(90deg,var(--accent-3),var(--accent));{% elif forloop.counter == 3 %}background:linear-gradient(90deg,var(--accent-2),var(--green));{% endif %}"></div>
+      <a
+        href="{% url 'blog_detail' r.slug %}"
+        class="related-full-card reveal"
+        aria-label="Read: {{ r.title }}"
+      >
+        <div class="card-accent-bar {% if forloop.counter == 2 %}alt-1{% elif forloop.counter == 3 %}alt-2{% endif %}"></div>
         <div class="card-body-inner">
-          <div class="card-meta">
-            <span>{{ r.published_at|date:"M j, Y"|default:"Coming Soon" }}</span>
-            {% if r.read_time %}<span>{{ r.read_time }} min read</span>{% endif %}
+          <div class="card-meta-row">
+            <span>{{ r.published_at|date:"M j, Y" }}</span>
+            <span>{{ r.reading_time }} min read</span>
           </div>
           <h3 class="card-title-text">{{ r.title }}</h3>
           <p class="card-excerpt">{{ r.content|truncatewords:20 }}</p>
-          <span class="card-link-arrow">Read Article <i class="bi bi-arrow-right"></i></span>
+          <span class="card-link-arrow" aria-hidden="true">Read Article <i class="bi bi-arrow-right"></i></span>
         </div>
       </a>
       {% endfor %}
@@ -752,101 +842,92 @@
 
 {% block extra_js %}
 <script>
-/* ============================================================
-   READING PROGRESS BAR
-   ============================================================ */
 (function () {
+  'use strict';
+
+  /* ── Reading progress bar ─────────────────────────────── */
   const fill    = document.getElementById('read-progress-fill');
   const article = document.getElementById('articleBody');
-  if (!fill || !article) return;
 
-  window.addEventListener('scroll', () => {
-    const rect   = article.getBoundingClientRect();
-    const total  = article.offsetHeight - window.innerHeight;
-    const scrolled = Math.max(0, -rect.top);
-    const pct    = Math.min(100, (scrolled / total) * 100);
-    fill.style.width = pct + '%';
-  }, { passive: true });
-})();
+  if (fill && article) {
+    window.addEventListener('scroll', function () {
+      const rect     = article.getBoundingClientRect();
+      const total    = article.offsetHeight - window.innerHeight;
+      const scrolled = Math.max(0, -rect.top);
+      const pct      = total > 0 ? Math.min(100, (scrolled / total) * 100) : 0;
+      fill.style.width = pct + '%';
+    }, { passive: true });
+  }
 
-/* ============================================================
-   AUTO TABLE OF CONTENTS
-   ============================================================ */
-(function () {
+  /* ── Auto Table of Contents ───────────────────────────── */
   const body    = document.getElementById('articleBody');
   const tocList = document.getElementById('tocList');
   const tocCard = document.getElementById('tocCard');
-  if (!body || !tocList) return;
 
-  const headings = body.querySelectorAll('h2, h3');
-  if (headings.length < 2) {
-    if (tocCard) tocCard.style.display = 'none';
-    return;
+  if (body && tocList) {
+    const headings = body.querySelectorAll('h2, h3');
+
+    if (headings.length < 2) {
+      if (tocCard) tocCard.style.display = 'none';
+    } else {
+      headings.forEach(function (h, i) {
+        h.id = 'bd-section-' + i;
+        const li = document.createElement('li');
+        const a  = document.createElement('a');
+        a.href        = '#' + h.id;
+        a.textContent = h.textContent;
+        if (h.tagName === 'H3') { a.style.paddingLeft = '26px'; a.style.fontSize = '0.76rem'; }
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.pushState(null, '', '#' + h.id);
+        });
+        li.appendChild(a);
+        tocList.appendChild(li);
+      });
+
+      const tocLinks  = tocList.querySelectorAll('a');
+      const tocObs    = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            tocLinks.forEach(l => l.classList.remove('active'));
+            const match = tocList.querySelector('a[href="#' + entry.target.id + '"]');
+            if (match) match.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-15% 0px -72% 0px' });
+
+      headings.forEach(h => tocObs.observe(h));
+    }
   }
 
-  headings.forEach((h, i) => {
-    const id = 'section-' + i;
-    h.id = id;
-
-    const li = document.createElement('li');
-    const a  = document.createElement('a');
-    a.href        = '#' + id;
-    a.textContent = h.textContent;
-    if (h.tagName === 'H3') a.style.paddingLeft = '24px';
-
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  /* ── Copy link button ─────────────────────────────────── */
+  window.bdCopyLink = function (btn) {
+    if (!navigator.clipboard) return;
+    navigator.clipboard.writeText(window.location.href).then(function () {
+      const span = btn.querySelector('span');
+      const orig = span.textContent;
+      span.textContent      = 'Copied!';
+      btn.style.borderColor = 'var(--green)';
+      btn.style.color       = 'var(--green)';
+      setTimeout(function () {
+        span.textContent      = orig;
+        btn.style.borderColor = '';
+        btn.style.color       = '';
+      }, 2200);
     });
+  };
 
-    li.appendChild(a);
-    tocList.appendChild(li);
-  });
-
-  /* Highlight active TOC item on scroll */
-  const tocLinks = tocList.querySelectorAll('a');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        tocLinks.forEach(l => l.classList.remove('active'));
-        const match = tocList.querySelector('a[href="#' + entry.target.id + '"]');
-        if (match) match.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-
-  headings.forEach(h => observer.observe(h));
 })();
 
-/* ============================================================
-   COPY LINK BUTTON
-   ============================================================ */
-function copyLink(btn) {
-  navigator.clipboard.writeText(window.location.href).then(() => {
-    const span = btn.querySelector('span');
-    span.textContent = 'Copied!';
-    btn.style.borderColor = 'var(--green)';
-    btn.style.color       = 'var(--green)';
-    setTimeout(() => {
-      span.textContent  = 'Copy Link';
-      btn.style.borderColor = '';
-      btn.style.color       = '';
-    }, 2000);
-  });
-}
-
-/* ============================================================
-   SCROLL REVEAL
-   ============================================================ */
-const revealObs = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObs.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.08 });
-
-document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+/* ── Scroll reveal ────────────────────────────────────────── */
+(function () {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
 </script>
 {% endblock %}

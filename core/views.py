@@ -1,7 +1,24 @@
 from django.shortcuts import render, get_object_or_404
-from django.core.mail import send_mail
-from django.conf import settings
 from .models import *
+from django.shortcuts import render
+from .models import ContactInfo, ContactMessage
+from django.contrib import messages
+
+def get_client_ip(request):
+
+    x_forwarded_for = request.META.get(
+        'HTTP_X_FORWARDED_FOR'
+    )
+
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+
+    return ip
+
+
 
 # Create your views here.
 def home(request):
@@ -42,15 +59,40 @@ def about(request):
 
 
 
+from django.shortcuts import render
+from .models import Project, Technologies
+
+
 def projects(request):
-    featured_projects = Project.objects.filter(featured=True).order_by('-created_at')[:3]
-    recent_projects = Project.objects.filter(featured=False).order_by('-created_at')[:6]
-    all_projects = Project.objects.all().order_by('-created_at')
-    technologies = Technologies.objects.all().order_by('name')  # optional ordering
+    """
+    Projects archive page.
+
+    Splits into:
+      featured_projects  – up to 3 featured projects, shown in the large
+                           horizontal cards at the top.
+      all_projects       – every project (including featured ones) for the
+                           filterable grid below.  Featured ones get a badge.
+      technologies       – tech-stack grid at the bottom of the page.
+    """
+
+    featured_projects = (
+        Project.objects
+        .filter(featured=True)
+        .select_related('case_study')      # avoids N+1 on case study links
+        .order_by('display_order', '-created_at')[:3]
+    )
+
+    all_projects = (
+        Project.objects
+        .all()
+        .select_related('case_study')
+        .order_by('display_order', '-created_at')
+    )
+
+    technologies = Technologies.objects.all().order_by('order', 'name')
 
     context = {
         'featured_projects': featured_projects,
-        'recent_projects': recent_projects,
         'all_projects': all_projects,
         'technologies': technologies,
     }
@@ -59,54 +101,86 @@ def projects(request):
 
 
 
-
 def contact(request):
+
     success_message = None
     error_message = None
 
     contact_info = ContactInfo.objects.first()
 
     if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        subject = request.POST.get('subject')
-        message = request.POST.get('message')
+
+        name = request.POST.get("name", "").strip()
+        email = request.POST.get("email", "").strip()
+        phone = request.POST.get("phone", "").strip()
+
+        company = request.POST.get("company", "").strip()
+
+        subject = request.POST.get("subject", "").strip()
+
+        project_type = request.POST.get(
+            "project_type",
+            ""
+        ).strip()
+
+        budget = request.POST.get("budget", "").strip()
+
+        timeline = request.POST.get("timeline", "").strip()
+
+        message = request.POST.get("message", "").strip()
 
         if name and email and subject and message:
 
-            ContactMessage.objects.create(
-                name=name,
-                email=email,
-                subject=subject,
-                message=message
+            ip_address = request.META.get(
+                "REMOTE_ADDR"
             )
 
-            try:
-                send_mail(
-                    subject=f"New Contact: {subject}",
-                    message=f"""
-Name: {name}
-Email: {email}
+            user_agent = request.META.get(
+                "HTTP_USER_AGENT",
+                ""
+            )
 
-Message:
-{message}
-""",
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[settings.DEFAULT_FROM_EMAIL],
-                    fail_silently=True,
-                )
-            except:
-                pass
+            ContactMessage.objects.create(
 
-            success_message = "Your message was sent successfully."
+                name=name,
+                email=email,
+                phone=phone,
+
+                company=company,
+
+                subject=subject,
+
+                project_type=project_type or "other",
+
+                budget=budget,
+
+                timeline=timeline,
+
+                message=message,
+
+                ip_address=ip_address,
+
+                user_agent=user_agent,
+            )
+            success_message = (
+                "Your message has been sent successfully."
+            )
+
         else:
-            error_message = "Please fill all fields properly."
 
-    return render(request, 'contact.html', {
-        'contact_info': contact_info,
-        'success_message': success_message,
-        'error_message': error_message,
+            error_message = (
+                "Please fill all required fields properly."
+            )
+
+    return render(request, "contact.html", {
+
+        "contact_info": contact_info,
+
+        "success_message": success_message,
+
+        "error_message": error_message,
     })
+
 
 
 
@@ -125,82 +199,242 @@ def services(request):
 
 
 
-
 def hire(request):
 
     status = FreelanceStatus.objects.first()
-
     faqs = FAQ.objects.all()
 
-    success = None
+    success_message = None
+    error_message = None
+
+    selected_service = None
+    selected_package = None
 
     if request.method == "POST":
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        project_type = request.POST.get("project_type")
-        budget = request.POST.get("budget")
-        deadline = request.POST.get("deadline")
-        description = request.POST.get("description")
 
-        if name and email and project_type and budget and description:
+        name = request.POST.get("name", "").strip()
+        email = request.POST.get("email", "").strip()
+        phone = request.POST.get("phone", "").strip()
+
+        company = request.POST.get("company", "").strip()
+
+        project_type = request.POST.get("project_type", "").strip()
+
+        budget = request.POST.get("budget", "").strip()
+        timeline = request.POST.get("timeline", "").strip()
+        deadline = request.POST.get("deadline", "").strip()
+
+        message = request.POST.get("description", "").strip()
+
+        selected_service_slug = request.POST.get("selected_service")
+        selected_package_slug = request.POST.get("selected_package")
+
+        # Optional: resolve service/package if you use them
+        try:
+            if selected_service_slug:
+                selected_service = Service.objects.filter(slug=selected_service_slug).first()
+
+            if selected_package_slug:
+                selected_package = ServicePackage.objects.filter(slug=selected_package_slug).first()
+        except:
+            selected_service = None
+            selected_package = None
+
+        if name and email and project_type and message:
+
+            ip_address = request.META.get("REMOTE_ADDR")
+            user_agent = request.META.get("HTTP_USER_AGENT", "")
 
             ProjectInquiry.objects.create(
-                name=name,
+
+                full_name=name,
                 email=email,
+                phone=phone,
+                company=company,
+
+                subject=f"{project_type} inquiry from {name}",
+
                 project_type=project_type,
-                budget=budget,
-                deadline=deadline if deadline else None,
-                description=description
+                service=selected_service,
+                selected_package=selected_package,
+
+                budget=budget or None,
+                timeline=timeline or None,
+                deadline=deadline or None,
+
+                message=message,
+
+                source="hire_page",
+                ip_address=ip_address,
+                user_agent=user_agent,
             )
 
-            success = "Your project request has been sent successfully."
+            success_message = "Your project inquiry has been submitted successfully."
 
         else:
-            success = "Please fill all required fields."
+            error_message = "Please fill all required fields properly."
 
-    return render(request, 'hire.html', {
-        'status': status,
-        'faqs': faqs,
-        'success': success
+    return render(request, "hire.html", {
+
+        "status": status,
+        "faqs": faqs,
+
+        "success_message": success_message,
+        "error_message": error_message,
+
+        "selected_service": selected_service,
+        "selected_package": selected_package,
     })
 
 
-def blog(request):
 
-    tag = request.GET.get('tag')
 
-    posts = BlogPost.objects.filter(is_published=True)
 
+
+# ============================================================
+# views.py
+# ============================================================
+ 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.contrib import messages
+from django.db.models import Q
+ 
+ 
+# ── Constants ───────────────────────────────────────────────────────────────
+POSTS_PER_PAGE = 6   # cards shown per "page" / per Load-More click
+ 
+ 
+# ── Helpers ─────────────────────────────────────────────────────────────────
+ 
+def _build_queryset(tag: str, search: str):
+    """Return a filtered, published BlogPost queryset."""
+    qs = BlogPost.objects.filter(is_published=True)
+ 
     if tag:
-        posts = posts.filter(tags__icontains=tag)
-
-    # all tags (for filter UI)
-    all_tags = set()
-    for post in BlogPost.objects.filter(is_published=True):
-        for t in post.get_tags():
+        qs = qs.filter(tags__icontains=tag)
+ 
+    if search:
+        qs = qs.filter(
+            Q(title__icontains=search) |
+            Q(content__icontains=search) |
+            Q(tags__icontains=search)
+        )
+ 
+    return qs
+ 
+ 
+def _collect_all_tags():
+    """
+    Gather every distinct tag from published posts in a single DB hit.
+    Returns a sorted list of tag strings.
+    """
+    all_tags: set[str] = set()
+    for tag_string in BlogPost.objects.filter(is_published=True).values_list('tags', flat=True):
+        for t in (t.strip() for t in tag_string.split(',') if t.strip()):
             all_tags.add(t)
-
+    return sorted(all_tags)
+ 
+ 
+# ── Views ───────────────────────────────────────────────────────────────────
+ 
+def blog(request):
+    """
+    Main blog listing.
+ 
+    First POSTS_PER_PAGE posts are rendered server-side.
+    Subsequent pages are loaded via the `blog_load_more` AJAX endpoint
+    (triggered by the 'Load More' button in the template).
+ 
+    Query params:
+        tag    – filter by tag  (e.g. ?tag=django)
+        search – full-text search (e.g. ?search=celery)
+    """
+    tag    = request.GET.get('tag',    '').strip()
+    search = request.GET.get('search', '').strip()
+ 
+    qs = _build_queryset(tag, search)
+ 
+    paginator   = Paginator(qs, POSTS_PER_PAGE)
+    page_obj    = paginator.get_page(1)          # always start at page 1
+ 
+    # The featured post is the single most-recent published post
+    # (independent of tag/search filter so it doesn't disappear)
+    featured = BlogPost.objects.filter(is_published=True).first()
+ 
     return render(request, 'blog.html', {
-        'posts': posts,
-        'all_tags': sorted(all_tags),
-        'active_tag': tag
+        'featured':       featured,
+        'posts':          page_obj.object_list,   # first N posts for the grid
+        'all_tags':       _collect_all_tags(),
+        'active_tag':     tag,
+        'search_query':   search,
+        'has_more':       page_obj.has_next(),     # show/hide Load More btn
+        'next_page':      2,                       # next page the JS will fetch
+        'total_count':    paginator.count,         # total matching posts
     })
-
-
+ 
+ 
+def blog_load_more(request):
+    """
+    AJAX endpoint — returns rendered card HTML + pagination state.
+ 
+    Called by the 'Load More' button via fetch().
+ 
+    Query params (all forwarded from the front-end):
+        page   – integer page number to fetch
+        tag    – current tag filter
+        search – current search term
+    """
+    if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        # Graceful fallback: redirect to the main blog page
+        return redirect('blog')
+ 
+    page_number = int(request.GET.get('page',   2))
+    tag         =     request.GET.get('tag',    '').strip()
+    search      =     request.GET.get('search', '').strip()
+ 
+    qs        = _build_queryset(tag, search)
+    paginator = Paginator(qs, POSTS_PER_PAGE)
+    page_obj  = paginator.get_page(page_number)
+ 
+    # Render only the card fragments, not the full page
+    html = render_to_string(
+        'partials/blog_cards.html',
+        {'posts': page_obj.object_list},
+        request=request,
+    )
+ 
+    return JsonResponse({
+        'html':      html,
+        'has_more':  page_obj.has_next(),
+        'next_page': page_number + 1,
+        'loaded':    page_obj.end_index(),   # cumulative cards loaded so far
+        'total':     paginator.count,
+    })
+ 
+ 
 def blog_detail(request, slug):
+    """Full article page."""
     post = get_object_or_404(BlogPost, slug=slug, is_published=True)
-
-    # Reading time (approx 200 words per minute)
-    word_count = len(post.content.split())
-    reading_time = max(1, word_count // 200)
-
-    # Related posts (simple logic: same tags OR latest posts)
-    related_posts = BlogPost.objects.filter(is_published=True).exclude(id=post.id)[:3]
-
+ 
+    # Related posts: prefer same-tag matches, fall back to latest 3
+    post_tags     = post.get_tags()
+    related_posts = BlogPost.objects.filter(is_published=True).exclude(pk=post.pk)
+ 
+    if post_tags:
+        tag_filter = Q()
+        for t in post_tags:
+            tag_filter |= Q(tags__icontains=t)
+        related_posts = related_posts.filter(tag_filter)
+ 
+    related_posts = related_posts[:3]
+ 
     return render(request, 'blog_detail.html', {
-        'post': post,
-        'reading_time': reading_time,
-        'related_posts': related_posts
+        'post':          post,
+        'reading_time':  post.reading_time,
+        'related_posts': related_posts,
     })
 
 
@@ -214,3 +448,45 @@ def case_studies(request):
 def case_study_detail(request, slug):
     case = get_object_or_404(CaseStudy, slug=slug, is_published=True)
     return render(request, 'case_study_detail.html', {'case': case})
+
+
+
+def blog_subscribe(request):
+
+    if request.method == "POST":
+
+        email = request.POST.get("email", "").strip()
+
+        if email:
+
+            if BlogSubscriber.objects.filter(email=email).exists():
+
+                messages.error(
+                    request,
+                    "You're already subscribed."
+                )
+
+            else:
+
+                ip_address = request.META.get("REMOTE_ADDR")
+                user_agent = request.META.get("HTTP_USER_AGENT", "")
+
+                BlogSubscriber.objects.create(
+                    email=email,
+                    ip_address=ip_address,
+                    user_agent=user_agent
+                )
+
+                messages.success(
+                    request,
+                    "Subscribed successfully!"
+                )
+
+        else:
+
+            messages.error(
+                request,
+                "Please enter a valid email."
+            )
+
+    return render(request, "blog.html")

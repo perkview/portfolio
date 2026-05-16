@@ -9,909 +9,787 @@
 {% block extra_head %}
 <style>
 
-  /* ============================================================
-     PAGE HERO
-     ============================================================ */
-  .projects-hero {
-    position: relative;
-    padding: 90px 0 80px;
-    overflow: hidden;
-  }
+/* ============================================================
+   LIGHT THEME OVERRIDES
+   ============================================================ */
+body.light-theme {
+  --bg:         #F8FAFC;
+  --bg-card:    #FFFFFF;
+  --bg-glass:   rgba(0,0,0,0.03);
+  --border:     rgba(0,0,0,0.08);
+  --text:       #0F172A;
+  --text-muted: #64748B;
+  --text-dim:   #475569;
+}
 
-  .projects-hero-orb-1 {
-    position: absolute;
-    width: 700px; height: 700px;
-    background: radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 70%);
-    top: -260px; right: -200px;
-    pointer-events: none;
-  }
-  .projects-hero-orb-2 {
-    position: absolute;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%);
-    bottom: -80px; left: -80px;
-    pointer-events: none;
-  }
+/* ============================================================
+   PAGE HERO
+   ============================================================ */
+.projects-hero {
+  position: relative;
+  padding: clamp(80px, 12vw, 120px) 0 clamp(60px, 8vw, 90px);
+  overflow: hidden;
+}
+.projects-hero-orb-1 {
+  position: absolute;
+  width: clamp(300px, 55vw, 700px);
+  height: clamp(300px, 55vw, 700px);
+  background: radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 70%);
+  top: -20%; right: -10%;
+  pointer-events: none;
+}
+.projects-hero-orb-2 {
+  position: absolute;
+  width: clamp(200px, 35vw, 400px);
+  height: clamp(200px, 35vw, 400px);
+  background: radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%);
+  bottom: -10%; left: -5%;
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.projects-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin-bottom: 20px;
+  max-width: 720px;
+  color: var(--text);
+}
+.projects-hero-title span {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.projects-hero-sub {
+  color: var(--text-muted);
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  line-height: 1.75;
+  max-width: 600px;
+  margin-bottom: clamp(24px, 4vw, 36px);
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.btn-primary-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--accent), #2563EB);
+  color: #fff;
+  padding: clamp(10px, 2vw, 13px) clamp(20px, 3vw, 28px);
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: clamp(0.82rem, 1.6vw, 0.92rem);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 6px 24px rgba(59,130,246,0.3);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(59,130,246,0.5);
+  color: #fff;
+}
+.btn-primary-custom:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.btn-outline-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  color: var(--text-dim);
+  padding: clamp(10px, 2vw, 13px) clamp(18px, 3vw, 24px);
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: clamp(0.82rem, 1.6vw, 0.875rem);
+  transition: var(--transition);
+  font-family: var(--font-body);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-outline-custom:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(59,130,246,0.06);
+}
+.btn-outline-custom:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 20px;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    width: 24px; height: 1px;
-    background: var(--accent);
-  }
+/* ============================================================
+   STATS STRIP
+   ============================================================ */
+.projects-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: clamp(40px, 6vw, 60px);
+}
+.proj-stat {
+  background: var(--bg-card);
+  padding: clamp(20px, 4vw, 32px) clamp(12px, 2vw, 20px);
+  text-align: center;
+  transition: var(--transition);
+}
+.proj-stat:hover { background: rgba(59,130,246,0.04); }
+.proj-stat-num {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.proj-stat-label {
+  font-size: clamp(0.62rem, 1.2vw, 0.72rem);
+  color: var(--text-muted);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
 
-  .projects-hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.08;
-    margin-bottom: 20px;
-    max-width: 720px;
-  }
-  .projects-hero-title span {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+/* ============================================================
+   SECTION COMMONS
+   ============================================================ */
+.proj-section {
+  padding: clamp(60px, 8vw, 90px) 0;
+  position: relative;
+}
+.section-divider { height: 1px; background: var(--border); }
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.section-eyebrow::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.section-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.section-heading span {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.section-subheading {
+  color: var(--text-muted);
+  font-size: clamp(0.88rem, 1.6vw, 0.95rem);
+  max-width: 520px;
+  margin-bottom: clamp(28px, 5vw, 48px);
+  line-height: 1.75;
+}
 
-  .projects-hero-sub {
-    color: var(--text-muted);
-    font-size: 1.05rem;
-    line-height: 1.75;
-    max-width: 600px;
-    margin-bottom: 36px;
-  }
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: clamp(24px, 4vw, 40px);
+  align-items: center;
+}
+.filter-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-right: 2px;
+  flex-shrink: 0;
+}
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 7px 14px;
+  border-radius: 50px;
+  font-size: clamp(0.72rem, 1.4vw, 0.8rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+  white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.07); }
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(59,130,246,0.35);
+}
+.filter-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.filter-count {
+  background: rgba(255,255,255,0.18);
+  padding: 1px 6px;
+  border-radius: 50px;
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+.filter-btn:not(.active) .filter-count { background: var(--bg-glass); color: var(--text-muted); }
 
-  .hero-actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
+/* ============================================================
+   FEATURED CARDS
+   ============================================================ */
+.featured-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(20px, 3vw, 28px);
+  margin-bottom: 20px;
+}
+.featured-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: clamp(280px, 35vw, 420px) 1fr;
+  transition: var(--transition);
+  position: relative;
+}
+.featured-card:hover { border-color: rgba(59,130,246,0.3); box-shadow: 0 24px 64px rgba(0,0,0,0.3); }
+body.light-theme .featured-card:hover { box-shadow: 0 24px 64px rgba(59,130,246,0.1); }
+.featured-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-3));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: var(--transition);
+  z-index: 2;
+}
+.featured-card:hover::before { transform: scaleY(1); }
+.featured-img-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+  min-height: 240px;
+}
+.featured-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  display: block;
+}
+.featured-card:hover .featured-img-wrap img { transform: scale(1.04); }
+.featured-img-placeholder {
+  width: 100%; height: 100%;
+  min-height: 260px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.featured-img-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.featured-img-placeholder > i { position: relative; z-index: 1; }
+.featured-badge {
+  position: absolute;
+  top: 14px; left: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 11px;
+  border-radius: 50px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.featured-card-body {
+  padding: clamp(22px, 4vw, 36px) clamp(20px, 3vw, 32px);
+  display: flex;
+  flex-direction: column;
+}
+.project-number {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.project-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.project-desc {
+  color: var(--text-muted);
+  font-size: clamp(0.82rem, 1.5vw, 0.875rem);
+  line-height: 1.75;
+  margin-bottom: 18px;
+  flex: 1;
+}
+.proj-tech-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+.proj-tech-tag {
+  background: rgba(59,130,246,0.08);
+  border: 1px solid rgba(59,130,246,0.18);
+  color: var(--accent-2);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 50px;
+  letter-spacing: 0.04em;
+}
+.proj-metrics {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+  padding: 12px 14px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.proj-metric { display: flex; align-items: center; gap: 7px; font-size: clamp(0.7rem, 1.3vw, 0.75rem); color: var(--text-dim); }
+.proj-metric i { color: var(--green); }
+.proj-metric strong { color: var(--text); font-weight: 700; }
+.proj-links { display: flex; gap: 9px; flex-wrap: wrap; }
+.proj-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 50px;
+  font-size: clamp(0.78rem, 1.4vw, 0.82rem);
+  font-weight: 600;
+  transition: var(--transition);
+  font-family: var(--font-body);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-demo { background: linear-gradient(135deg, var(--accent), #2563EB); color: #fff; box-shadow: 0 4px 14px rgba(59,130,246,0.28); }
+.btn-demo:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(59,130,246,0.48); color: #fff; }
+.btn-github { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+.btn-github:hover { border-color: var(--text-dim); color: var(--text); background: var(--bg-glass); }
+.btn-case { background: rgba(139,92,246,0.1); color: #A78BFA; border: 1px solid rgba(139,92,246,0.2); }
+.btn-case:hover { background: rgba(139,92,246,0.18); border-color: rgba(139,92,246,0.4); color: #C4B5FD; }
 
-  .btn-outline-custom {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: transparent;
-    color: var(--text-dim);
-    padding: 12px 24px;
-    border-radius: 50px;
-    border: 1px solid var(--border);
-    font-weight: 600;
-    font-size: 0.875rem;
-    transition: var(--transition);
-    font-family: var(--font-body);
-  }
-  .btn-outline-custom:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(59,130,246,0.06);
-  }
+/* ============================================================
+   ALL PROJECTS GRID
+   ============================================================ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 18px;
+}
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+  position: relative;
+}
+.project-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-3));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: var(--transition);
+}
+.project-card:hover {
+  border-color: rgba(59,130,246,0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 54px rgba(0,0,0,0.25);
+}
+body.light-theme .project-card:hover { box-shadow: 0 20px 54px rgba(59,130,246,0.1); }
+.project-card:hover::after { transform: scaleX(1); }
+.project-card.hidden { display: none; }
+.proj-card-img {
+  position: relative;
+  height: 172px;
+  overflow: hidden;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.proj-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block; }
+.project-card:hover .proj-card-img img { transform: scale(1.06); }
+.proj-card-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  position: relative;
+}
+.proj-card-img-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.proj-card-img-placeholder > i { position: relative; z-index: 1; }
+.card-featured-badge {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 50px;
+  z-index: 2;
+}
+.proj-card-body {
+  padding: clamp(18px, 3vw, 24px) clamp(16px, 2.5vw, 22px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.proj-card-category {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.proj-card-title { font-size: clamp(0.92rem, 1.8vw, 1rem); font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.3; transition: color 0.2s; }
+.project-card:hover .proj-card-title { color: var(--accent-2); }
+.proj-card-desc { color: var(--text-muted); font-size: clamp(0.78rem, 1.4vw, 0.82rem); line-height: 1.65; flex: 1; margin-bottom: 14px; }
+.proj-card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 14px; }
+.proj-card-tag {
+  background: rgba(59,130,246,0.06);
+  border: 1px solid rgba(59,130,246,0.12);
+  color: var(--text-muted);
+  font-size: 0.64rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 50px;
+  letter-spacing: 0.04em;
+}
+.card-case-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #A78BFA;
+  transition: gap 0.2s;
+  text-decoration: none;
+  margin-top: auto;
+}
+.card-case-link:hover { gap: 8px; color: #C4B5FD; }
+.proj-card-footer {
+  padding: 12px clamp(16px, 2.5vw, 22px) 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.proj-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  border-radius: 50px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  transition: var(--transition);
+  font-family: var(--font-body);
+  flex: 1;
+  justify-content: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.card-link-demo { background: linear-gradient(135deg, var(--accent), #2563EB); color: #fff; box-shadow: 0 3px 10px rgba(59,130,246,0.22); border: none; }
+.card-link-demo:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(59,130,246,0.42); }
+.card-link-github { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+.card-link-github:hover { border-color: var(--text-dim); color: var(--text); background: var(--bg-glass); }
 
-  /* ============================================================
-     STATS STRIP
-     ============================================================ */
-  .projects-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin: 60px 0 0;
-  }
-  @media (max-width: 640px) { .projects-stats { grid-template-columns: repeat(2, 1fr); } }
+/* ============================================================
+   NO RESULTS
+   ============================================================ */
+#no-results {
+  display: none;
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: clamp(32px, 6vw, 48px) 20px;
+  color: var(--text-muted);
+}
+#no-results i { font-size: 2rem; display: block; margin-bottom: 12px; opacity: 0.4; }
 
-  .proj-stat {
-    background: var(--bg-card);
-    padding: 32px 20px;
-    text-align: center;
-    transition: var(--transition);
-  }
-  .proj-stat:hover { background: rgba(59,130,246,0.05); }
+/* ============================================================
+   TECH STACK GRID
+   ============================================================ */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(80px, 12vw, 110px), 1fr));
+  gap: 12px;
+  margin-top: clamp(28px, 5vw, 48px);
+}
+.tech-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: clamp(14px, 3vw, 20px) clamp(8px, 2vw, 12px);
+  text-align: center;
+  transition: var(--transition);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.tech-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(59,130,246,0.06), transparent);
+  opacity: 0;
+  transition: var(--transition);
+}
+.tech-item:hover { border-color: rgba(59,130,246,0.28); transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.18); }
+body.light-theme .tech-item:hover { box-shadow: 0 10px 28px rgba(59,130,246,0.1); }
+.tech-item:hover::before { opacity: 1; }
+.tech-item img {
+  width: clamp(28px, 5vw, 36px);
+  height: clamp(28px, 5vw, 36px);
+  object-fit: contain;
+  filter: grayscale(0.6) brightness(1.3);
+  margin-bottom: 8px;
+  transition: filter 0.3s;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.tech-item:hover img { filter: none; }
+body.light-theme .tech-item img { filter: grayscale(0.5) brightness(0.7); }
+body.light-theme .tech-item:hover img { filter: none; }
+.tech-item-icon { font-size: clamp(1.4rem, 3vw, 1.8rem); color: var(--accent); margin-bottom: 8px; display: block; transition: transform 0.3s; position: relative; z-index: 1; }
+.tech-item:hover .tech-item-icon { transform: scale(1.1); }
+.tech-item-name { font-size: clamp(0.62rem, 1.2vw, 0.72rem); font-weight: 600; color: var(--text-muted); letter-spacing: 0.03em; line-height: 1.3; position: relative; z-index: 1; }
+.tech-item:hover .tech-item-name { color: var(--text-dim); }
 
-  .proj-stat-num {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .proj-stat-label {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-  }
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline-track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: clamp(28px, 5vw, 48px);
+}
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  left: 19px; top: 28px; bottom: 28px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent), rgba(59,130,246,0.1));
+}
+.timeline-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: clamp(16px, 3vw, 24px);
+  padding-bottom: clamp(24px, 4vw, 36px);
+  align-items: start;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+.tl-dot {
+  width: 40px; height: 40px;
+  background: rgba(59,130,246,0.1);
+  border: 2px solid rgba(59,130,246,0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  transition: var(--transition);
+}
+.timeline-item:hover .tl-dot { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 0 6px rgba(59,130,246,0.1); }
+.tl-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: clamp(16px, 3vw, 22px) clamp(18px, 3vw, 26px);
+  transition: var(--transition);
+}
+.timeline-item:hover .tl-card { border-color: rgba(59,130,246,0.2); transform: translateX(4px); }
+.tl-period {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(59,130,246,0.08);
+  border: 1px solid rgba(59,130,246,0.15);
+  padding: 3px 10px;
+  border-radius: 50px;
+  margin-bottom: 10px;
+}
+.tl-title { font-size: clamp(0.88rem, 1.8vw, 0.95rem); font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.tl-desc { font-size: clamp(0.78rem, 1.4vw, 0.82rem); color: var(--text-muted); line-height: 1.65; }
 
-  /* ============================================================
-     SECTION COMMONS
-     ============================================================ */
-  .proj-section { padding: 80px 0; position: relative; }
+/* ============================================================
+   CTA BOX
+   ============================================================ */
+.projects-cta {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: clamp(40px, 8vw, 72px) clamp(24px, 6vw, 60px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: clamp(60px, 8vw, 80px);
+}
+.projects-cta::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 280px;
+  background: radial-gradient(ellipse, rgba(59,130,246,0.10) 0%, transparent 70%);
+  pointer-events: none;
+}
+.projects-cta::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; right: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-title { font-family: var(--font-display); font-size: clamp(1.4rem, 3.5vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 14px; position: relative; z-index: 1; color: var(--text); }
+.cta-title span { background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.cta-sub { color: var(--text-muted); font-size: clamp(0.88rem, 1.6vw, 0.95rem); max-width: 480px; margin: 0 auto clamp(24px, 4vw, 36px); position: relative; z-index: 1; line-height: 1.75; }
+.cta-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: clamp(20px, 3vw, 28px); position: relative; z-index: 1; }
+.cta-chip { background: rgba(59,130,246,0.07); border: 1px solid rgba(59,130,246,0.16); color: var(--text-dim); padding: 4px 12px; border-radius: 50px; font-size: 0.74rem; font-weight: 500; }
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
 
-  .section-divider { height: 1px; background: var(--border); }
-
-  .section-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-  .section-eyebrow::before {
-    content: '';
-    width: 20px; height: 1px;
-    background: var(--accent);
-  }
-
-  .section-heading {
-    font-family: var(--font-display);
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 8px;
-  }
-  .section-heading span {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .section-subheading {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    max-width: 520px;
-    margin-bottom: 48px;
-    line-height: 1.75;
-  }
-
-  /* ============================================================
-     FILTER BAR
-     ============================================================ */
-  .filter-bar {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
-    align-items: center;
-  }
-
-  .filter-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-right: 4px;
-  }
-
-  .filter-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 7px 16px;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    font-family: var(--font-body);
-  }
-  .filter-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(59,130,246,0.07);
-  }
-  .filter-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-    box-shadow: 0 4px 16px rgba(59,130,246,0.35);
-  }
-
-  /* Filter count badge */
-  .filter-count {
-    background: rgba(255,255,255,0.15);
-    padding: 1px 6px;
-    border-radius: 50px;
-    font-size: 0.65rem;
-    font-weight: 700;
-  }
-  .filter-btn.active .filter-count { background: rgba(255,255,255,0.25); }
-
-  /* ============================================================
-     FEATURED PROJECT CARDS (large horizontal)
-     ============================================================ */
-  .featured-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 28px;
-    margin-bottom: 24px;
-  }
-
-  .featured-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 420px 1fr;
-    transition: var(--transition);
-    position: relative;
-  }
-  .featured-card:hover {
-    border-color: rgba(59,130,246,0.3);
-    box-shadow: 0 28px 70px rgba(0,0,0,0.4);
-  }
-
-  /* Accent strip on left edge on hover */
-  .featured-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: linear-gradient(to bottom, var(--accent), var(--accent-3));
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: var(--transition);
-  }
-  .featured-card:hover::before { transform: scaleY(1); }
-
-  @media (max-width: 900px) {
-    .featured-card { grid-template-columns: 1fr; }
-    .featured-img-wrap { height: 220px; }
-  }
-
-  .featured-img-wrap {
-    position: relative;
-    overflow: hidden;
-    background: var(--bg);
-  }
-  .featured-img-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-    display: block;
-  }
-  .featured-card:hover .featured-img-wrap img { transform: scale(1.04); }
-
-  /* No-image placeholder */
-  .featured-img-placeholder {
-    width: 100%; height: 100%;
-    min-height: 260px;
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    color: var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  .featured-img-placeholder::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
-
-  .featured-badge {
-    position: absolute;
-    top: 14px; left: 14px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 12px;
-    border-radius: 50px;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .featured-card-body {
-    padding: 36px 32px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .project-number {
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 10px;
-  }
-
-  .project-title {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 12px;
-    line-height: 1.25;
-    letter-spacing: -0.01em;
-  }
-
-  .project-desc {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    line-height: 1.75;
-    margin-bottom: 20px;
-    flex: 1;
-  }
-
-  /* Tech stack tags */
-  .proj-tech-tags {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-  .proj-tech-tag {
-    background: rgba(59,130,246,0.08);
-    border: 1px solid rgba(59,130,246,0.18);
-    color: var(--accent-2);
-    font-size: 0.68rem;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 50px;
-    letter-spacing: 0.04em;
-  }
-
-  /* Performance metrics strip */
-  .proj-metrics {
-    display: flex;
-    gap: 18px;
-    flex-wrap: wrap;
-    margin-bottom: 24px;
-    padding: 14px 16px;
-    background: var(--bg-glass);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-  }
-  .proj-metric {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 0.75rem;
-    color: var(--text-dim);
-  }
-  .proj-metric i {
-    color: var(--green);
-    font-size: 0.82rem;
-  }
-  .proj-metric strong {
-    color: var(--text);
-    font-weight: 700;
-  }
-
-  /* Action links */
-  .proj-links {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .proj-link-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    transition: var(--transition);
-    font-family: var(--font-body);
-    border: none;
-    cursor: pointer;
-  }
-  .btn-demo {
-    background: linear-gradient(135deg, var(--accent), #2563EB);
-    color: #fff;
-    box-shadow: 0 4px 16px rgba(59,130,246,0.3);
-  }
-  .btn-demo:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(59,130,246,0.5);
-    color: #fff;
-  }
-  .btn-github {
-    background: transparent;
-    color: var(--text-dim);
-    border: 1px solid var(--border);
-  }
-  .btn-github:hover {
-    border-color: var(--text-dim);
-    color: var(--text);
-    background: var(--bg-glass);
-  }
-  .btn-case {
-    background: rgba(139,92,246,0.1);
-    color: #A78BFA;
-    border: 1px solid rgba(139,92,246,0.2);
-  }
-  .btn-case:hover {
-    background: rgba(139,92,246,0.18);
-    border-color: rgba(139,92,246,0.4);
-    color: #C4B5FD;
-  }
-
-  /* ============================================================
-     ALL PROJECTS GRID (compact cards)
-     ============================================================ */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-  }
-
-  .project-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: var(--transition);
-    position: relative;
-  }
-  .project-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-3));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: var(--transition);
-  }
-  .project-card:hover {
-    border-color: rgba(59,130,246,0.25);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 54px rgba(0,0,0,0.35);
-  }
-  .project-card:hover::after { transform: scaleX(1); }
-  .project-card.hidden { display: none; }
-
-  /* Card image */
-  .proj-card-img {
-    position: relative;
-    height: 180px;
-    overflow: hidden;
-    background: var(--bg);
-    flex-shrink: 0;
-  }
-  .proj-card-img img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-    display: block;
-  }
-  .project-card:hover .proj-card-img img { transform: scale(1.06); }
-
-  .proj-card-img-placeholder {
-    width: 100%; height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.2rem;
-    color: rgba(255,255,255,0.06);
-    position: relative;
-  }
-  .proj-card-img-placeholder::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  /* Featured badge overlay */
-  .card-featured-badge {
-    position: absolute;
-    top: 10px; right: 10px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 9px;
-    border-radius: 50px;
-    z-index: 2;
-  }
-
-  /* Card body */
-  .proj-card-body {
-    padding: 24px 22px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .proj-card-category {
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-
-  .proj-card-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 8px;
-    line-height: 1.3;
-    transition: color 0.2s;
-  }
-  .project-card:hover .proj-card-title { color: var(--accent-2); }
-
-  .proj-card-desc {
-    color: var(--text-muted);
-    font-size: 0.82rem;
-    line-height: 1.65;
-    flex: 1;
-    margin-bottom: 16px;
-  }
-
-  .proj-card-tags {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-    margin-bottom: 18px;
-  }
-  .proj-card-tag {
-    background: rgba(59,130,246,0.07);
-    border: 1px solid rgba(59,130,246,0.14);
-    color: var(--text-muted);
-    font-size: 0.65rem;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 50px;
-    letter-spacing: 0.04em;
-  }
-
-  /* Card footer */
-  .proj-card-footer {
-    padding: 14px 22px 18px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .proj-card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 7px 14px;
-    border-radius: 50px;
-    font-size: 0.76rem;
-    font-weight: 600;
-    transition: var(--transition);
-    font-family: var(--font-body);
-    flex: 1;
-    justify-content: center;
-  }
-  .card-link-demo {
-    background: linear-gradient(135deg, var(--accent), #2563EB);
-    color: #fff;
-    box-shadow: 0 3px 12px rgba(59,130,246,0.25);
-    border: none;
-  }
-  .card-link-demo:hover {
-    color: #fff;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(59,130,246,0.45);
-  }
-  .card-link-github {
-    background: transparent;
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-  }
-  .card-link-github:hover {
-    border-color: var(--text-dim);
-    color: var(--text);
-    background: var(--bg-glass);
-  }
-
-  /* Case study inline link */
-  .card-case-link {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #A78BFA;
-    transition: gap 0.2s;
-    padding: 4px 0;
-  }
-  .card-case-link:hover { gap: 8px; color: #C4B5FD; }
-
-  /* ============================================================
-     TECH STACK SECTION
-     ============================================================ */
-  .tech-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 14px;
-    margin-top: 48px;
-  }
-
-  .tech-item {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 20px 12px;
-    text-align: center;
-    transition: var(--transition);
-    cursor: default;
-    position: relative;
-    overflow: hidden;
-  }
-  .tech-item::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(59,130,246,0.06), transparent);
-    opacity: 0;
-    transition: var(--transition);
-  }
-  .tech-item:hover {
-    border-color: rgba(59,130,246,0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
-  }
-  .tech-item:hover::before { opacity: 1; }
-
-  .tech-item img {
-    width: 36px; height: 36px;
-    object-fit: contain;
-    filter: grayscale(0.6) brightness(1.3);
-    margin-bottom: 10px;
-    transition: filter 0.3s;
-  }
-  .tech-item:hover img { filter: none; }
-
-  .tech-item-icon {
-    font-size: 1.8rem;
-    color: var(--accent);
-    margin-bottom: 10px;
-    display: block;
-    transition: transform 0.3s;
-  }
-  .tech-item:hover .tech-item-icon { transform: scale(1.1); }
-
-  .tech-item-name {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: 0.04em;
-  }
-  .tech-item:hover .tech-item-name { color: var(--text-dim); }
-
-  /* ============================================================
-     DEVELOPMENT TIMELINE
-     ============================================================ */
-  .timeline-track {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin-top: 48px;
-  }
-  .timeline-track::before {
-    content: '';
-    position: absolute;
-    left: 19px; top: 28px; bottom: 28px;
-    width: 1px;
-    background: linear-gradient(to bottom, var(--accent), rgba(59,130,246,0.1));
-  }
-
-  .timeline-item {
-    display: grid;
-    grid-template-columns: 40px 1fr;
-    gap: 24px;
-    padding-bottom: 36px;
-    align-items: start;
-  }
-  .timeline-item:last-child { padding-bottom: 0; }
-
-  .tl-dot {
-    width: 40px; height: 40px;
-    background: rgba(59,130,246,0.1);
-    border: 2px solid rgba(59,130,246,0.4);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent);
-    font-size: 0.85rem;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 1;
-    transition: var(--transition);
-  }
-  .timeline-item:hover .tl-dot {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 6px rgba(59,130,246,0.1);
-  }
-
-  .tl-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 22px 26px;
-    transition: var(--transition);
-  }
-  .timeline-item:hover .tl-card {
-    border-color: rgba(59,130,246,0.2);
-    transform: translateX(4px);
-  }
-
-  .tl-period {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: rgba(59,130,246,0.08);
-    border: 1px solid rgba(59,130,246,0.15);
-    padding: 3px 10px;
-    border-radius: 50px;
-    margin-bottom: 10px;
-  }
-
-  .tl-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  .tl-desc {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    line-height: 1.65;
-  }
-
-  /* ============================================================
-     CTA BOX
-     ============================================================ */
-  .projects-cta {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 72px 60px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 80px;
-  }
-  .projects-cta::before {
-    content: '';
-    position: absolute;
-    top: -100px; left: 50%; transform: translateX(-50%);
-    width: 600px; height: 280px;
-    background: radial-gradient(ellipse, rgba(59,130,246,0.10) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .projects-cta::after {
-    content: '';
-    position: absolute;
-    bottom: -80px; right: -60px;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .cta-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 14px;
-    position: relative; z-index: 1;
-  }
-  .cta-title span {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .cta-sub {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    max-width: 460px;
-    margin: 0 auto 36px;
-    position: relative; z-index: 1;
-    line-height: 1.75;
-  }
-  .cta-btns {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-    position: relative; z-index: 1;
-  }
-
-  /* ============================================================
-     EMPTY STATE
-     ============================================================ */
-  .empty-state {
-    padding: 64px 24px;
-    text-align: center;
-    color: var(--text-muted);
-    border: 1px dashed var(--border);
-    border-radius: var(--radius);
-  }
-  .empty-state i { font-size: 2.5rem; opacity: 0.3; margin-bottom: 16px; display: block; }
-
-  /* ============================================================
-     NO RESULTS (filter)
-     ============================================================ */
-  #no-results {
-    display: none;
-    grid-column: 1/-1;
-    text-align: center;
-    padding: 48px 20px;
-    color: var(--text-muted);
-  }
-  #no-results i { font-size: 2rem; display: block; margin-bottom: 12px; opacity: 0.4; }
-
-  /* ============================================================
-     RESPONSIVE
-     ============================================================ */
-  @media (max-width: 768px) {
-    .projects-cta { padding: 48px 24px; }
-    .featured-card-body { padding: 24px 20px; }
-  }
-  @media (max-width: 480px) {
-    .projects-grid { grid-template-columns: 1fr; }
-    .proj-links { flex-direction: column; }
-  }
-
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .featured-card { grid-template-columns: 1fr; }
+  .featured-img-wrap { height: clamp(180px, 40vw, 260px); min-height: unset; }
+  .featured-img-placeholder { min-height: unset; height: 100%; }
+}
+@media (max-width: 768px) {
+  .projects-stats { grid-template-columns: repeat(2, 1fr); }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .hero-actions .btn-primary-custom,
+  .hero-actions .btn-outline-custom { width: 100%; max-width: 280px; justify-content: center; }
+  .filter-bar { gap: 6px; }
+  .projects-cta { padding: clamp(32px, 6vw, 48px) clamp(20px, 5vw, 32px); }
+  .cta-btns { flex-direction: column; align-items: center; }
+  .cta-btns .btn-primary-custom,
+  .cta-btns .btn-outline-custom { width: 100%; max-width: 280px; justify-content: center; }
+  .proj-links { flex-direction: row; flex-wrap: wrap; }
+  .timeline-track::before { left: 18px; }
+}
+@media (max-width: 480px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .proj-links { flex-direction: column; }
+  .proj-link-btn { justify-content: center; width: 100%; }
+  .filter-bar { gap: 5px; }
+  .filter-label { width: 100%; margin-bottom: 4px; }
+  .tech-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; }
+  .timeline-item { grid-template-columns: 36px 1fr; gap: 12px; }
+  .tl-dot { width: 36px; height: 36px; font-size: 0.78rem; }
+  .timeline-track::before { left: 17px; }
+  .cta-chips { gap: 6px; }
+  .cta-chip { font-size: 0.7rem; padding: 3px 10px; }
+}
+@media (min-width: 1440px) {
+  .projects-grid { grid-template-columns: repeat(3, 1fr); }
+  .featured-card { grid-template-columns: 440px 1fr; }
+}
+.projects-hero, .proj-section { max-width: 100vw; overflow-x: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  .featured-card:hover .featured-img-wrap img,
+  .project-card:hover .proj-card-img img { transform: none; }
+  .featured-card::before, .project-card::after { transition: none; }
+}
 </style>
 {% endblock %}
 
@@ -921,10 +799,10 @@
 <!-- ============================================================
      HERO
      ============================================================ -->
-<section class="projects-hero">
-  <div class="projects-hero-orb-1"></div>
-  <div class="projects-hero-orb-2"></div>
-  <div class="container">
+<section class="projects-hero" aria-label="Projects introduction">
+  <div class="projects-hero-orb-1" aria-hidden="true"></div>
+  <div class="projects-hero-orb-2" aria-hidden="true"></div>
+  <div class="container px-3">
 
     <div class="reveal">
       <p class="hero-eyebrow">The Work</p>
@@ -933,35 +811,35 @@
         <span>Actually Ship.</span>
       </h1>
       <p class="projects-hero-sub">
-        Not side-project demos — real systems with real users, real edge cases, and real lessons learned. 
+        Not side-project demos — real systems with real users, real edge cases, and real lessons learned.
         Browse by technology, read the architecture decisions, or reach out to build something similar.
       </p>
       <div class="hero-actions">
         <a href="/freelance/" class="btn-primary-custom">
-          <i class="bi bi-lightning-charge-fill"></i>
+          <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
           Build Something Similar
         </a>
         <a href="#all-projects" class="btn-outline-custom">
-          <i class="bi bi-grid-3x3-gap"></i>
+          <i class="bi bi-grid-3x3-gap" aria-hidden="true"></i>
           Browse All Projects
         </a>
       </div>
     </div>
 
-    <div class="projects-stats reveal">
-      <div class="proj-stat">
+    <div class="projects-stats reveal" role="list" aria-label="Project statistics">
+      <div class="proj-stat" role="listitem">
         <div class="proj-stat-num" data-target="10" data-suffix="+">0+</div>
         <div class="proj-stat-label">Projects Built</div>
       </div>
-      <div class="proj-stat">
+      <div class="proj-stat" role="listitem">
         <div class="proj-stat-num" data-target="8" data-suffix="+">0+</div>
         <div class="proj-stat-label">Technologies Used</div>
       </div>
-      <div class="proj-stat">
+      <div class="proj-stat" role="listitem">
         <div class="proj-stat-num" data-target="3" data-suffix="+">0+</div>
         <div class="proj-stat-label">Years Building</div>
       </div>
-      <div class="proj-stat">
+      <div class="proj-stat" role="listitem">
         <div class="proj-stat-num" data-target="5" data-suffix="+">0+</div>
         <div class="proj-stat-label">Live Systems</div>
       </div>
@@ -975,81 +853,113 @@
 <!-- ============================================================
      FEATURED PROJECTS
      ============================================================ -->
-<section class="proj-section">
-  <div class="container">
+<section class="proj-section" aria-labelledby="featured-heading">
+  <div class="container px-3">
 
     <div class="reveal">
       <p class="section-eyebrow">Highlighted Work</p>
-      <h2 class="section-heading">Featured <span>Projects</span></h2>
+      <h2 class="section-heading" id="featured-heading">Featured <span>Projects</span></h2>
       <p class="section-subheading">Fully documented builds with technical decisions, architecture overviews, and measurable outcomes.</p>
     </div>
 
     <div class="featured-grid">
 
       {% for project in featured_projects %}
-      <div class="featured-card reveal">
+      {# ── DB row: featured=True, up to 3 returned by view ── #}
+      <article class="featured-card reveal" style="transition-delay:{{ forloop.counter0 }}00ms">
+
         <div class="featured-img-wrap">
           {% if project.image %}
             <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
           {% else %}
-            <div class="featured-img-placeholder">
-              <i class="bi bi-code-slash" style="position:relative;z-index:1;color:rgba(59,130,246,0.2)"></i>
+            <div class="featured-img-placeholder" aria-hidden="true">
+              <i class="bi bi-code-slash" style="color:rgba(59,130,246,0.2)"></i>
             </div>
           {% endif %}
-          <span class="featured-badge"><i class="bi bi-star-fill"></i> Featured</span>
+          <span class="featured-badge" aria-label="Featured project">
+            <i class="bi bi-star-fill" aria-hidden="true"></i> Featured
+          </span>
         </div>
+
         <div class="featured-card-body">
           <div class="project-number">Project {{ forloop.counter|stringformat:"02d" }}</div>
+
+          {# project.title — CharField(max_length=150) #}
           <h2 class="project-title">{{ project.title }}</h2>
+
+          {# project.description — TextField; truncated to 40 words #}
           <p class="project-desc">{{ project.description|truncatewords:40 }}</p>
-          <div class="proj-tech-tags">
+
+          {# project.tags_list — @property that splits tech_stack CSV into a list #}
+          <div class="proj-tech-tags" aria-label="Technologies used">
             {% for tag in project.tags_list %}
               <span class="proj-tech-tag">{{ tag }}</span>
+            {% empty %}
+              <span class="proj-tech-tag">Django</span>
+              <span class="proj-tech-tag">Python</span>
             {% endfor %}
           </div>
+
+          {# project.users_count / project.performance_note — new CharField fields #}
           {% if project.users_count or project.performance_note %}
-          <div class="proj-metrics">
+          <div class="proj-metrics" aria-label="Project metrics">
             {% if project.users_count %}
-            <div class="proj-metric"><i class="bi bi-people-fill"></i><span><strong>{{ project.users_count }}</strong> Users</span></div>
+            <div class="proj-metric">
+              <i class="bi bi-people-fill" aria-hidden="true"></i>
+              <span><strong>{{ project.users_count }}</strong> Users</span>
+            </div>
             {% endif %}
             {% if project.performance_note %}
-            <div class="proj-metric"><i class="bi bi-speedometer2"></i><span>{{ project.performance_note }}</span></div>
+            <div class="proj-metric">
+              <i class="bi bi-speedometer2" aria-hidden="true"></i>
+              <span>{{ project.performance_note }}</span>
+            </div>
             {% endif %}
           </div>
           {% endif %}
+
           <div class="proj-links">
             {% if project.live_demo_link %}
-            <a href="{{ project.live_demo_link }}" target="_blank" rel="noopener" class="proj-link-btn btn-demo">
-              <i class="bi bi-box-arrow-up-right"></i> Live Demo
+            <a href="{{ project.live_demo_link }}"
+               target="_blank" rel="noopener noreferrer"
+               class="proj-link-btn btn-demo">
+              <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Live Demo
             </a>
             {% endif %}
+
             {% if project.github_link %}
-            <a href="{{ project.github_link }}" target="_blank" rel="noopener" class="proj-link-btn btn-github">
-              <i class="bi bi-github"></i> GitHub
+            <a href="{{ project.github_link }}"
+               target="_blank" rel="noopener noreferrer"
+               class="proj-link-btn btn-github">
+              <i class="bi bi-github" aria-hidden="true"></i> GitHub
             </a>
             {% endif %}
+
+            {# project.case_study — OneToOneField to CaseStudy; .slug from CaseStudy model #}
             {% if project.case_study %}
-            <a href="{% url 'case_study_detail' project.case_study.slug %}" class="proj-link-btn btn-case">
-              <i class="bi bi-file-text"></i> Case Study
+            <a href="{% url 'case_study_detail' project.case_study.slug %}"
+               class="proj-link-btn btn-case">
+              <i class="bi bi-file-text" aria-hidden="true"></i> Case Study
             </a>
             {% endif %}
           </div>
         </div>
-      </div>
+
+      </article>
       {% empty %}
 
-      <!-- FALLBACK: Video Platform -->
-      <div class="featured-card reveal">
+      {# ── Fallback: shown only when DB has zero featured projects ── #}
+      <article class="featured-card reveal">
         <div class="featured-img-wrap">
-          <div class="featured-img-placeholder">
-            <i class="bi bi-play-circle" style="position:relative;z-index:1;color:rgba(59,130,246,0.25);font-size:3.5rem"></i>
+          <div class="featured-img-placeholder" aria-hidden="true">
+            <i class="bi bi-play-circle" style="color:rgba(59,130,246,0.22)"></i>
           </div>
-          <span class="featured-badge"><i class="bi bi-star-fill"></i> Featured</span>
+          <span class="featured-badge"><i class="bi bi-star-fill" aria-hidden="true"></i> Featured</span>
         </div>
         <div class="featured-card-body">
           <div class="project-number">Project 01</div>
           <h2 class="project-title">Video Platform with Reward System</h2>
-          <p class="project-desc">A YouTube-style platform where users earn micro-rewards for watching content. Built with full account management, ad-insertion, creator monetisation, subscription tiers, and a custom reward redemption engine. Handled concurrent video streaming, ad targeting logic, and multi-role access (viewer / creator / admin).</p>
+          <p class="project-desc">A YouTube-style platform where users earn micro-rewards for watching content. Built with full account management, ad-insertion, creator monetisation, subscription tiers, and a custom reward redemption engine.</p>
           <div class="proj-tech-tags">
             <span class="proj-tech-tag">Django</span>
             <span class="proj-tech-tag">PostgreSQL</span>
@@ -1058,30 +968,29 @@
             <span class="proj-tech-tag">SaaS</span>
           </div>
           <div class="proj-metrics">
-            <div class="proj-metric"><i class="bi bi-layers"></i><span><strong>Multi-role</strong> Auth System</span></div>
-            <div class="proj-metric"><i class="bi bi-currency-dollar"></i><span><strong>Custom</strong> Rewards Engine</span></div>
-            <div class="proj-metric"><i class="bi bi-play-circle"></i><span><strong>Streaming</strong> + Ad Insertion</span></div>
+            <div class="proj-metric"><i class="bi bi-layers" aria-hidden="true"></i><span><strong>Multi-role</strong> Auth System</span></div>
+            <div class="proj-metric"><i class="bi bi-currency-dollar" aria-hidden="true"></i><span><strong>Custom</strong> Rewards Engine</span></div>
+            <div class="proj-metric"><i class="bi bi-play-circle" aria-hidden="true"></i><span><strong>Streaming</strong> + Ad Insertion</span></div>
           </div>
           <div class="proj-links">
-            <a href="#" class="proj-link-btn btn-demo"><i class="bi bi-box-arrow-up-right"></i> Live Demo</a>
-            <a href="#" class="proj-link-btn btn-github"><i class="bi bi-github"></i> GitHub</a>
-            <a href="{% url 'case_studies' %}" class="proj-link-btn btn-case"><i class="bi bi-file-text"></i> Case Study</a>
+            <a href="#" class="proj-link-btn btn-demo"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Live Demo</a>
+            <a href="#" class="proj-link-btn btn-github"><i class="bi bi-github" aria-hidden="true"></i> GitHub</a>
+            <a href="{% url 'case_studies' %}" class="proj-link-btn btn-case"><i class="bi bi-file-text" aria-hidden="true"></i> Case Study</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <!-- FALLBACK: QuantumTask -->
-      <div class="featured-card reveal">
+      <article class="featured-card reveal" style="transition-delay:0.08s">
         <div class="featured-img-wrap">
-          <div class="featured-img-placeholder">
-            <i class="bi bi-kanban" style="position:relative;z-index:1;color:rgba(139,92,246,0.25);font-size:3.5rem"></i>
+          <div class="featured-img-placeholder" aria-hidden="true">
+            <i class="bi bi-kanban" style="color:rgba(139,92,246,0.22)"></i>
           </div>
-          <span class="featured-badge"><i class="bi bi-star-fill"></i> Featured</span>
+          <span class="featured-badge"><i class="bi bi-star-fill" aria-hidden="true"></i> Featured</span>
         </div>
         <div class="featured-card-body">
           <div class="project-number">Project 02</div>
           <h2 class="project-title">QuantumTask — Productivity SaaS</h2>
-          <p class="project-desc">A full-featured Django productivity platform with task management, habit tracking, goal setting, focus timers, analytics dashboards, and team collaboration tools. Designed with a clean minimal UI and real-time data updates. Built as a scalable SaaS with multi-tenant architecture.</p>
+          <p class="project-desc">A full-featured Django productivity platform with task management, habit tracking, goal setting, focus timers, analytics dashboards, and team collaboration tools.</p>
           <div class="proj-tech-tags">
             <span class="proj-tech-tag">Django</span>
             <span class="proj-tech-tag">PostgreSQL</span>
@@ -1090,30 +999,29 @@
             <span class="proj-tech-tag">Analytics</span>
           </div>
           <div class="proj-metrics">
-            <div class="proj-metric"><i class="bi bi-diagram-3"></i><span><strong>Multi-tenant</strong> Architecture</span></div>
-            <div class="proj-metric"><i class="bi bi-bar-chart-line"></i><span><strong>Real-time</strong> Analytics</span></div>
-            <div class="proj-metric"><i class="bi bi-people"></i><span><strong>Team</strong> Collaboration</span></div>
+            <div class="proj-metric"><i class="bi bi-diagram-3" aria-hidden="true"></i><span><strong>Multi-tenant</strong> Architecture</span></div>
+            <div class="proj-metric"><i class="bi bi-bar-chart-line" aria-hidden="true"></i><span><strong>Real-time</strong> Analytics</span></div>
+            <div class="proj-metric"><i class="bi bi-people" aria-hidden="true"></i><span><strong>Team</strong> Collaboration</span></div>
           </div>
           <div class="proj-links">
-            <a href="#" class="proj-link-btn btn-demo"><i class="bi bi-box-arrow-up-right"></i> Live Demo</a>
-            <a href="#" class="proj-link-btn btn-github"><i class="bi bi-github"></i> GitHub</a>
-            <a href="{% url 'case_studies' %}" class="proj-link-btn btn-case"><i class="bi bi-file-text"></i> Case Study</a>
+            <a href="#" class="proj-link-btn btn-demo"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Live Demo</a>
+            <a href="#" class="proj-link-btn btn-github"><i class="bi bi-github" aria-hidden="true"></i> GitHub</a>
+            <a href="{% url 'case_studies' %}" class="proj-link-btn btn-case"><i class="bi bi-file-text" aria-hidden="true"></i> Case Study</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <!-- FALLBACK: AI Chatbot -->
-      <div class="featured-card reveal">
+      <article class="featured-card reveal" style="transition-delay:0.16s">
         <div class="featured-img-wrap">
-          <div class="featured-img-placeholder">
-            <i class="bi bi-robot" style="position:relative;z-index:1;color:rgba(6,182,212,0.25);font-size:3.5rem"></i>
+          <div class="featured-img-placeholder" aria-hidden="true">
+            <i class="bi bi-robot" style="color:rgba(6,182,212,0.22)"></i>
           </div>
-          <span class="featured-badge"><i class="bi bi-star-fill"></i> Featured</span>
+          <span class="featured-badge"><i class="bi bi-star-fill" aria-hidden="true"></i> Featured</span>
         </div>
         <div class="featured-card-body">
           <div class="project-number">Project 03</div>
           <h2 class="project-title">Self-Hosted AI Chatbot System</h2>
-          <p class="project-desc">A fully self-hosted AI assistant with document understanding, image analysis, voice I/O, persistent conversation memory, and OpenRouter multi-model support. Runs on Django with a clean streaming chat UI. No third-party subscriptions required — deployable on any VPS in under 10 minutes.</p>
+          <p class="project-desc">A fully self-hosted AI assistant with document understanding, image analysis, voice I/O, persistent conversation memory, and OpenRouter multi-model support.</p>
           <div class="proj-tech-tags">
             <span class="proj-tech-tag">Django</span>
             <span class="proj-tech-tag">OpenRouter</span>
@@ -1122,141 +1030,172 @@
             <span class="proj-tech-tag">AI / LLMs</span>
           </div>
           <div class="proj-metrics">
-            <div class="proj-metric"><i class="bi bi-mic"></i><span><strong>Voice</strong> I/O Pipeline</span></div>
-            <div class="proj-metric"><i class="bi bi-file-earmark-text"></i><span><strong>Document</strong> Understanding</span></div>
-            <div class="proj-metric"><i class="bi bi-server"></i><span><strong>Self-hosted</strong> Deployment</span></div>
+            <div class="proj-metric"><i class="bi bi-mic" aria-hidden="true"></i><span><strong>Voice</strong> I/O Pipeline</span></div>
+            <div class="proj-metric"><i class="bi bi-file-earmark-text" aria-hidden="true"></i><span><strong>Document</strong> Understanding</span></div>
+            <div class="proj-metric"><i class="bi bi-server" aria-hidden="true"></i><span><strong>Self-hosted</strong> Deployment</span></div>
           </div>
           <div class="proj-links">
-            <a href="#" class="proj-link-btn btn-demo"><i class="bi bi-box-arrow-up-right"></i> Live Demo</a>
-            <a href="#" class="proj-link-btn btn-github"><i class="bi bi-github"></i> GitHub</a>
-            <a href="{% url 'case_studies' %}" class="proj-link-btn btn-case"><i class="bi bi-file-text"></i> Case Study</a>
+            <a href="#" class="proj-link-btn btn-demo"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Live Demo</a>
+            <a href="#" class="proj-link-btn btn-github"><i class="bi bi-github" aria-hidden="true"></i> GitHub</a>
+            <a href="{% url 'case_studies' %}" class="proj-link-btn btn-case"><i class="bi bi-file-text" aria-hidden="true"></i> Case Study</a>
           </div>
         </div>
-      </div>
+      </article>
 
       {% endfor %}
-    </div>
+    </div>{# /featured-grid #}
   </div>
 </section>
 
 <div class="section-divider"></div>
 
 <!-- ============================================================
-     ALL PROJECTS (filterable grid)
+     ALL PROJECTS — filterable grid
      ============================================================ -->
-<section class="proj-section" id="all-projects">
-  <div class="container">
+<section class="proj-section" id="all-projects" aria-labelledby="all-projects-heading">
+  <div class="container px-3">
 
     <div class="reveal">
       <p class="section-eyebrow">Full Archive</p>
-      <h2 class="section-heading">All <span>Projects</span></h2>
+      <h2 class="section-heading" id="all-projects-heading">All <span>Projects</span></h2>
       <p class="section-subheading">Filter by tech stack to find the most relevant work for your project.</p>
     </div>
 
     <!-- Filter bar -->
-    <div class="filter-bar reveal" id="techFilterBar">
+    <div class="filter-bar reveal" id="techFilterBar" role="group" aria-label="Filter projects by technology">
       <span class="filter-label">Stack:</span>
-      <button class="filter-btn active" data-tech="all">All <span class="filter-count" id="count-all">—</span></button>
-      <button class="filter-btn" data-tech="django">Django</button>
-      <button class="filter-btn" data-tech="python">Python</button>
-      <button class="filter-btn" data-tech="ai">AI</button>
-      <button class="filter-btn" data-tech="automation">Automation</button>
-      <button class="filter-btn" data-tech="ecommerce">E-Commerce</button>
-      <button class="filter-btn" data-tech="api">API</button>
+      <button class="filter-btn active" data-tech="all" aria-pressed="true">
+        All <span class="filter-count" id="count-all">—</span>
+      </button>
+      <button class="filter-btn" data-tech="django"     aria-pressed="false">Django</button>
+      <button class="filter-btn" data-tech="python"     aria-pressed="false">Python</button>
+      <button class="filter-btn" data-tech="ai"         aria-pressed="false">AI</button>
+      <button class="filter-btn" data-tech="automation" aria-pressed="false">Automation</button>
+      <button class="filter-btn" data-tech="ecommerce"  aria-pressed="false">E-Commerce</button>
+      <button class="filter-btn" data-tech="api"        aria-pressed="false">API</button>
     </div>
 
-    <div class="projects-grid" id="projectsGrid">
+    <div class="projects-grid" id="projectsGrid" role="list">
 
       {% for project in all_projects %}
-      <div class="project-card reveal" data-tech="{{ project.tech_stack|lower|default:'django python' }}">
+      <article
+        class="project-card reveal"
+        data-tech="{{ project.tech_stack_lower|default:'django python' }}"
+        role="listitem"
+      >
         <div class="proj-card-img">
           {% if project.image %}
             <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
           {% else %}
-            <div class="proj-card-img-placeholder"><i class="bi bi-code-slash" style="position:relative;z-index:1"></i></div>
+            <div class="proj-card-img-placeholder" aria-hidden="true">
+              <i class="bi bi-code-slash" style="color:rgba(59,130,246,0.18)"></i>
+            </div>
           {% endif %}
+
+          {# project.is_featured — @property alias for the `featured` BooleanField #}
           {% if project.is_featured %}
             <span class="card-featured-badge">Featured</span>
           {% endif %}
         </div>
+
         <div class="proj-card-body">
-          <div class="proj-card-category">{{ project.category|default:"Web Development" }}</div>
+          
+          <div class="proj-card-category">{{ project.get_category_display }}</div>
+
           <h3 class="proj-card-title">{{ project.title }}</h3>
+
           <p class="proj-card-desc">{{ project.description|truncatewords:22 }}</p>
-          <div class="proj-card-tags">
+
+          {# project.tags_list — @property splitting tech_stack CSV into a list #}
+          <div class="proj-card-tags" aria-label="Technologies">
             {% for tag in project.tags_list %}
               <span class="proj-card-tag">{{ tag }}</span>
+            {% empty %}
+              <span class="proj-card-tag">Django</span>
+              <span class="proj-card-tag">Python</span>
             {% endfor %}
           </div>
+
+          {# project.case_study — OneToOneField(CaseStudy); null if not linked #}
           {% if project.case_study %}
-          <a href="{% url 'case_study_detail' project.case_study.slug %}" class="card-case-link">
-            <i class="bi bi-file-earmark-text"></i> Read case study <i class="bi bi-arrow-right"></i>
+          <a href="{% url 'case_study_detail' project.case_study.slug %}"
+             class="card-case-link">
+            <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+            Read case study
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
           </a>
           {% endif %}
         </div>
+
         <div class="proj-card-footer">
           {% if project.live_demo_link %}
-          <a href="{{ project.live_demo_link }}" target="_blank" rel="noopener" class="proj-card-link card-link-demo">
-            <i class="bi bi-box-arrow-up-right"></i> Demo
+          <a href="{{ project.live_demo_link }}"
+             target="_blank" rel="noopener noreferrer"
+             class="proj-card-link card-link-demo">
+            <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Demo
           </a>
           {% endif %}
+
           {% if project.github_link %}
-          <a href="{{ project.github_link }}" target="_blank" rel="noopener" class="proj-card-link card-link-github">
-            <i class="bi bi-github"></i> Code
+          <a href="{{ project.github_link }}"
+             target="_blank" rel="noopener noreferrer"
+             class="proj-card-link card-link-github">
+            <i class="bi bi-github" aria-hidden="true"></i> Code
           </a>
           {% endif %}
         </div>
-      </div>
-      {% empty %}
+      </article>
 
-      <!-- FALLBACK compact cards -->
-      <div class="project-card reveal" data-tech="django python api">
-        <div class="proj-card-img"><div class="proj-card-img-placeholder"><i class="bi bi-code-slash" style="position:relative;z-index:1"></i></div></div>
+      {% empty %}
+      {# ── Fallback cards: shown only when DB has zero projects ── #}
+
+      <article class="project-card reveal" data-tech="django python api" role="listitem">
+        <div class="proj-card-img"><div class="proj-card-img-placeholder" aria-hidden="true"><i class="bi bi-code-slash" style="color:rgba(59,130,246,0.18)"></i></div></div>
         <div class="proj-card-body">
           <div class="proj-card-category">Django · SaaS</div>
           <h3 class="proj-card-title">Video Platform with Rewards</h3>
           <p class="proj-card-desc">YouTube-style platform with micro-reward engine, creator monetisation, ad insertion, and multi-role auth.</p>
           <div class="proj-card-tags"><span class="proj-card-tag">Django</span><span class="proj-card-tag">PostgreSQL</span><span class="proj-card-tag">Payments</span></div>
-          <a href="{% url 'case_studies' %}" class="card-case-link"><i class="bi bi-file-earmark-text"></i> Read case study <i class="bi bi-arrow-right"></i></a>
+          <a href="{% url 'case_studies' %}" class="card-case-link"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> Read case study <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
         <div class="proj-card-footer">
-          <a href="#" class="proj-card-link card-link-demo"><i class="bi bi-box-arrow-up-right"></i> Demo</a>
-          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github"></i> Code</a>
+          <a href="#" class="proj-card-link card-link-demo"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Demo</a>
+          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github" aria-hidden="true"></i> Code</a>
         </div>
-      </div>
+      </article>
 
-      <div class="project-card reveal" data-tech="django python saas" style="transition-delay:0.07s">
-        <div class="proj-card-img"><div class="proj-card-img-placeholder" style="background:rgba(139,92,246,0.04)"><i class="bi bi-kanban" style="position:relative;z-index:1;color:rgba(139,92,246,0.2)"></i></div></div>
+      <article class="project-card reveal" data-tech="django python saas" role="listitem" style="transition-delay:0.07s">
+        <div class="proj-card-img"><div class="proj-card-img-placeholder" style="background:rgba(139,92,246,0.04)" aria-hidden="true"><i class="bi bi-kanban" style="color:rgba(139,92,246,0.2)"></i></div></div>
         <div class="proj-card-body">
           <div class="proj-card-category">Django · Productivity</div>
           <h3 class="proj-card-title">QuantumTask SaaS</h3>
           <p class="proj-card-desc">Full productivity SaaS with task management, habits, analytics, goal tracking, and team collaboration.</p>
           <div class="proj-card-tags"><span class="proj-card-tag">Django</span><span class="proj-card-tag">Chart.js</span><span class="proj-card-tag">Analytics</span></div>
-          <a href="{% url 'case_studies' %}" class="card-case-link"><i class="bi bi-file-earmark-text"></i> Read case study <i class="bi bi-arrow-right"></i></a>
+          <a href="{% url 'case_studies' %}" class="card-case-link"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> Read case study <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
         <div class="proj-card-footer">
-          <a href="#" class="proj-card-link card-link-demo"><i class="bi bi-box-arrow-up-right"></i> Demo</a>
-          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github"></i> Code</a>
+          <a href="#" class="proj-card-link card-link-demo"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Demo</a>
+          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github" aria-hidden="true"></i> Code</a>
         </div>
-      </div>
+      </article>
 
-      <div class="project-card reveal" data-tech="ai python automation" style="transition-delay:0.14s">
-        <div class="proj-card-img"><div class="proj-card-img-placeholder" style="background:rgba(6,182,212,0.04)"><i class="bi bi-robot" style="position:relative;z-index:1;color:rgba(6,182,212,0.2)"></i></div></div>
+      <article class="project-card reveal" data-tech="ai python automation" role="listitem" style="transition-delay:0.14s">
+        <div class="proj-card-img"><div class="proj-card-img-placeholder" style="background:rgba(6,182,212,0.04)" aria-hidden="true"><i class="bi bi-robot" style="color:rgba(6,182,212,0.2)"></i></div></div>
         <div class="proj-card-body">
           <div class="proj-card-category">AI · Python</div>
           <h3 class="proj-card-title">Self-Hosted AI Chatbot</h3>
           <p class="proj-card-desc">Django-based AI assistant with voice I/O, document understanding, persistent memory, and OpenRouter multi-model support.</p>
           <div class="proj-card-tags"><span class="proj-card-tag">OpenRouter</span><span class="proj-card-tag">LangChain</span><span class="proj-card-tag">Python</span></div>
-          <a href="{% url 'case_studies' %}" class="card-case-link"><i class="bi bi-file-earmark-text"></i> Read case study <i class="bi bi-arrow-right"></i></a>
+          <a href="{% url 'case_studies' %}" class="card-case-link"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> Read case study <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
         <div class="proj-card-footer">
-          <a href="#" class="proj-card-link card-link-demo"><i class="bi bi-box-arrow-up-right"></i> Demo</a>
-          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github"></i> Code</a>
+          <a href="#" class="proj-card-link card-link-demo"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Demo</a>
+          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github" aria-hidden="true"></i> Code</a>
         </div>
-      </div>
+      </article>
 
-      <div class="project-card reveal" data-tech="automation python api" style="transition-delay:0.21s">
-        <div class="proj-card-img"><div class="proj-card-img-placeholder" style="background:rgba(16,185,129,0.04)"><i class="bi bi-graph-up-arrow" style="position:relative;z-index:1;color:rgba(16,185,129,0.2)"></i></div></div>
+      <article class="project-card reveal" data-tech="automation python api" role="listitem" style="transition-delay:0.21s">
+        <div class="proj-card-img"><div class="proj-card-img-placeholder" style="background:rgba(16,185,129,0.04)" aria-hidden="true"><i class="bi bi-graph-up-arrow" style="color:rgba(16,185,129,0.2)"></i></div></div>
         <div class="proj-card-body">
           <div class="proj-card-category">Automation · Trading</div>
           <h3 class="proj-card-title">TradingView Webhook Bot</h3>
@@ -1264,13 +1203,13 @@
           <div class="proj-card-tags"><span class="proj-card-tag">Python</span><span class="proj-card-tag">Django</span><span class="proj-card-tag">REST API</span></div>
         </div>
         <div class="proj-card-footer">
-          <a href="#" class="proj-card-link card-link-demo"><i class="bi bi-box-arrow-up-right"></i> Demo</a>
-          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github"></i> Code</a>
+          <a href="#" class="proj-card-link card-link-demo"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Demo</a>
+          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github" aria-hidden="true"></i> Code</a>
         </div>
-      </div>
+      </article>
 
-      <div class="project-card reveal" data-tech="django ecommerce python" style="transition-delay:0.28s">
-        <div class="proj-card-img"><div class="proj-card-img-placeholder" style="background:rgba(245,158,11,0.04)"><i class="bi bi-cart3" style="position:relative;z-index:1;color:rgba(245,158,11,0.2)"></i></div></div>
+      <article class="project-card reveal" data-tech="django ecommerce python" role="listitem" style="transition-delay:0.28s">
+        <div class="proj-card-img"><div class="proj-card-img-placeholder" style="background:rgba(245,158,11,0.04)" aria-hidden="true"><i class="bi bi-cart3" style="color:rgba(245,158,11,0.2)"></i></div></div>
         <div class="proj-card-body">
           <div class="proj-card-category">E-Commerce · Django</div>
           <h3 class="proj-card-title">Custom E-Commerce Platform</h3>
@@ -1278,13 +1217,13 @@
           <div class="proj-card-tags"><span class="proj-card-tag">Django</span><span class="proj-card-tag">Stripe</span><span class="proj-card-tag">MySQL</span></div>
         </div>
         <div class="proj-card-footer">
-          <a href="#" class="proj-card-link card-link-demo"><i class="bi bi-box-arrow-up-right"></i> Demo</a>
-          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github"></i> Code</a>
+          <a href="#" class="proj-card-link card-link-demo"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Demo</a>
+          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github" aria-hidden="true"></i> Code</a>
         </div>
-      </div>
+      </article>
 
-      <div class="project-card reveal" data-tech="django api python" style="transition-delay:0.35s">
-        <div class="proj-card-img"><div class="proj-card-img-placeholder" style="background:rgba(239,68,68,0.04)"><i class="bi bi-server" style="position:relative;z-index:1;color:rgba(239,68,68,0.2)"></i></div></div>
+      <article class="project-card reveal" data-tech="django api python" role="listitem" style="transition-delay:0.35s">
+        <div class="proj-card-img"><div class="proj-card-img-placeholder" style="background:rgba(239,68,68,0.04)" aria-hidden="true"><i class="bi bi-server" style="color:rgba(239,68,68,0.2)"></i></div></div>
         <div class="proj-card-body">
           <div class="proj-card-category">Backend · API</div>
           <h3 class="proj-card-title">Portfolio Admin System</h3>
@@ -1292,19 +1231,18 @@
           <div class="proj-card-tags"><span class="proj-card-tag">Django</span><span class="proj-card-tag">DRF</span><span class="proj-card-tag">PostgreSQL</span></div>
         </div>
         <div class="proj-card-footer">
-          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github"></i> Code</a>
+          <a href="#" class="proj-card-link card-link-github"><i class="bi bi-github" aria-hidden="true"></i> Code</a>
         </div>
-      </div>
-
-      <!-- No results message -->
-      <div id="no-results">
-        <i class="bi bi-search"></i>
-        No projects found for this filter. <a href="#" style="color:var(--accent)" onclick="resetFilter()">Clear filter</a>
-      </div>
+      </article>
 
       {% endfor %}
+      <div id="no-results" role="status" aria-live="polite">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        No projects match this filter.
+        <a href="#" style="color:var(--accent)" id="reset-filter-link">Clear filter</a>
+      </div>
 
-    </div>
+    </div>{# /projects-grid #}
   </div>
 </section>
 
@@ -1313,51 +1251,41 @@
 <!-- ============================================================
      TECH STACK
      ============================================================ -->
-<section class="proj-section">
-  <div class="container">
+<section class="proj-section" aria-labelledby="tech-stack-heading">
+  <div class="container px-3">
 
-    <div class="reveal" style="text-align:center; max-width:560px; margin:0 auto 0;">
+    <div class="reveal" style="text-align:center; max-width:560px; margin:0 auto;">
       <p class="section-eyebrow" style="justify-content:center;">Tools of the Trade</p>
-      <h2 class="section-heading" style="text-align:center;">Tech <span>Stack</span></h2>
-      <p class="section-subheading" style="text-align:center; margin:0 auto 0;">The technologies I use across projects — chosen for reliability, performance, and real-world suitability.</p>
+      <h2 class="section-heading" id="tech-stack-heading" style="text-align:center;">Tech <span>Stack</span></h2>
+      <p class="section-subheading" style="text-align:center; margin:0 auto;">The technologies I use across projects — chosen for reliability, performance, and real-world suitability.</p>
     </div>
 
-    <div class="tech-grid">
+    <div class="tech-grid" role="list" aria-label="Technologies">
       {% for tech in technologies %}
-      <div class="tech-item reveal">
+      {# tech.icon — ImageField on Technologies model; tech.name — CharField #}
+      <div class="tech-item reveal" role="listitem"
+           style="transition-delay:{{ forloop.counter0 }}00ms">
         {% if tech.icon %}
           <img src="{{ tech.icon.url }}" alt="{{ tech.name }}">
         {% else %}
-          <i class="bi bi-code-slash tech-item-icon"></i>
+          <i class="bi bi-code-slash tech-item-icon" aria-hidden="true"></i>
         {% endif %}
         <div class="tech-item-name">{{ tech.name }}</div>
       </div>
       {% empty %}
-      {% for tech in technologies %}
-  <div class="tech-item reveal" style="transition-delay:{{ forloop.counter0 }}00ms">
-    
-    {% if tech.icon %}
-      <img src="{{ tech.icon.url }}" class="tech-item-icon" alt="{{ tech.name }}">
-    {% else %}
-      <i class="bi bi-code-slash tech-item-icon"></i>
-    {% endif %}
-
-    <div class="tech-item-name">{{ tech.name }}</div>
-  </div>
-{% endfor %}
-      <!-- Fallback individual items -->
-      <div class="tech-item reveal"><i class="bi bi-braces tech-item-icon" style="color:var(--accent)"></i><div class="tech-item-name">Django</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.06s"><i class="bi bi-filetype-py tech-item-icon" style="color:var(--accent)"></i><div class="tech-item-name">Python</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.12s"><i class="bi bi-database tech-item-icon" style="color:var(--accent-2)"></i><div class="tech-item-name">PostgreSQL</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.18s"><i class="bi bi-bootstrap tech-item-icon" style="color:#7952B3"></i><div class="tech-item-name">Bootstrap</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.24s"><i class="bi bi-filetype-js tech-item-icon" style="color:#F7DF1E"></i><div class="tech-item-name">JavaScript</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.30s"><i class="bi bi-cloud tech-item-icon" style="color:var(--accent)"></i><div class="tech-item-name">REST APIs</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.36s"><i class="bi bi-git tech-item-icon" style="color:#F05032"></i><div class="tech-item-name">Git</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.42s"><i class="bi bi-robot tech-item-icon" style="color:var(--accent-3)"></i><div class="tech-item-name">AI / LLMs</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.48s"><i class="bi bi-gear tech-item-icon" style="color:var(--accent-2)"></i><div class="tech-item-name">Automation</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.54s"><i class="bi bi-ubuntu tech-item-icon" style="color:#E95420"></i><div class="tech-item-name">Linux / VPS</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.60s"><i class="bi bi-bar-chart-line tech-item-icon" style="color:#FF6384"></i><div class="tech-item-name">Chart.js</div></div>
-      <div class="tech-item reveal" style="transition-delay:0.66s"><i class="bi bi-currency-exchange tech-item-icon" style="color:var(--green)"></i><div class="tech-item-name">Stripe / Pay</div></div>
+      {# Fallback when Technologies table is empty #}
+      <div class="tech-item reveal" role="listitem"><i class="bi bi-braces tech-item-icon" style="color:var(--accent)" aria-hidden="true"></i><div class="tech-item-name">Django</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.06s"><i class="bi bi-filetype-py tech-item-icon" style="color:var(--accent)" aria-hidden="true"></i><div class="tech-item-name">Python</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.12s"><i class="bi bi-database tech-item-icon" style="color:var(--accent-2)" aria-hidden="true"></i><div class="tech-item-name">PostgreSQL</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.18s"><i class="bi bi-bootstrap tech-item-icon" style="color:#7952B3" aria-hidden="true"></i><div class="tech-item-name">Bootstrap</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.24s"><i class="bi bi-filetype-js tech-item-icon" style="color:#F7DF1E" aria-hidden="true"></i><div class="tech-item-name">JavaScript</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.30s"><i class="bi bi-cloud tech-item-icon" style="color:var(--accent)" aria-hidden="true"></i><div class="tech-item-name">REST APIs</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.36s"><i class="bi bi-git tech-item-icon" style="color:#F05032" aria-hidden="true"></i><div class="tech-item-name">Git</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.42s"><i class="bi bi-robot tech-item-icon" style="color:var(--accent-3)" aria-hidden="true"></i><div class="tech-item-name">AI / LLMs</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.48s"><i class="bi bi-gear tech-item-icon" style="color:var(--accent-2)" aria-hidden="true"></i><div class="tech-item-name">Automation</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.54s"><i class="bi bi-ubuntu tech-item-icon" style="color:#E95420" aria-hidden="true"></i><div class="tech-item-name">Linux / VPS</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.60s"><i class="bi bi-bar-chart-line tech-item-icon" style="color:#FF6384" aria-hidden="true"></i><div class="tech-item-name">Chart.js</div></div>
+      <div class="tech-item reveal" role="listitem" style="transition-delay:0.66s"><i class="bi bi-currency-exchange tech-item-icon" style="color:var(--green)" aria-hidden="true"></i><div class="tech-item-name">Stripe / Pay</div></div>
       {% endfor %}
     </div>
 
@@ -1369,49 +1297,49 @@
 <!-- ============================================================
      DEVELOPMENT TIMELINE
      ============================================================ -->
-<section class="proj-section">
-  <div class="container">
+<section class="proj-section" aria-labelledby="timeline-heading">
+  <div class="container px-3">
 
     <div class="reveal">
       <p class="section-eyebrow">The Journey</p>
-      <h2 class="section-heading">Development <span>Timeline</span></h2>
+      <h2 class="section-heading" id="timeline-heading">Development <span>Timeline</span></h2>
       <p class="section-subheading">How the work has evolved — from first projects to production systems.</p>
     </div>
 
-    <div class="timeline-track">
+    <div class="timeline-track" role="list">
 
-      <div class="timeline-item reveal">
-        <div class="tl-dot"><i class="bi bi-code-slash"></i></div>
+      <div class="timeline-item reveal" role="listitem">
+        <div class="tl-dot" aria-hidden="true"><i class="bi bi-code-slash"></i></div>
         <div class="tl-card">
-          <div class="tl-period"><i class="bi bi-calendar3"></i> 2022</div>
-          <h3 class="tl-title">Foundation — Python & Django Basics</h3>
+          <div class="tl-period"><i class="bi bi-calendar3" aria-hidden="true"></i> 2022</div>
+          <h3 class="tl-title">Foundation — Python &amp; Django Basics</h3>
           <p class="tl-desc">Started with Python fundamentals, moved into Django, built the first CRUD applications, learned database design, and deployed on shared hosting. First real project: a personal blog with custom admin.</p>
         </div>
       </div>
 
-      <div class="timeline-item reveal" style="transition-delay:0.1s">
-        <div class="tl-dot"><i class="bi bi-layers"></i></div>
+      <div class="timeline-item reveal" role="listitem" style="transition-delay:0.1s">
+        <div class="tl-dot" aria-hidden="true"><i class="bi bi-layers"></i></div>
         <div class="tl-card">
-          <div class="tl-period"><i class="bi bi-calendar3"></i> 2023</div>
+          <div class="tl-period"><i class="bi bi-calendar3" aria-hidden="true"></i> 2023</div>
           <h3 class="tl-title">Scale-Up — Full Stack Systems</h3>
           <p class="tl-desc">Expanded into multi-app Django projects, REST APIs with DRF, Stripe payment integration, role-based auth, and async task queues. Built the Video Platform and QuantumTask during this period.</p>
         </div>
       </div>
 
-      <div class="timeline-item reveal" style="transition-delay:0.2s">
-        <div class="tl-dot"><i class="bi bi-robot"></i></div>
+      <div class="timeline-item reveal" role="listitem" style="transition-delay:0.2s">
+        <div class="tl-dot" aria-hidden="true"><i class="bi bi-robot"></i></div>
         <div class="tl-card">
-          <div class="tl-period"><i class="bi bi-calendar3"></i> 2024</div>
-          <h3 class="tl-title">AI Integration & Automation Systems</h3>
+          <div class="tl-period"><i class="bi bi-calendar3" aria-hidden="true"></i> 2024</div>
+          <h3 class="tl-title">AI Integration &amp; Automation Systems</h3>
           <p class="tl-desc">Integrated LLMs via OpenRouter and LangChain, built the self-hosted AI chatbot with voice I/O, designed the trading bot system, and began taking on client freelance projects requiring AI components.</p>
         </div>
       </div>
 
-      <div class="timeline-item reveal" style="transition-delay:0.3s">
-        <div class="tl-dot"><i class="bi bi-briefcase"></i></div>
+      <div class="timeline-item reveal" role="listitem" style="transition-delay:0.3s">
+        <div class="tl-dot" aria-hidden="true"><i class="bi bi-briefcase"></i></div>
         <div class="tl-card">
-          <div class="tl-period"><i class="bi bi-calendar3"></i> 2025 — Present</div>
-          <h3 class="tl-title">Client Work & Production Deployments</h3>
+          <div class="tl-period"><i class="bi bi-calendar3" aria-hidden="true"></i> 2025 — Present</div>
+          <h3 class="tl-title">Client Work &amp; Production Deployments</h3>
           <p class="tl-desc">Focused on freelance client delivery — scoped requirements, built proposals, shipped production systems with proper documentation. Deployed on VPS infrastructure with CI-ready codebases.</p>
         </div>
       </div>
@@ -1423,7 +1351,7 @@
 <!-- ============================================================
      FINAL CTA
      ============================================================ -->
-<div class="container" style="padding-top:60px;">
+<div class="container px-3" style="padding-top:clamp(40px,6vw,60px);">
   <div class="projects-cta reveal">
     <p class="section-eyebrow" style="justify-content:center; margin-bottom:18px;">Build Something Similar</p>
     <h2 class="cta-title">
@@ -1431,15 +1359,21 @@
       <span>you've seen here?</span>
     </h2>
     <p class="cta-sub">
-      Every project started with a conversation. If you need something built — whether it matches a project here or is entirely new — reach out and let's scope it.
+      Every project started with a conversation. Whether it's a student project, an MVP, or a full platform — reach out and let's scope it together.
     </p>
+    <div class="cta-chips" aria-label="Types of projects welcomed">
+      <span class="cta-chip">🚀 Need an MVP?</span>
+      <span class="cta-chip">🎓 Student Projects</span>
+      <span class="cta-chip">💡 Discuss an Idea</span>
+      <span class="cta-chip">💳 Flexible Pricing</span>
+    </div>
     <div class="cta-btns">
       <a href="/freelance/" class="btn-primary-custom">
-        <i class="bi bi-lightning-charge-fill"></i>
+        <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
         Start a Project
       </a>
       <a href="{% url 'case_studies' %}" class="btn-outline-custom">
-        <i class="bi bi-file-earmark-text"></i>
+        <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
         Read Case Studies
       </a>
     </div>
@@ -1454,61 +1388,65 @@
 /* ============================================================
    ANIMATED COUNTERS
    ============================================================ */
-function animateCounter(el) {
+function animateProjectsCounter(el) {
   const target = parseInt(el.dataset.target);
   const suffix = el.dataset.suffix || '+';
+  if (!target || isNaN(target)) return;
   const duration = 1400;
-  const steps = 55;
+  const steps    = 55;
   const increment = target / steps;
   let current = 0;
   const interval = setInterval(() => {
     current += increment;
-    if (current >= target) {
-      current = target;
-      clearInterval(interval);
-    }
+    if (current >= target) { current = target; clearInterval(interval); }
     el.textContent = Math.floor(current) + suffix;
   }, duration / steps);
 }
 
-const counterObserver = new IntersectionObserver(entries => {
+const projectsCounterObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      entry.target.querySelectorAll('[data-target]').forEach(animateCounter);
-      counterObserver.unobserve(entry.target);
+      entry.target.querySelectorAll('[data-target]').forEach(animateProjectsCounter);
+      projectsCounterObserver.unobserve(entry.target);
     }
   });
 }, { threshold: 0.35 });
 
-document.querySelectorAll('.projects-stats').forEach(el => counterObserver.observe(el));
+document.querySelectorAll('.projects-stats').forEach(el => projectsCounterObserver.observe(el));
 
 /* ============================================================
-   TECH STACK FILTER (real-time)
+   TECH STACK FILTER
    ============================================================ */
-const filterBtns = document.querySelectorAll('#techFilterBar .filter-btn');
-const projectCards = document.querySelectorAll('#projectsGrid .project-card');
-const noResults = document.getElementById('no-results');
+(function () {
+  const filterBtns   = document.querySelectorAll('#techFilterBar .filter-btn');
+  const projectCards = document.querySelectorAll('#projectsGrid .project-card');
+  const noResults    = document.getElementById('no-results');
+  const resetLink    = document.getElementById('reset-filter-link');
+  const countAll     = document.getElementById('count-all');
 
-// Count total projects
-const totalCount = projectCards.length;
-const countAll = document.getElementById('count-all');
-if (countAll) countAll.textContent = totalCount;
+  // Show real total on the "All" badge
+  if (countAll) countAll.textContent = projectCards.length;
 
-function resetFilter() {
-  document.querySelector('[data-tech="all"]').click();
-}
-
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    filterBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    const tech = btn.dataset.tech;
+  function applyFilter(tech) {
     let visibleCount = 0;
 
-    projectCards.forEach((card, i) => {
+    // Update button states
+    filterBtns.forEach(b => {
+      const isActive = b.dataset.tech === tech;
+      b.classList.toggle('active', isActive);
+      b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+
+    // Show / hide cards
+    projectCards.forEach(card => {
+      /*
+       * data-tech comes from project.tech_stack_lower which lowercases the
+       * raw comma-separated string, e.g. "django, postgresql, stripe".
+       * The filter keywords (django, python, ai …) are all lowercase so
+       * a simple .includes() match is sufficient.
+       */
       const cardTech = (card.dataset.tech || '').toLowerCase();
-      const show = tech === 'all' || cardTech.includes(tech);
+      const show     = tech === 'all' || cardTech.includes(tech);
 
       if (show) {
         card.classList.remove('hidden');
@@ -1516,29 +1454,42 @@ filterBtns.forEach(btn => {
         visibleCount++;
       } else {
         card.classList.add('hidden');
+        card.style.transitionDelay = '0s';
       }
     });
 
+    // no-results message
     if (noResults) {
       noResults.style.display = visibleCount === 0 ? 'block' : 'none';
     }
-  });
-});
+  }
+
+  filterBtns.forEach(btn =>
+    btn.addEventListener('click', () => applyFilter(btn.dataset.tech))
+  );
+
+  if (resetLink) {
+    resetLink.addEventListener('click', e => {
+      e.preventDefault();
+      applyFilter('all');
+    });
+  }
+})();
 
 /* ============================================================
-   STAGGER PROJECT CARDS
+   STAGGER ENTRANCE ANIMATION
+   Set transition-delay on cards that don't already have one
    ============================================================ */
-document.querySelectorAll('#projectsGrid .project-card.reveal').forEach((el, i) => {
+document.querySelectorAll('#projectsGrid .project-card').forEach((el, i) => {
   if (!el.style.transitionDelay) {
     el.style.transitionDelay = (i * 0.07) + 's';
   }
 });
 
-/* ============================================================
-   STAGGER FEATURED CARDS
-   ============================================================ */
-document.querySelectorAll('.featured-grid .featured-card.reveal').forEach((el, i) => {
-  el.style.transitionDelay = (i * 0.12) + 's';
+document.querySelectorAll('.featured-grid .featured-card').forEach((el, i) => {
+  if (!el.style.transitionDelay) {
+    el.style.transitionDelay = (i * 0.1) + 's';
+  }
 });
 </script>
 {% endblock %}

@@ -9,6 +9,7 @@ urlpatterns = [
     path('services/', views.services, name='services'),
     path('freelance/', views.hire, name='freelance'),
     path('blog/', views.blog, name='blog'),
+    path('blog_subscribe/', views.blog_subscribe, name='blog_subscribe'),
     path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
     path('case-studies/', views.case_studies, name='case_studies'),
     path('case-studies/<slug:slug>/', views.case_study_detail, name='case_study_detail'),
